@@ -1,0 +1,10 @@
+{
+  "name": "dhtmlx-suite-node",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+	"prettier": "prettier --write /**/*.{js, ts, html, css}"
+  },
+  "license": "ISC",
+  "author": "DHTMLX"
+}
