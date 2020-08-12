@@ -100,16 +100,31 @@
 					return;
 				}
 				form.send("https://docs.dhtmlx.com/suite/backend/formData/").then(function(res) {
-					successMessage(res.name);
+					displayMessage(res.name);
 				});
 				form.clear();
 			});
 
-			function successMessage(name) {
+			form.events.on("ValidationFail", function(id) {
+				displayMessage(id, true);
+			});
+
+			function displayMessage(message, err) {
+				let css;
+				let text;
+
+				if (err) {
+					css = "dhx_message--error";
+					text = message + " invalid data";
+				} else {
+					css = "dhx_message--success";
+					text = message + ", your data has been entered successfully";
+				}
+
 				dhx.message({
-					text: name + ", your data has been entered successfully", 
-					expire: 8000,
-					css: "dhx_message--success",
+					text: text, 
+					expire: 3000,
+					css: css,
 				});
 			}
 		</script>
