@@ -5,7 +5,10 @@
 		<title>Basic initialization - DHTMLX Dataview</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
 		<link rel="stylesheet" href="../assets/css/index.css">
-		<!-- custom sample head -->
+		<!-- <link rel="stylesheet" href="https://cdn.dhtmlx.com/suite/edge/suite.css"> -->
+		<!-- <script type="text/javascript" src="https://cdn.dhtmlx.com/suite/edge/suite.js"></script> -->
+		<link rel="stylesheet" href="../library/suite.css">
+		<script type="text/javascript" src="../library/suite.js"></script>
 	</head>
 	<body>
 		<header class="dhx_sample-header">
@@ -27,5 +30,88 @@
 				</h1>
 			</div>
 		</header>
+		<section class="dhx_sample-container">
+			<form id="form"></form>
+		</section>
+		<script>
+			const form = new dhx.Form("form", {
+				css: "dhx_widget--bordered",
+				width: 500,
+				height: 360,
+				rows: [
+					{
+						type: "input",
+						label: "Name",
+						icon: "dxi dxi-eye",
+						placeholder: "John Doe",
+						required: true,
+						preMessage: "Enter your name",
+						successMessage: "Success",
+						errorMessage: "Please fill in this field",
+						id: "name",
+					},
+					{
+						type: "input",
+						label: "Email",
+						icon: "dxi dxi-eye",
+						placeholder: "jd@mail.name",
+						required: true,
+						preMessage: "Enter your email",
+						successMessage: "Success",
+						errorMessage: "Invalid email",
+						validation: "email",
+						id: "email",
+					},
+					{
+						type: "input",
+						inputType: "password",
+						label: "Password",
+						icon: "dxi dxi-eye-off",
+						placeholder: "********",
+						required: true,
+						preMessage: "Enter password",
+						successMessage: "Success",
+						errorMessage: "Password must be at least 8 characters",
+						validation: function(value) {
+							return value.length > 8;
+						},
+						id: "password",
+					},
+					{
+						type: "checkbox",
+						label: "I agree",
+						labelPosition: "right",
+						required: true,
+						id: "agree",
+					},
+					{
+						type: "button",
+						value: "Send",
+						size: "medium",
+						view: "flat",
+						color: "primary",
+						full: true,
+					}
+				]
+			});
+
+			form.events.on("ButtonClick", function() {
+				if (!form.validate()) {
+					return;
+				}
+				form.send("https://docs.dhtmlx.com/suite/backend/formData/").then(function(res) {
+					successMessage(res.name);
+				});
+				form.clear();
+			});
+
+			function successMessage(name) {
+				dhx.message({
+					text: name + ", your data has been entered successfully", 
+					expire: 8000,
+					css: "dhx_message--success",
+				});
+			}
+		</script>
 	</body>
 </html>
