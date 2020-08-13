@@ -5,7 +5,22 @@
 		<title>Basic initialization - DHTMLX Dataview</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
 		<link rel="stylesheet" href="../assets/css/index.css" />
+		<link rel="stylesheet" href="../library/suite.css" />
+		<script type="text/javascript" src="../library/suite.js"></script>
 		<!-- custom sample head -->
+		<script src="../temp/personal.js"></script>
+		<style>
+			.dhx-demo_personal-card p {
+				margin: 0;
+				color: rgba(0, 0, 0, 0.7);
+				font-size: 14px;
+				line-height: 20px;
+			}
+			.dhx_sample-container__widget {
+				max-width: 400px;
+				height: 450px;
+			}
+		</style>
 	</head>
 	<body>
 		<header class="dhx_sample-header">
@@ -16,16 +31,41 @@
 							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<span class="dhx_sample-header-breadcrumbs__link">Form with NodeJS</span>
+							<span class="dhx_sample-header-breadcrumbs__link">List with NodeJS</span>
 						</li>
 					</ul>
 				</nav>
 				<h1 class="dhx_sample-header__title">
 					<div class="dhx_sample-header__content">
-						Form with NodeJS.
+						List with NodeJS.
 					</div>
 				</h1>
 			</div>
 		</header>
+		<section class="dhx_sample-container">
+			<div class="dhx_sample-container__widget" id="list"></div>
+		</section>
+		<script>
+			function template(data) {
+				var template = `
+					<div class="dhx-demo_personal-card">
+						<p><b>Name:</b> ${data.name}</p>
+						<p><b>Post:</b> ${data.post}</p>
+						<p><b>Phone:</b> ${data.phone}</p>
+						<p><b>Beginning of work:</b> ${data.start}</p>
+						<p><b>Birthday:</b> ${data.birthday}</p>
+					</div>
+				`;
+				return template;
+			}
+
+			var list = new dhx.List("list", {
+				css: "dhx_widget--bordered",
+				dragMode: "both",
+				template: template
+			});
+
+			list.data.parse(data);
+		</script>
 	</body>
 </html>
