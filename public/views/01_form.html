@@ -3,11 +3,9 @@
 	<head>
 		<!-- meta block -->
 		<title>Basic initialization - DHTMLX Dataview</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
-		<link rel="stylesheet" href="../assets/css/index.css">
-		<!-- <link rel="stylesheet" href="https://cdn.dhtmlx.com/suite/edge/suite.css"> -->
-		<!-- <script type="text/javascript" src="https://cdn.dhtmlx.com/suite/edge/suite.js"></script> -->
-		<link rel="stylesheet" href="../library/suite.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
+		<link rel="stylesheet" href="../assets/css/index.css" />
+		<link rel="stylesheet" href="../library/suite.css" />
 		<script type="text/javascript" src="../library/suite.js"></script>
 	</head>
 	<body>
@@ -16,7 +14,9 @@
 				<nav class="dhx_sample-header__breadcrumbs">
 					<ul class="dhx_sample-header-breadcrumbs">
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
+							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link"
+								>NodeJS samles</a
+							>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
 							<span class="dhx_sample-header-breadcrumbs__link">Form with NodeJS</span>
@@ -37,7 +37,8 @@
 			const form = new dhx.Form("form", {
 				css: "dhx_widget--bordered",
 				width: 500,
-				height: 360,
+				height: 350,
+				padding: 20,
 				rows: [
 					{
 						type: "input",
@@ -72,17 +73,10 @@
 						preMessage: "Enter password",
 						successMessage: "Success",
 						errorMessage: "Password must be at least 8 characters",
-						validation: function(value) {
+						validation: function (value) {
 							return value.length > 8;
 						},
 						id: "password",
-					},
-					{
-						type: "checkbox",
-						label: "I agree",
-						labelPosition: "right",
-						required: true,
-						id: "agree",
 					},
 					{
 						type: "button",
@@ -91,21 +85,21 @@
 						view: "flat",
 						color: "primary",
 						full: true,
-					}
-				]
+					},
+				],
 			});
 
-			form.events.on("ButtonClick", function() {
+			form.events.on("ButtonClick", function () {
 				if (!form.validate()) {
 					return;
 				}
-				form.send("https://docs.dhtmlx.com/suite/backend/formData/").then(function(res) {
+				form.send("https://docs.dhtmlx.com/suite/backend/formData/").then(function (res) {
 					displayMessage(res.name);
 				});
 				form.clear();
 			});
 
-			form.events.on("ValidationFail", function(id) {
+			form.events.on("ValidationFail", function (id) {
 				displayMessage(id, true);
 			});
 
@@ -122,7 +116,7 @@
 				}
 
 				dhx.message({
-					text: text, 
+					text: text,
 					expire: 3000,
 					css: css,
 				});
