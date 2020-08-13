@@ -5,7 +5,74 @@
 		<title>Basic initialization - DHTMLX Dataview</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
 		<link rel="stylesheet" href="../assets/css/index.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.5.55/css/materialdesignicons.min.css"
+		/>
+		<link rel="stylesheet" href="../library/suite.css" />
+		<script type="text/javascript" src="../library/suite.js"></script>
+		<script src="../temp/dataview.js"></script>
 		<!-- custom sample head -->
+		<style>
+			.dhx-demo_personal-card {
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background: white;
+				color: rgba(0, 0, 0, 0.7);
+				padding: 10px 12px;
+			}
+			.dhx-demo_personal-card i {
+				color: rgba(0, 0, 0, 0.7);
+				height: 20px;
+				width: 20px;
+				font-size: 18px;
+			}
+			.dhx-demo_personal-card__info {
+				display: flex;
+			}
+			.dhx-demo_personal-card__info a {
+				color: #0288d1;
+			}
+			.dhx-demo_personal-card__container {
+				height: 100%;
+				width: 100%;
+				overflow: hidden;
+				position: relative;
+			}
+			.dhx-demo_personal-card__container h3,
+			.dhx-demo_personal-card__container p {
+				text-align: left;
+				font-size: 14px;
+				line-height: 20px;
+				height: 20px;
+				margin: 0 0 4px 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			.dhx-demo_personal-card__container i {
+				margin-right: 4px;
+			}
+			.dhx-demo_personal-card__img-container {
+				min-width: 93px;
+				width: 93px;
+				margin-right: 12px;
+				height: 93px;
+			}
+			.dhx-demo_personal-card__img-container img {
+				width: inherit;
+				height: auto;
+			}
+			.dhx_sample-container__widget {
+				height: 525px;
+				max-width: 700px;
+			}
+			.dhx_dataview-item {
+				padding: 2px;
+			}
+		</style>
 	</head>
 	<body>
 		<header class="dhx_sample-header">
@@ -13,21 +80,50 @@
 				<nav class="dhx_sample-header__breadcrumbs">
 					<ul class="dhx_sample-header-breadcrumbs">
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link"
-								>NodeJS samles</a
-							>
+							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<span class="dhx_sample-header-breadcrumbs__link">Form with NodeJS</span>
+							<span class="dhx_sample-header-breadcrumbs__link">Dataview with NodeJS</span>
 						</li>
 					</ul>
 				</nav>
 				<h1 class="dhx_sample-header__title">
 					<div class="dhx_sample-header__content">
-						Form with NodeJS.
+						Dataview with NodeJS.
 					</div>
 				</h1>
 			</div>
 		</header>
+		<section class="dhx_sample-container">
+			<div class="dhx_sample-container__widget" id="dataview"></div>
+		</section>
+		<script>
+			function template(data) {
+				var template = '<div class="dhx-demo_personal-card">';
+				template += '<div class="dhx-demo_personal-card__container dhx-demo_personal-card__img-container">';
+				template += '<img src="' + data.photo + '" alt="' + data.name + '"></img></div>';
+				template += '<div class="dhx-demo_personal-card__container">';
+				template += "<h3>" + data.name + "</h3>";
+				template += "<p>" + data.post + "</p>";
+				template += '<span class="dhx-demo_personal-card__info">';
+				template += '<i class="mdi mdi-cellphone-android"></i>';
+				template += "<p>" + data.phone + "</p></span>";
+				template += '<span class="dhx-demo_personal-card__info">';
+				template += '<i class="mdi mdi-email-outline"></i>';
+				template += '<a href="mailto:' + data.mail + '" target="_blank">' + data.mail + "</a></span></div></div>";
+				return template;
+			}
+
+			var dataview = new dhx.DataView("dataview", {
+				itemsInRow: 2,
+				gap: 10,
+				css: "dhx_widget--bordered",
+				dragMode: "both",
+				template: template,
+				multiselection: true,
+			});
+
+			dataview.data.parse(data);
+		</script>
 	</body>
 </html>

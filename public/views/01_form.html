@@ -14,9 +14,7 @@
 				<nav class="dhx_sample-header__breadcrumbs">
 					<ul class="dhx_sample-header-breadcrumbs">
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link"
-								>NodeJS samles</a
-							>
+							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
 							<span class="dhx_sample-header-breadcrumbs__link">Form with NodeJS</span>
@@ -34,7 +32,7 @@
 			<form id="form"></form>
 		</section>
 		<script>
-			const form = new dhx.Form("form", {
+			var form = new dhx.Form("form", {
 				css: "dhx_widget--bordered",
 				width: 500,
 				height: 350,
@@ -104,8 +102,8 @@
 			});
 
 			function displayMessage(message, err) {
-				let css;
-				let text;
+				var css;
+				var text;
 
 				if (err) {
 					css = "dhx_message--error";
