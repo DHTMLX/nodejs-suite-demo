@@ -5,7 +5,17 @@
 		<title>Basic initialization - DHTMLX Dataview</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
 		<link rel="stylesheet" href="../assets/css/index.css" />
+		<link rel="stylesheet" href="../library/suite.css" />
+		<script type="text/javascript" src="../library/suite.js"></script>
 		<!-- custom sample head -->
+		<script src="../temp/book.js"></script>
+		<style>
+			.dhx_sample-container__widget {
+				max-width: 400px;
+				max-height: 450px;
+				overflow-y: auto;
+			}
+		</style>
 	</head>
 	<body>
 		<header class="dhx_sample-header">
@@ -16,16 +26,27 @@
 							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<span class="dhx_sample-header-breadcrumbs__link">Form with NodeJS</span>
+							<span class="dhx_sample-header-breadcrumbs__link">Tree with NodeJS</span>
 						</li>
 					</ul>
 				</nav>
 				<h1 class="dhx_sample-header__title">
 					<div class="dhx_sample-header__content">
-						Form with NodeJS.
+						Tree with NodeJS.
 					</div>
 				</h1>
 			</div>
 		</header>
+		<section class="dhx_sample-container">
+			<div class="dhx_sample-container__widget" id="tree"></div>
+		</section>
+		<script>
+			var tree = new dhx.Tree("tree", {
+				dragMode: "both",
+				css: "dhx_widget--bordered",
+			});
+
+			tree.data.parse(data);
+		</script>
 	</body>
 </html>

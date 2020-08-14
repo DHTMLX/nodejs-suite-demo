@@ -7,7 +7,7 @@ var data = [
 		mail: "kmccoy@gmail.com",
 		photo: "../temp/img/big-avatar-1.jpg",
 		birthday: "10.01.1956",
-		start:"15.09.1990"
+		start: "15.09.1990",
 	},
 	{
 		id: "1",
@@ -17,7 +17,7 @@ var data = [
 		mail: "tfisher@gmail.com",
 		photo: "../temp/img/big-avatar-2.jpg",
 		birthday: "09.12.1987",
-		start:"04.02.2018"
+		start: "04.02.2018",
 	},
 	{
 		id: "1.1",
@@ -27,7 +27,7 @@ var data = [
 		mail: "fsaunders@gmail.com",
 		photo: "../temp/img/big-avatar-3.jpg",
 		birthday: "25.05.1997",
-		start:"12.09.2019"
+		start: "12.09.2019",
 	},
 	{
 		id: "1.1.1",
@@ -37,7 +37,7 @@ var data = [
 		mail: "jbrown@gmail.com",
 		photo: "../temp/img/big-avatar-14.jpg",
 		birthday: "03.10.1970",
-		start:"06.02.1998"
+		start: "06.02.1998",
 	},
 	{
 		id: "1.1.1.1",
@@ -47,7 +47,7 @@ var data = [
 		mail: "rmarshall@gmail.com",
 		photo: "../temp/img/big-avatar-16.jpg",
 		birthday: "02.11.1984",
-		start:"12.06.2015"
+		start: "12.06.2015",
 	},
 	{
 		id: "1.1.1.2",
@@ -57,7 +57,7 @@ var data = [
 		mail: "twalsh@gmail.com",
 		photo: "../temp/img/big-avatar-17.jpg",
 		birthday: "15.03.1978",
-		start:"15.08.1999"
+		start: "15.08.1999",
 	},
 	{
 		id: "1.1.1.3",
@@ -67,7 +67,7 @@ var data = [
 		mail: "hpearce@gmail.com",
 		photo: "../temp/img/big-avatar-18.jpg",
 		birthday: "12.12.1990",
-		start:"05.03.2017"
+		start: "05.03.2017",
 	},
 	{
 		id: "1.1.2",
@@ -78,7 +78,7 @@ var data = [
 		photo: "../temp/img/big-avatar-19.jpg",
 		dir: "vertical",
 		birthday: "15.03.1954",
-		start:"09.12.1986"
+		start: "09.12.1986",
 	},
 	{
 		id: "1.1.2.1",
@@ -88,7 +88,7 @@ var data = [
 		mail: "egreen@gmail.com",
 		photo: "../temp/img/big-avatar-20.jpg",
 		birthday: "01.06.1957",
-		start:"12.02.1976"
+		start: "12.02.1976",
 	},
 	{
 		id: "1.1.2.2",
@@ -98,7 +98,7 @@ var data = [
 		mail: "dbarrett@gmail.com",
 		photo: "../temp/img/big-avatar-21.jpg",
 		birthday: "09.09.1948",
-		start:"04.03.1968"
+		start: "04.03.1968",
 	},
 	{
 		id: "1.1.3",
@@ -108,7 +108,7 @@ var data = [
 		mail: "ajohnston@gmail.com",
 		photo: "../temp/img/big-avatar-22.jpg",
 		birthday: "01.07.1956",
-		start:"09.01.2020"
+		start: "09.01.2020",
 	},
 	{
 		id: "1.1.3.1",
@@ -118,7 +118,7 @@ var data = [
 		mail: "pholmes@gmail.com",
 		photo: "../temp/img/big-avatar-23.jpg",
 		birthday: "07.01.2000",
-		start:"25.12.2019"
+		start: "25.12.2019",
 	},
 	{
 		id: "1.1.3.2",
@@ -128,7 +128,7 @@ var data = [
 		mail: "cfraser@gmail.com",
 		photo: "../temp/img/big-avatar-24.jpg",
 		birthday: "05.08.1988",
-		start:"07.06.2010"
+		start: "07.06.2010",
 	},
 	{
 		id: "2",
@@ -138,7 +138,7 @@ var data = [
 		mail: "ahall@gmail.com",
 		photo: "../temp/img/big-avatar-4.jpg",
 		birthday: "04.04.1983",
-		start:"05.03.2015"
+		start: "05.03.2015",
 	},
 	{
 		id: "2.1",
@@ -149,7 +149,7 @@ var data = [
 		photo: "../temp/img/big-avatar-25.jpg",
 		dir: "vertical",
 		birthday: "04.03.1989",
-		start:"09.01.2020"
+		start: "09.01.2020",
 	},
 	{
 		id: "2.1.1",
@@ -159,7 +159,7 @@ var data = [
 		mail: "bsutton@gmail.com",
 		photo: "../temp/img/big-avatar-26.jpg",
 		birthday: "01.12.1993",
-		start:"11.05.2019"
+		start: "11.05.2019",
 	},
 	{
 		id: "2.1.2",
@@ -169,7 +169,7 @@ var data = [
 		mail: "jstevens@gmail.com",
 		photo: "../temp/img/big-avatar-27.jpg",
 		birthday: "25.11.1986",
-		start:"07.03.2005"
+		start: "07.03.2005",
 	},
 	{
 		id: "2.1.3",
@@ -179,7 +179,7 @@ var data = [
 		mail: "akhan@gmail.com",
 		photo: "../temp/img/big-avatar-28.jpg",
 		birthday: "03.03.1987",
-		start:"09.05.2014"
+		start: "09.05.2014",
 	},
 	{
 		id: "2.2",
@@ -190,7 +190,7 @@ var data = [
 		photo: "../temp/img/big-avatar-29.jpg",
 		dir: "vertical",
 		birthday: "09.11.1986",
-		start:"05.05.2014"
+		start: "05.05.2014",
 	},
 	{
 		id: "2.2.1",
@@ -200,7 +200,7 @@ var data = [
 		mail: "smorris@gmail.com",
 		photo: "../temp/img/big-avatar-30.jpg",
 		birthday: "25.11.1986",
-		start:"07.03.2005"
+		start: "07.03.2005",
 	},
 	{
 		id: "2.2.2",
@@ -210,7 +210,7 @@ var data = [
 		mail: "jmurray@gmail.com",
 		photo: "../temp/img/big-avatar-31.jpg",
 		birthday: "03.02.1979",
-		start:"12.10.2015"
+		start: "12.10.2015",
 	},
 	{
 		id: "2.2.3",
@@ -220,7 +220,7 @@ var data = [
 		mail: "mbarker@gmail.com",
 		photo: "../temp/img/big-avatar-32.jpg",
 		birthday: "02.12.1954",
-		start:"01.03.2005"
+		start: "01.03.2005",
 	},
 	{
 		id: "3",
@@ -231,7 +231,7 @@ var data = [
 		photo: "../temp/img/big-avatar-6.jpg",
 		dir: "vertical",
 		birthday: "02.02.1960",
-		start:"09.01.2000"
+		start: "09.01.2000",
 	},
 	{
 		id: "3.1",
@@ -241,7 +241,7 @@ var data = [
 		mail: "cburke@gmail.com",
 		photo: "../temp/img/big-avatar-7.jpg",
 		birthday: "01.04.1997",
-		start:"01.02.2019"
+		start: "01.02.2019",
 	},
 	{
 		id: "3.2",
@@ -251,7 +251,7 @@ var data = [
 		mail: "esaunders@gmail.com",
 		photo: "../temp/img/big-avatar-8.jpg",
 		birthday: "25.04.1987",
-		start:"09.09.2018"
+		start: "09.09.2018",
 	},
 	{
 		id: "3.3",
@@ -261,7 +261,7 @@ var data = [
 		mail: "smatthews@gmail.com",
 		photo: "../temp/img/big-avatar-9.jpg",
 		birthday: "01.03.1986",
-		start:"01.01.2015"
+		start: "01.01.2015",
 	},
 	{
 		id: "3.4",
@@ -271,7 +271,7 @@ var data = [
 		mail: "kfoster@gmail.com",
 		photo: "../temp/img/big-avatar-10.jpg",
 		birthday: "05.12.1980",
-		start:"06.01.2000"
+		start: "06.01.2000",
 	},
 	{
 		id: "4",
@@ -281,7 +281,7 @@ var data = [
 		mail: "pcox@gmail.com",
 		photo: "../temp/img/big-avatar-11.jpg",
 		birthday: "09.03.1964",
-		start:"03.01.2002"
+		start: "03.01.2002",
 	},
 	{
 		id: "4.1",
@@ -291,7 +291,7 @@ var data = [
 		mail: "ncollins@gmail.com",
 		photo: "../temp/img/big-avatar-12.jpg",
 		birthday: "04.06.1988",
-		start:"09.03.2014"
+		start: "09.03.2014",
 	},
 	{
 		id: "4.1.1",
@@ -301,7 +301,7 @@ var data = [
 		mail: "aday@gmail.com",
 		photo: "../temp/img/big-avatar-33.jpg",
 		birthday: "03.03.1989",
-		start:"03.02.2019"
+		start: "03.02.2019",
 	},
 	{
 		id: "4.1.2",
@@ -311,7 +311,7 @@ var data = [
 		mail: "nnewman@gmail.com",
 		photo: "../temp/img/big-avatar-34.jpg",
 		birthday: "09.10.1980",
-		start:"09.09.2000"
+		start: "09.09.2000",
 	},
 	{
 		id: "4.2",
@@ -321,7 +321,7 @@ var data = [
 		mail: "hblack@gmail.com",
 		photo: "../temp/img/big-avatar-13.jpg",
 		birthday: "12.12.1989",
-		start:"04.07.2016"
+		start: "04.07.2016",
 	},
 	{
 		id: "4.3",
@@ -331,6 +331,6 @@ var data = [
 		mail: "amoore@gmail.com",
 		photo: "../temp/img/big-avatar-5.jpg",
 		birthday: "02.12.1990",
-		start:"09.03.2015"
-	}
+		start: "09.03.2015",
+	},
 ];

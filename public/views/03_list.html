@@ -47,22 +47,19 @@
 		</section>
 		<script>
 			function template(data) {
-				var template = `
-					<div class="dhx-demo_personal-card">
-						<p><b>Name:</b> ${data.name}</p>
-						<p><b>Post:</b> ${data.post}</p>
-						<p><b>Phone:</b> ${data.phone}</p>
-						<p><b>Beginning of work:</b> ${data.start}</p>
-						<p><b>Birthday:</b> ${data.birthday}</p>
-					</div>
-				`;
+				var template = "<div class='dhx-demo_personal-card'>";
+				template += "<p><b>Name:</b> " + data.name + "</p>";
+				template += "<p><b>Post:</b> " + data.post + "</p>";
+				template += "<p><b>Phone:</b> " + data.phone + "</p>";
+				template += "<p><b>Beginning of work:</b> " + data.start + "</p>";
+				template += "<p><b>Birthday:</b> " + data.birthday + "</p>";
 				return template;
 			}
 
 			var list = new dhx.List("list", {
 				css: "dhx_widget--bordered",
 				dragMode: "both",
-				template: template
+				template: template,
 			});
 
 			list.data.parse(data);
