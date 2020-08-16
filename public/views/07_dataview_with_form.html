@@ -5,7 +5,75 @@
 		<title>Basic initialization - DHTMLX Dataview</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
 		<link rel="stylesheet" href="../assets/css/index.css" />
+		<link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.5.55/css/materialdesignicons.min.css" />
+		<link rel="stylesheet" href="../library/suite.css" />
+		<script type="text/javascript" src="../library/suite.js"></script>
 		<!-- custom sample head -->
+		<script src="../temp/personal.js"></script>
+		<style>
+			.dhx-demo_personal-card {
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background: white;
+				color: rgba(0, 0, 0, 0.7);
+				padding: 10px 12px;
+			}
+			.dhx-demo_personal-card i {
+				color: rgba(0, 0, 0, 0.7);
+				height: 20px;
+				width: 20px;
+				font-size: 18px;
+			}
+			.dhx-demo_personal-card__info {
+				display: flex;
+			}
+			.dhx-demo_personal-card__info a {
+				color: #0288d1;
+			}
+			.dhx-demo_personal-card__container {
+				height: 100%;
+				width: 100%;
+				overflow: hidden;
+				position: relative;
+			}
+			.dhx-demo_personal-card__container h3,
+			.dhx-demo_personal-card__container p {
+				text-align: left;
+				font-size: 14px;
+				line-height: 20px;
+				height: 20px;
+				margin: 0 0 4px 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			.dhx-demo_personal-card__container i {
+				margin-right: 4px;
+			}
+			.dhx-demo_personal-card__img-container {
+				min-width: 110px;
+				width: 110px;
+				margin-right: 12px;
+				height: 110px;
+			}
+			.dhx-demo_personal-card__img-container img {
+				width: inherit;
+				height: auto;
+			}
+			.dhx_sample-container__widget {
+				height: 600px;
+				max-width: 700px;
+				margin: 0 20px;
+			}
+			.dhx_dataview-item {
+				padding: 2px;
+			}
+			.dhx_form-button .dhx_button {
+				width: 140px;
+			}
+		</style>
 	</head>
 	<body>
 		<header class="dhx_sample-header">
@@ -16,16 +84,143 @@
 							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<span class="dhx_sample-header-breadcrumbs__link">Form with NodeJS</span>
+							<span class="dhx_sample-header-breadcrumbs__link">Dataview and Form with NodeJS</span>
 						</li>
 					</ul>
 				</nav>
 				<h1 class="dhx_sample-header__title">
 					<div class="dhx_sample-header__content">
-						Form with NodeJS.
+						Dataview and Form with NodeJS.
 					</div>
 				</h1>
 			</div>
 		</header>
+		<section class="dhx_sample-container">
+			<div class="dhx_sample-container__widget" id="dataview"></div>
+			<div class="dhx_sample-container__widget" id="form"></div>
+		</section>
+		<script>
+			function template(data) {
+				var template = '<div class="dhx-demo_personal-card">';
+				template += '<div class="dhx-demo_personal-card__container dhx-demo_personal-card__img-container">';
+				template += '<img src="' + data.photo + '" alt="' + data.name + '"></img></div>';
+				template += '<div class="dhx-demo_personal-card__container">';
+				template += "<h3>" + data.name + "</h3>";
+				template += "<p>" + data.post + "</p>";
+				template += '<span class="dhx-demo_personal-card__info">';
+				template += '<i class="mdi mdi-cellphone-android"></i>';
+				template += "<p>" + data.phone + "</p></span>";
+				template += '<span class="dhx-demo_personal-card__info">';
+				template += '<i class="mdi mdi-cake-variant"></i>';
+				template += "<p>" + data.birthday + "</p></span>";
+				template += '<span class="dhx-demo_personal-card__info">';
+				template += '<i class="mdi mdi-email-outline"></i>';
+				template += '<a href="mailto:' + data.mail + '" target="_blank">' + data.mail + "</a></span></div></div>";
+				return template;
+			}
+
+			var dataview = new dhx.DataView("dataview", {
+				itemsInRow: 2,
+				gap: 10,
+				css: "dhx_widget--bordered",
+				dragMode: "both",
+				template: template,
+			});
+
+			dataview.data.parse(data);
+
+			var form = new dhx.Form("form", {
+				css: "dhx_widget--bordered",
+				width: 500,
+				height: 600,
+				padding: 20,
+				rows: [
+					{
+						type: "input",
+						label: "Employee name",
+						placeholder: "John Doe",
+						required: true,
+						id: "name",
+					},
+					{
+						type: "input",
+						label: "Position",
+						placeholder: "Resident",
+						required: true,
+						id: "position",
+					},
+					{
+						type: "input",
+						label: "Phone number",
+						placeholder: "(405) 500-2020",
+						icon: "mdi mdi-cellphone-android",
+						required: true,
+						validation: function(value) {
+							return /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/.test(value);
+						},
+						id: "phone",
+					},
+					{
+						type: "datepicker",
+						label: "Birthday",
+						required: true,
+						valueFormat: "Date",
+						placeholder: "25.12.1991",
+						dateFormat: "%d.%m.%Y",
+						id: "date",
+					},
+					{
+						type: "input",
+						label: "Email",
+						icon: "mdi mdi-email-outline",
+						placeholder: "jd@mail.name",
+						required: true,
+						validation: "email",
+						id: "email",
+					},
+					{
+						type: "simpleVault",
+						required: true,
+						label: "File with photo",
+						id: "simplevault",
+					},
+					{
+						type: "spacer",
+					},
+					{
+						align: "between",
+						cols: [
+							{
+								type: "button",
+								value: "Add",
+								size: "medium",
+								view: "flat",
+								color: "primary",
+								css: "dhx_form-button",
+								id: "add",
+							},
+							{
+								type: "button",
+								value: "Edit",
+								size: "medium",
+								view: "flat",
+								color: "primary",
+								css: "dhx_form-button",
+								id: "edit",
+							},
+							{
+								type: "button",
+								value: "Delete",
+								size: "medium",
+								view: "flat",
+								color: "primary",
+								css: "dhx_form-button",
+								id: "delete",
+							},
+						]
+					},
+				],
+			});
+		</script>
 	</body>
 </html>

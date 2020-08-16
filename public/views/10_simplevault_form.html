@@ -5,6 +5,8 @@
 		<title>Basic initialization - DHTMLX Dataview</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
 		<link rel="stylesheet" href="../assets/css/index.css" />
+		<link rel="stylesheet" href="../library/suite.css" />
+		<script type="text/javascript" src="../library/suite.js"></script>
 		<!-- custom sample head -->
 	</head>
 	<body>
@@ -16,16 +18,37 @@
 							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<span class="dhx_sample-header-breadcrumbs__link">Form with NodeJS</span>
+							<span class="dhx_sample-header-breadcrumbs__link">Simplevault with NodeJS.</span>
 						</li>
 					</ul>
 				</nav>
 				<h1 class="dhx_sample-header__title">
 					<div class="dhx_sample-header__content">
-						Form with NodeJS.
+						Simplevault with NodeJS.
 					</div>
 				</h1>
 			</div>
 		</header>
+		<section class="dhx_sample-container">
+			<div id="form"></div>
+		</section>
+		<script>
+
+			var form = new dhx.Form("form", {
+				css: "dhx_widget--bordered",
+				width: 500,
+				height: 200,
+				padding: 20,
+				rows: [
+				{
+						type: "simpleVault",
+						required: true,
+						label: "Simple Vault",
+						id: "simplevault",
+					}
+
+				],
+			});
+		</script>
 	</body>
 </html>

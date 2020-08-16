@@ -8,18 +8,12 @@
 		<link rel="stylesheet" href="../library/suite.css" />
 		<script type="text/javascript" src="../library/suite.js"></script>
 		<!-- custom sample head -->
-		<link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.5.55/css/materialdesignicons.min.css" />
-		<script src="../temp/personal.js"></script>
+		<script src="../temp/book.js"></script>
 		<style>
-			.dhx-demo_personal-card p {
-				margin: 0;
-				color: rgba(0, 0, 0, 0.7);
-				font-size: 14px;
-				line-height: 20px;
-			}
 			.dhx_sample-container__widget {
 				max-width: 500px;
 				height: 600px;
+				overflow-y: auto;
 				margin: 0 20px;
 			}
 			.dhx_form-button .dhx_button {
@@ -36,39 +30,29 @@
 							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<span class="dhx_sample-header-breadcrumbs__link">List and Form with NodeJS</span>
+							<span class="dhx_sample-header-breadcrumbs__link">Tree and Form with NodeJS</span>
 						</li>
 					</ul>
 				</nav>
 				<h1 class="dhx_sample-header__title">
 					<div class="dhx_sample-header__content">
-						List and Form with NodeJS.
+						Tree and Form with NodeJS.
 					</div>
 				</h1>
 			</div>
 		</header>
 		<section class="dhx_sample-container">
-			<div class="dhx_sample-container__widget" id="list"></div>
+			<div class="dhx_sample-container__widget" id="tree"></div>
 			<div class="dhx_sample-container__widget" id="form"></div>
 		</section>
 		<script>
-			function template(data) {
-				var template = "<div class='dhx-demo_personal-card'>";
-				template += "<p><b>Name:</b> " + data.name + "</p>";
-				template += "<p><b>Position:</b> " + data.post + "</p>";
-				template += "<p><b>Phone:</b> " + data.phone + "</p>";
-				template += "<p><b>Works since:</b> " + data.start + "</p>";
-				template += "<p><b>Birthday:</b> " + data.birthday + "</p>";
-				return template;
-			}
-
-			var list = new dhx.List("list", {
-				css: "dhx_widget--bordered",
+			var tree = new dhx.Tree("tree", {
+				editing: true,
 				dragMode: "both",
-				template: template,
+				css: "dhx_widget--bordered",
 			});
 
-			list.data.parse(data);
+			tree.data.parse(data);
 
 			var form = new dhx.Form("form", {
 				css: "dhx_widget--bordered",
@@ -79,45 +63,9 @@
 					{
 						type: "input",
 						label: "Name",
-						placeholder: "John Doe",
+						placeholder: "New book",
 						required: true,
 						id: "name",
-					},
-					{
-						type: "input",
-						label: "Position",
-						placeholder: "Resident",
-						required: true,
-						id: "position",
-					},
-					{
-						type: "input",
-						label: "Phone number",
-						placeholder: "(405) 500-2020",
-						icon: "mdi mdi-cellphone-android",
-						required: true,
-						validation: function(value) {
-							return /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/.test(value);
-						},
-						id: "phone",
-					},
-					{
-						type: "datepicker",
-						label: "Works since",
-						required: true,
-						valueFormat: "Date",
-						placeholder: "25.12.1991",
-						dateFormat: "%d.%m.%Y",
-						id: "work",
-					},
-					{
-						type: "datepicker",
-						label: "Birthday",
-						required: true,
-						valueFormat: "Date",
-						placeholder: "25.12.1991",
-						dateFormat: "%d.%m.%Y",
-						id: "date",
 					},
 					{
 						type: "spacer",
