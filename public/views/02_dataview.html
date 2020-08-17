@@ -9,7 +9,6 @@
 		<link rel="stylesheet" href="../library/suite.css" />
 		<script type="text/javascript" src="../library/suite.js"></script>
 		<!-- custom sample head -->
-		<script src="../temp/personal.js"></script>
 		<style>
 			.dhx-demo_personal-card {
 				height: 100%;
@@ -95,10 +94,13 @@
 			<div class="dhx_sample-container__widget" id="dataview"></div>
 		</section>
 		<script>
+			var URL = "http://localhost:3000/personal/";
+			var imgURL = "http://localhost:3000/images/";
+
 			function template(data) {
 				var template = '<div class="dhx-demo_personal-card">';
 				template += '<div class="dhx-demo_personal-card__container dhx-demo_personal-card__img-container">';
-				template += '<img src="' + data.photo + '" alt="' + data.name + '"></img></div>';
+				template += '<img src="' + imgURL + data.photo + '" alt="' + data.name + '"></img></div>';
 				template += '<div class="dhx-demo_personal-card__container">';
 				template += "<h3>" + data.name + "</h3>";
 				template += "<p>" + data.post + "</p>";
@@ -123,7 +125,30 @@
 				multiselection: true,
 			});
 
-			dataview.data.parse(data);
+			dataview.data
+				.load(URL)
+				.then(function (res) {
+					displayMessage("Data loaded successfully");
+				})
+				.catch(function (res) {
+					displayMessage(res.statusText || "Resource Not Found", true);
+				});
+
+			function displayMessage(text, err) {
+				var css;
+
+				if (err) {
+					css = "dhx_message--error";
+				} else {
+					css = "dhx_message--success";
+				}
+
+				dhx.message({
+					text: text,
+					expire: 3000,
+					css: css,
+				});
+			}
 		</script>
 	</body>
 </html>

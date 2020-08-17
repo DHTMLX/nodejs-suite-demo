@@ -71,7 +71,7 @@
 						displayMessage("Files added successfully");
 					})
 					.catch(function (res) {
-						displayMessage(res.statusText, true);
+						displayMessage(res.statusText || "Resource Not Found", true);
 					});
 				form.clear();
 			});

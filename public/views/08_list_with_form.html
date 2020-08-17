@@ -9,7 +9,6 @@
 		<script type="text/javascript" src="../library/suite.js"></script>
 		<!-- custom sample head -->
 		<link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.5.55/css/materialdesignicons.min.css" />
-		<script src="../temp/personal.js"></script>
 		<style>
 			body {
 				overflow: hidden;
@@ -55,6 +54,9 @@
 			<div class="dhx_sample-container__widget" id="form"></div>
 		</section>
 		<script>
+			var URL = "http://localhost:3000/personal/";
+			var item;
+
 			function template(data) {
 				var template = "<div class='dhx-demo_personal-card'>";
 				template += "<p><b>Name:</b> " + data.name + "</p>";
@@ -72,7 +74,14 @@
 				keyNavigation: true,
 			});
 
-			list.data.parse(data);
+			list.data
+				.load(URL)
+				.then(function (res) {
+					displayMessage("Data loaded successfully");
+				})
+				.catch(function (res) {
+					displayMessage(res.statusText || "Resource Not Found", true);
+				});
 
 			var form = new dhx.Form("form", {
 				css: "dhx_widget--bordered",
@@ -186,13 +195,11 @@
 					case "delete":
 						deleteItem();
 						break;
-					default:
-						break;
 				}
 			});
 
 			list.selection.events.on("AfterSelect", function (id) {
-				var item = list.selection.getItem(id);
+				item = list.selection.getItem(id);
 				if (item) {
 					form.enable();
 					form.setValue({
@@ -235,7 +242,17 @@
 			}
 
 			function deleteItem() {
-				form.validate();
+				var id = item.id;
+				dhx.ajax
+					.delete(URL + id)
+					.then(function () {
+						list.data.remove(id);
+						displayMessage(id + " - Removed");
+						clearState();
+					})
+					.catch(function (error) {
+						displayMessage(error.message, true);
+					});
 			}
 
 			function editItem() {

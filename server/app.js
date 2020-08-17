@@ -2,32 +2,25 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 
-// import config from "./utils/dbConfig";
+import config from "./utils/dbConfig";
 import { notFound } from "./utils/responses";
 
-// import initDB from "./database/initDB";
+import initDB from "./database/initDatabase";
 
-// import createCitiesRoute from "./routes/cities";
-// import createBooksRoute from "./routes/books";
-// import createAnimalsRoute from "./routes/animals";
-// import createTreeItemsRoute from "./routes/treeItems";
 import createFormRoute from "./routers/form";
+import createPersonalRoute from "./routers/personal";
 
 export default async function () {
-	// const db = await initDB(config.dbPath);
+	const db = await initDB(config.dbPath);
 	const app = express();
 
 	app.use(cors());
-	app.use(express.static(__dirname + "/public"));
 	app.use(bodyParser.json({ limit: "5mb" }));
 	app.use(bodyParser.urlencoded({ limit: "5mb", extended: true }));
+	app.use(express.static(__dirname + "/upload"));
 
 	createFormRoute(app);
-
-	// createCitiesRoute(app, db);
-	// createBooksRoute(app, db);
-	// createAnimalsRoute(app, db);
-	// createTreeItemsRoute(app, db);
+	createPersonalRoute(app, db);
 
 	app.use((_, res) => {
 		notFound(res);

@@ -1,3 +1,3 @@
 export default {
-	dbPath: "demo-app.sqlite",
+	dbPath: "dhtmlx-suite.sqlite",
 };
