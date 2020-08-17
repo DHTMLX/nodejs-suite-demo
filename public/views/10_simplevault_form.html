@@ -33,20 +33,68 @@
 			<div id="form"></div>
 		</section>
 		<script>
+			var URL = "http://localhost:3000/form/upload";
+
 			var form = new dhx.Form("form", {
 				css: "dhx_widget--bordered",
 				width: 500,
-				height: 200,
+				height: 510,
 				padding: 20,
 				rows: [
 					{
 						type: "simpleVault",
 						required: true,
 						label: "Simple Vault",
+						target: URL,
 						id: "simplevault",
+					},
+					{
+						type: "spacer",
+					},
+					{
+						type: "button",
+						value: "Send",
+						size: "medium",
+						view: "flat",
+						color: "primary",
+						full: true,
 					},
 				],
 			});
+
+			form.events.on("ButtonClick", function () {
+				if (!form.validate()) {
+					return;
+				}
+				form.send(URL, "POST", true)
+					.then(function (res) {
+						displayMessage("Files added successfully");
+					})
+					.catch(function (res) {
+						displayMessage(res.statusText, true);
+					});
+				form.clear();
+			});
+
+			form.events.on("ValidationFail", function (id) {
+				displayMessage(id + " invalid data", true);
+			});
+
+			function displayMessage(text, err) {
+				var css;
+
+				if (err) {
+					css = "dhx_message--error";
+				} else {
+					css = "dhx_message--success";
+				}
+
+				dhx.message({
+					text: text,
+					expire: 3000,
+					css: css,
+				});
+			}
 		</script>
 	</body>
 </html>
