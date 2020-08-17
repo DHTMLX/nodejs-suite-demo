@@ -11,6 +11,9 @@
 		<link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.5.55/css/materialdesignicons.min.css" />
 		<script src="../temp/personal.js"></script>
 		<style>
+			body {
+				overflow: hidden;
+			}
 			.dhx-demo_personal-card p {
 				margin: 0;
 				color: rgba(0, 0, 0, 0.7);
@@ -23,7 +26,7 @@
 				margin: 0 20px;
 			}
 			.dhx_form-button .dhx_button {
-				width: 140px;
+				width: 110px;
 			}
 		</style>
 	</head>
@@ -66,6 +69,7 @@
 				css: "dhx_widget--bordered",
 				dragMode: "both",
 				template: template,
+				keyNavigation: true,
 			});
 
 			list.data.parse(data);
@@ -88,7 +92,7 @@
 						label: "Position",
 						placeholder: "Resident",
 						required: true,
-						id: "position",
+						id: "post",
 					},
 					{
 						type: "input",
@@ -96,7 +100,7 @@
 						placeholder: "(405) 500-2020",
 						icon: "mdi mdi-cellphone-android",
 						required: true,
-						validation: function(value) {
+						validation: function (value) {
 							return /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/.test(value);
 						},
 						id: "phone",
@@ -117,7 +121,7 @@
 						valueFormat: "Date",
 						placeholder: "25.12.1991",
 						dateFormat: "%d.%m.%Y",
-						id: "date",
+						id: "birthday",
 					},
 					{
 						type: "spacer",
@@ -141,6 +145,7 @@
 								view: "flat",
 								color: "primary",
 								css: "dhx_form-button",
+								disabled: true,
 								id: "edit",
 							},
 							{
@@ -150,12 +155,96 @@
 								view: "flat",
 								color: "primary",
 								css: "dhx_form-button",
+								disabled: true,
 								id: "delete",
 							},
-						]
+							{
+								type: "button",
+								value: "Clear",
+								size: "medium",
+								view: "flat",
+								color: "primary",
+								css: "dhx_form-button",
+								id: "clear",
+							},
+						],
 					},
 				],
 			});
+
+			form.events.on("ButtonClick", function (id) {
+				switch (id) {
+					case "clear":
+						clearState();
+						break;
+					case "add":
+						addItem();
+						break;
+					case "edit":
+						editItem();
+						break;
+					case "delete":
+						deleteItem();
+						break;
+					default:
+						break;
+				}
+			});
+
+			list.selection.events.on("AfterSelect", function (id) {
+				var item = list.selection.getItem(id);
+				if (item) {
+					form.enable();
+					form.setValue({
+						name: item.name,
+						post: item.post,
+						phone: item.phone,
+						work: item.start,
+						birthday: item.birthday,
+					});
+				}
+			});
+
+			form.events.on("ValidationFail", function (id) {
+				displayMessage(id + " invalid data", true);
+			});
+
+			function displayMessage(text, err) {
+				var css;
+
+				if (err) {
+					css = "dhx_message--error";
+				} else {
+					css = "dhx_message--success";
+				}
+
+				dhx.message({
+					text: text,
+					expire: 3000,
+					css: css,
+				});
+			}
+
+			function clearState() {
+				var button = ["edit", "delete"];
+				button.forEach(id => {
+					form.getItem(id).disable();
+				});
+				form.clear();
+				list.selection.remove();
+			}
+
+			function deleteItem() {
+				form.validate();
+			}
+
+			function editItem() {
+				form.validate();
+			}
+
+			function addItem() {
+				form.validate();
+			}
 		</script>
 	</body>
 </html>
