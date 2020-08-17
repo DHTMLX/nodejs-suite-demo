@@ -87,30 +87,34 @@
 				],
 			});
 
+			var URL = "http://localhost:3000/form/login";
+
 			form.events.on("ButtonClick", function () {
 				if (!form.validate()) {
 					return;
 				}
-				form.send("https://docs.dhtmlx.com/suite/backend/formData/").then(function (res) {
-					displayMessage(res.name);
-				});
+				form.send(URL)
+					.then(function (res) {
+						var name = JSON.parse(res).name;
+						displayMessage(name + ", your data has been entered successfully");
+					})
+					.catch(function (res) {
+						displayMessage(res.statusText, true);
+					});
 				form.clear();
 			});
 
 			form.events.on("ValidationFail", function (id) {
-				displayMessage(id, true);
+				displayMessage(id + " invalid data", true);
 			});
 
-			function displayMessage(message, err) {
+			function displayMessage(text, err) {
 				var css;
-				var text;
 
 				if (err) {
 					css = "dhx_message--error";
-					text = message + " invalid data";
 				} else {
 					css = "dhx_message--success";
-					text = message + ", your data has been entered successfully";
 				}
 
 				dhx.message({

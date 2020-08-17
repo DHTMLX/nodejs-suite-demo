@@ -11,6 +11,7 @@ import { notFound } from "./utils/responses";
 // import createBooksRoute from "./routes/books";
 // import createAnimalsRoute from "./routes/animals";
 // import createTreeItemsRoute from "./routes/treeItems";
+import createFormRoute from "./routers/form";
 
 export default async function () {
 	// const db = await initDB(config.dbPath);
@@ -20,6 +21,8 @@ export default async function () {
 	app.use(express.static(__dirname + "/public"));
 	app.use(bodyParser.json({ limit: "5mb" }));
 	app.use(bodyParser.urlencoded({ limit: "5mb", extended: true }));
+
+	createFormRoute(app);
 
 	// createCitiesRoute(app, db);
 	// createBooksRoute(app, db);

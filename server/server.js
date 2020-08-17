@@ -16,7 +16,7 @@ const { PORT } = process.env;
 (async () => {
 	const app = await createApp();
 
-	app.use((err, req, res) => {
+	app.use((err, _req, res) => {
 		console.error(err);
 		if (process.env.NODE_ENV === "production") {
 			res.status(500).send("Internal Server Error");
