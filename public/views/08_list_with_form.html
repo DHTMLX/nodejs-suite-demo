@@ -55,7 +55,7 @@
 		</section>
 		<script>
 			var URL = "http://localhost:3000/personal/";
-			var item;
+			var selectedItem;
 
 			function template(data) {
 				var template = "<div class='dhx-demo_personal-card'>";
@@ -118,19 +118,27 @@
 						type: "datepicker",
 						label: "Works since",
 						required: true,
-						valueFormat: "Date",
 						placeholder: "25.12.1991",
 						dateFormat: "%d.%m.%Y",
-						id: "work",
+						id: "start",
 					},
 					{
 						type: "datepicker",
 						label: "Birthday",
 						required: true,
-						valueFormat: "Date",
 						placeholder: "25.12.1991",
 						dateFormat: "%d.%m.%Y",
 						id: "birthday",
+					},
+					{
+						type: "input",
+						hidden: true,
+						id: "mail",
+					},
+					{
+						type: "input",
+						hidden: true,
+						id: "photo",
 					},
 					{
 						type: "spacer",
@@ -199,15 +207,17 @@
 			});
 
 			list.selection.events.on("AfterSelect", function (id) {
-				item = list.selection.getItem(id);
-				if (item) {
+				selectedItem = list.selection.getItem(id);
+				if (selectedItem) {
 					form.enable();
 					form.setValue({
-						name: item.name,
-						post: item.post,
-						phone: item.phone,
-						work: item.start,
-						birthday: item.birthday,
+						name: selectedItem.name,
+						post: selectedItem.post,
+						phone: selectedItem.phone,
+						start: selectedItem.start,
+						birthday: selectedItem.birthday,
+						mail: selectedItem.mail,
+						photo: selectedItem.photo,
 					});
 				}
 			});
@@ -242,12 +252,13 @@
 			}
 
 			function deleteItem() {
-				var id = item.id;
+				var id = selectedItem.id;
+				var name = selectedItem.name;
 				dhx.ajax
 					.delete(URL + id)
 					.then(function () {
 						list.data.remove(id);
-						displayMessage(id + " - Removed");
+						displayMessage(name + " - Removed");
 						clearState();
 					})
 					.catch(function (error) {
@@ -256,11 +267,47 @@
 			}
 
 			function editItem() {
-				form.validate();
+				if (!form.validate()) return;
+
+				var data = getItemData();
+				dhx.ajax
+					.put(URL + selectedItem.id, data)
+					.then(function () {
+						list.data.update(selectedItem.id, data);
+						displayMessage(data.name + " - Edited");
+					})
+					.catch(function (error) {
+						displayMessage(error.message, true);
+					});
 			}
 
 			function addItem() {
-				form.validate();
+				if (!form.validate()) return;
+
+				var data = getItemData();
+				dhx.ajax
+					.post(URL, data)
+					.then(function (res) {
+						data.id = res.id
+						list.data.add(data);
+						displayMessage(data.name + " - Added");
+					})
+					.catch(function (error) {
+						displayMessage(error.message, true);
+					});
+			}
+
+			function getItemData() {
+				var data = form.getValue();
+				return {
+					name: data.name,
+					post: data.post,
+					phone: data.phone,
+					birthday: data.birthday,
+					start: data.start,
+					mail: data.mail || "",
+					photo: data.photo || "",
+				};
 			}
 		</script>
 	</body>

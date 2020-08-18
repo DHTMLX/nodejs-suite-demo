@@ -1,16 +1,6 @@
 export default {
 	personal: [
 		{
-			id: 0,
-			name: "Kristin Mccoy",
-			post: "Medical director",
-			phone: "(405) 555-0128",
-			mail: "kmccoy@gmail.com",
-			photo: "big-avatar-1.jpg",
-			birthday: "10.01.1956",
-			start: "15.09.1990",
-		},
-		{
 			id: 1,
 			name: "Theo Fisher",
 			post: "Head of department",
@@ -329,6 +319,16 @@ export default {
 			photo: "big-avatar-5.jpg",
 			birthday: "02.12.1990",
 			start: "09.03.2015",
+		},
+		{
+			id: 33,
+			name: "Kristin Mccoy",
+			post: "Medical director",
+			phone: "(405) 555-0128",
+			mail: "kmccoy@gmail.com",
+			photo: "big-avatar-1.jpg",
+			birthday: "10.01.1956",
+			start: "15.09.1990",
 		},
 	],
 };
