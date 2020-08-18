@@ -33,5 +33,21 @@ export default async function (dbPath) {
 		}
 	}
 
+	// PROJECTS
+	{
+		await db.exec(
+			"CREATE TABLE IF NOT EXISTS projects (id INTEGER PRIMARY KEY, project TEXT, owner TEXT, start_date TEXT, end_date TEXT, status TEXT, hours INTEGER, balance INTEGER, paid INTEGER);"
+		);
+		const { count } = await db.get("SELECT COUNT(*) AS count FROM projects;");
+		if (count === 0) {
+			for (const { id, project, owner, start_date, end_date, status, hours, balance, paid } of data.projects) {
+				await db.get(
+					"INSERT INTO projects (id, project, owner, start_date, end_date, status, hours, balance, paid) VALUES (?,?,?,?,?,?,?,?,?);",
+					[id, project, owner, start_date, end_date, status, hours, balance, paid]
+				);
+			}
+		}
+	}
+
 	return db;
 }

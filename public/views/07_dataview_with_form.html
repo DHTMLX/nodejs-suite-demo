@@ -354,7 +354,7 @@
 				dhx.ajax
 					.post(URL, data)
 					.then(function (res) {
-						data.id = res.id
+						data.id = res.id;
 						dataview.data.add(data);
 						displayMessage(data.name + " - Added");
 					})

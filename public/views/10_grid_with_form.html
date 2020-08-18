@@ -8,17 +8,10 @@
 		<link rel="stylesheet" href="../library/suite.css" />
 		<script type="text/javascript" src="../library/suite.js"></script>
 		<!-- custom sample head -->
-		<link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.5.55/css/materialdesignicons.min.css" />
 		<style>
-			.dhx-demo_personal-card p {
-				margin: 0;
-				color: rgba(0, 0, 0, 0.7);
-				font-size: 14px;
-				line-height: 20px;
-			}
 			.dhx_sample-container__widget {
-				max-width: 500px;
-				height: 600px;
+				height: 620px;
+				max-width: 700px;
 				margin: 0 20px;
 			}
 			.dhx_form-button .dhx_button {
@@ -35,43 +28,54 @@
 							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<span class="dhx_sample-header-breadcrumbs__link">List and Form with NodeJS</span>
+							<span class="dhx_sample-header-breadcrumbs__link">Grid and Form with NodeJS</span>
 						</li>
 					</ul>
 				</nav>
 				<h1 class="dhx_sample-header__title">
 					<div class="dhx_sample-header__content">
-						List and Form with NodeJS.
+						Grid and Form with NodeJS.
 					</div>
 				</h1>
 			</div>
 		</header>
 		<section class="dhx_sample-container">
-			<div class="dhx_sample-container__widget" id="list"></div>
+			<div class="dhx_sample-container__widget" id="grid" style="min-width: 850px;"></div>
 			<div class="dhx_sample-container__widget" id="form"></div>
 		</section>
 		<script>
-			var URL = "http://localhost:3000/personal/";
-			var selectedItem;
+			var URL = "http://localhost:3000/projects/";
+			var selectedRow;
 
-			function template(data) {
-				var template = "<div class='dhx-demo_personal-card'>";
-				template += "<p><b>Name:</b> " + data.name + "</p>";
-				template += "<p><b>Position:</b> " + data.post + "</p>";
-				template += "<p><b>Phone:</b> " + data.phone + "</p>";
-				template += "<p><b>Works since:</b> " + data.start + "</p>";
-				template += "<p><b>Birthday:</b> " + data.birthday + "</p>";
-				return template;
-			}
-
-			var list = new dhx.List("list", {
-				css: "dhx_widget--bordered",
+			var grid = new dhx.Grid("grid", {
+				columns: [
+					{ width: 160, id: "project", header: [{ text: "Project" }, { content: "comboFilter" }] },
+					{
+						width: 160,
+						id: "status",
+						header: [{ text: "Status" }, { content: "selectFilter" }],
+						editorType: "select",
+						options: ["Done", "In Progress", "Not Started"],
+					},
+					{ width: 160, id: "paid", header: [{ text: "Paid", rowspan: 2 }], type: "boolean" },
+					{ width: 160, id: "owner", header: [{ text: "Owner" }, { content: "inputFilter" }] },
+					{ width: 160, id: "hours", header: [{ text: "Number of hours" }, { content: "inputFilter" }] },
+					{
+						width: 160,
+						id: "start_date",
+						header: [{ text: "Calendar", colspan: 2 }, { text: "Start date" }],
+						type: "date",
+						dateFormat: "%d/%m/%Y",
+					},
+					{ width: 160, id: "end_date", header: ["", { text: "End date" }], type: "date", dateFormat: "%d/%m/%Y" },
+					{ width: 160, id: "balance", header: [{ text: "Balance" }, { content: "inputFilter" }] },
+				],
+				selection: "row",
+				resizable: true,
 				dragMode: "both",
-				template: template,
-				keyNavigation: true,
 			});
 
-			list.data
+			grid.data
 				.load(URL)
 				.then(function (res) {
 					displayMessage("Data loaded successfully");
@@ -83,59 +87,79 @@
 			var form = new dhx.Form("form", {
 				css: "dhx_widget--bordered",
 				width: 500,
-				height: 600,
+				height: 620,
 				padding: 20,
 				rows: [
 					{
 						type: "input",
-						label: "Name",
-						placeholder: "John Doe",
+						label: "Project",
+						placeholder: "Project name",
 						required: true,
-						id: "name",
+						id: "project",
+					},
+					{
+						type: "select",
+						label: "Status",
+						id: "status",
+						options: [
+							{
+								value: "Done",
+								content: "Done",
+							},
+							{
+								value: "Not Started",
+								content: "Not Started",
+							},
+							{
+								value: "In Progress",
+								content: "In Progress",
+							},
+						],
 					},
 					{
 						type: "input",
-						label: "Position",
-						placeholder: "Resident",
+						label: "Owner",
+						placeholder: "Mark Luis",
 						required: true,
-						id: "post",
+						id: "owner",
 					},
 					{
 						type: "input",
-						label: "Phone number",
-						placeholder: "(405) 500-2020",
-						icon: "mdi mdi-cellphone-android",
+						label: "Number of hourse",
+						placeholder: "0",
+						validation: "integer",
 						required: true,
-						validation: function (value) {
-							return /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/.test(value);
-						},
-						id: "phone",
+						id: "hours",
 					},
 					{
 						type: "datepicker",
-						label: "Works since",
+						label: "Start date",
 						required: true,
-						placeholder: "25.12.1991",
-						dateFormat: "%d.%m.%Y",
-						id: "start",
+						placeholder: "25/12/2020",
+						dateFormat: "%d/%m/%Y",
+						id: "start_date",
 					},
 					{
 						type: "datepicker",
-						label: "Birthday",
+						label: "End date",
 						required: true,
-						placeholder: "25.12.1991",
-						dateFormat: "%d.%m.%Y",
-						id: "birthday",
+						placeholder: "30/12/2020",
+						dateFormat: "%d/%m/%Y",
+						id: "end_date",
 					},
 					{
 						type: "input",
-						hidden: true,
-						id: "mail",
+						label: "Balance",
+						placeholder: "0",
+						validation: "integer",
+						required: true,
+						id: "balance",
 					},
 					{
-						type: "input",
-						hidden: true,
-						id: "photo",
+						type: "checkbox",
+						label: "Paid",
+						labelPosition: "right",
+						id: "paid",
 					},
 					{
 						type: "spacer",
@@ -203,18 +227,18 @@
 				}
 			});
 
-			list.selection.events.on("AfterSelect", function (id) {
-				selectedItem = list.selection.getItem(id);
-				if (selectedItem) {
+			grid.selection.events.on("AfterSelect", function (row) {
+				if (row) {
 					form.enable();
 					form.setValue({
-						name: selectedItem.name,
-						post: selectedItem.post,
-						phone: selectedItem.phone,
-						start: selectedItem.start,
-						birthday: selectedItem.birthday,
-						mail: selectedItem.mail,
-						photo: selectedItem.photo,
+						project: row.project,
+						owner: row.owner,
+						start_date: row.start_date,
+						end_date: row.end_date,
+						status: row.status,
+						hours: row.hours,
+						balance: row.balance,
+						paid: row.paid,
 					});
 				}
 			});
@@ -245,18 +269,16 @@
 					form.getItem(id).disable();
 				});
 				form.clear();
-				list.selection.remove();
+				grid.selection.remove();
 			}
 
 			function deleteItem() {
-				var id = selectedItem.id;
-				var name = selectedItem.name;
+				var selectedRow = grid.selection.getCell().row;
 				dhx.ajax
-					.delete(URL + id)
+					.delete(URL + selectedRow.id)
 					.then(function () {
-						list.data.remove(id);
-						displayMessage(name + " - Removed");
-						clearState();
+						grid.data.remove(selectedRow.id);
+						displayMessage(selectedRow.project + " - Removed");
 					})
 					.catch(function (error) {
 						displayMessage(error.message, true);
@@ -266,12 +288,13 @@
 			function editItem() {
 				if (!form.validate()) return;
 
+				var selectedRow = grid.selection.getCell().row;
 				var data = getItemData();
 				dhx.ajax
-					.put(URL + selectedItem.id, data)
+					.put(URL + selectedRow.id, data)
 					.then(function () {
-						list.data.update(selectedItem.id, data);
-						displayMessage(data.name + " - Edited");
+						grid.data.update(selectedRow.id, data);
+						displayMessage(selectedRow.project + " - Edited");
 					})
 					.catch(function (error) {
 						displayMessage(error.message, true);
@@ -286,8 +309,8 @@
 					.post(URL, data)
 					.then(function (res) {
 						data.id = res.id;
-						list.data.add(data);
-						displayMessage(data.name + " - Added");
+						grid.data.add(data);
+						displayMessage(data.project + " - Added");
 					})
 					.catch(function (error) {
 						displayMessage(error.message, true);
@@ -297,13 +320,14 @@
 			function getItemData() {
 				var data = form.getValue();
 				return {
-					name: data.name,
-					post: data.post,
-					phone: data.phone,
-					birthday: data.birthday,
-					start: data.start,
-					mail: data.mail || "",
-					photo: data.photo || "",
+					project: data.project,
+					owner: data.owner,
+					start_date: data.start_date,
+					end_date: data.end_date,
+					status: data.status,
+					hours: data.hours,
+					balance: data.balance,
+					paid: data.paid,
 				};
 			}
 		</script>

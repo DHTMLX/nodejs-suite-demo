@@ -9,6 +9,7 @@ import initDB from "./database/initDatabase";
 
 import createFormRoute from "./routers/form";
 import createPersonalRoute from "./routers/personal";
+import createProjectsRoute from "./routers/projects";
 
 export default async function () {
 	const db = await initDB(config.dbPath);
@@ -21,6 +22,7 @@ export default async function () {
 
 	createFormRoute(app);
 	createPersonalRoute(app, db);
+	createProjectsRoute(app, db);
 
 	app.use((_, res) => {
 		notFound(res);
