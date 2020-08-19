@@ -15,7 +15,7 @@ export default async function (dbPath) {
 	// PERSONAL
 	{
 		await db.exec(
-			"CREATE TABLE IF NOT EXISTS personal (id INTEGER PRIMARY KEY, name TEXT, post TEXT, phone TEXT, mail TEXT, photo TEXT, birthday TEXT, start TEXT);"
+			"CREATE TABLE IF NOT EXISTS personal (id TEXT PRIMARY KEY, name TEXT, post TEXT, phone TEXT, mail TEXT, photo TEXT, birthday TEXT, start TEXT);"
 		);
 		const { count } = await db.get("SELECT COUNT(*) AS count FROM personal;");
 		if (count === 0) {

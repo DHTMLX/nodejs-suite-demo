@@ -68,6 +68,7 @@
 			.dhx_sample-container__widget {
 				height: 600px;
 				max-width: 700px;
+				min-width: 700px;
 				margin: 0 20px;
 			}
 			.dhx_dataview-item {
@@ -106,7 +107,6 @@
 			var URL = "http://localhost:3000/personal/";
 			var UPLOADER_URL = "http://localhost:3000/form/upload";
 			var imgURL = "http://localhost:3000/images/";
-			var selectedItem;
 
 			function template(data) {
 				var template = '<div class="dhx-demo_personal-card">';
@@ -276,8 +276,8 @@
 				}
 			});
 
-			dataview.selection.events.on("AfterSelect", function (id) {
-				selectedItem = dataview.selection.getItem(id);
+			dataview.selection.events.on("AfterSelect", function () {
+				var selectedItem = dataview.selection.getItem();
 				if (selectedItem) {
 					form.enable();
 					form.setValue({
@@ -322,14 +322,13 @@
 			}
 
 			function deleteItem() {
-				var id = selectedItem.id;
-				var name = selectedItem.name;
+				var item = dataview.selection.getItem();
+
 				dhx.ajax
-					.delete(URL + id)
+					.delete(URL + item.id)
 					.then(function () {
-						dataview.data.remove(id);
-						displayMessage(name + " - Removed");
-						clearState();
+						dataview.data.remove(item.id);
+						displayMessage(item.name + " - Removed");
 					})
 					.catch(function (error) {
 						displayMessage(error.message, true);
@@ -339,11 +338,13 @@
 			function editItem() {
 				if (!form.validate()) return;
 
+				var item = dataview.selection.getItem();
 				var data = getItemData();
+
 				dhx.ajax
-					.put(URL + selectedItem.id, data)
+					.put(URL + item.id, data)
 					.then(function () {
-						dataview.data.update(selectedItem.id, data);
+						dataview.data.update(item.id, data);
 						displayMessage(data.name + " - Edited");
 					})
 					.catch(function (error) {

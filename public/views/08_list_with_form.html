@@ -21,6 +21,7 @@
 				line-height: 20px;
 			}
 			.dhx_sample-container__widget {
+				min-width: 500px;
 				max-width: 500px;
 				height: 600px;
 				margin: 0 20px;
@@ -56,7 +57,6 @@
 		</section>
 		<script>
 			var URL = "http://localhost:3000/personal/";
-			var selectedItem;
 
 			function template(data) {
 				var template = "<div class='dhx-demo_personal-card'>";
@@ -207,8 +207,8 @@
 				}
 			});
 
-			list.selection.events.on("AfterSelect", function (id) {
-				selectedItem = list.selection.getItem(id);
+			list.selection.events.on("AfterSelect", function () {
+				var selectedItem = list.selection.getItem();
 				if (selectedItem) {
 					form.enable();
 					form.setValue({
@@ -253,14 +253,12 @@
 			}
 
 			function deleteItem() {
-				var id = selectedItem.id;
-				var name = selectedItem.name;
+				var item = list.selection.getItem();
 				dhx.ajax
-					.delete(URL + id)
+					.delete(URL + item.id)
 					.then(function () {
-						list.data.remove(id);
-						displayMessage(name + " - Removed");
-						clearState();
+						list.data.remove(item.id);
+						displayMessage(item.name + " - Removed");
 					})
 					.catch(function (error) {
 						displayMessage(error.message, true);
@@ -270,11 +268,13 @@
 			function editItem() {
 				if (!form.validate()) return;
 
+				var item = list.selection.getItem();
 				var data = getItemData();
+
 				dhx.ajax
-					.put(URL + selectedItem.id, data)
+					.put(URL + item.id, data)
 					.then(function () {
-						list.data.update(selectedItem.id, data);
+						list.data.update(item.id, data);
 						displayMessage(data.name + " - Edited");
 					})
 					.catch(function (error) {

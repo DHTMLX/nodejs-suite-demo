@@ -24,9 +24,9 @@ export default function (app, db) {
 		if (!name || !post || !phone || !mail || !birthday || !photo || !start) {
 			invalidRequest(res);
 		} else {
-			const {
-				lastID,
-			} = await db.run("INSERT INTO personal (name, post, phone, mail, photo, birthday, start) VALUES (?,?,?,?,?,?,?);", [
+			const id = `${Date.now().toString()}_id`;
+
+			await db.run("INSERT INTO personal (name, post, phone, mail, photo, birthday, start, id) VALUES (?,?,?,?,?,?,?,?);", [
 				name,
 				post,
 				phone,
@@ -34,14 +34,15 @@ export default function (app, db) {
 				photo,
 				birthday,
 				start,
+				id,
 			]);
-			res.setHeader("Location", `/personal/${lastID}`);
-			res.status(201).json({ id: lastID });
+			res.setHeader("Location", `/personal/${id}`);
+			res.status(201).json({ id });
 		}
 	});
 
 	app.put("/personal/:id", async (req, res) => {
-		const id = Number(req.params.id);
+		const id = req.params.id;
 		const personal = await db.get("SELECT * FROM personal WHERE id=?;", id);
 		if (!personal) {
 			notFound(res);

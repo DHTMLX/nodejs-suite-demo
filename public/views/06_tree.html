@@ -68,7 +68,7 @@
 				}
 			});
 
-			tree.events.on("afterDrag", function(data, events) {
+			tree.events.on("afterDrag", function (data, events) {
 				if (data.start) {
 					var data = tree.data.getItem(data.start);
 					sendTreeData(data);

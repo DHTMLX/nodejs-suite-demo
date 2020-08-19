@@ -1,7 +1,7 @@
 export default {
 	personal: [
 		{
-			id: 1,
+			id: "1",
 			name: "Theo Fisher",
 			post: "Head of department",
 			phone: "(405) 632-1372",
@@ -11,7 +11,7 @@ export default {
 			start: "04.02.2018",
 		},
 		{
-			id: 2,
+			id: "2",
 			name: "Francesca Saunders",
 			post: "Attending physician",
 			phone: "(402) 371-6736",
@@ -21,7 +21,7 @@ export default {
 			start: "12.09.2019",
 		},
 		{
-			id: 3,
+			id: "3",
 			name: "Jenson Brown",
 			post: "Fellow",
 			phone: "(346) 622-8633",
@@ -31,7 +31,7 @@ export default {
 			start: "06.02.1998",
 		},
 		{
-			id: 4,
+			id: "4",
 			name: "Raya Marshall",
 			post: "Resident",
 			phone: "(846) 962-1723",
@@ -41,7 +41,7 @@ export default {
 			start: "12.06.2015",
 		},
 		{
-			id: 5,
+			id: "5",
 			name: "Tom Walsh",
 			post: "Resident",
 			phone: "(763) 213-8373",
@@ -51,7 +51,7 @@ export default {
 			start: "15.08.1999",
 		},
 		{
-			id: 6,
+			id: "6",
 			name: "Harvey Pearce",
 			post: "Resident",
 			phone: "(364) 234-7523",
@@ -61,7 +61,7 @@ export default {
 			start: "05.03.2017",
 		},
 		{
-			id: 7,
+			id: "7",
 			name: "Archie Barnes",
 			post: "Fellow",
 			phone: "(578) 342-1237",
@@ -71,7 +71,7 @@ export default {
 			start: "09.12.1986",
 		},
 		{
-			id: 8,
+			id: "8",
 			name: "Emelia Green",
 			post: "Resident",
 			phone: "(832) 426-2223",
@@ -81,7 +81,7 @@ export default {
 			start: "12.02.1976",
 		},
 		{
-			id: 9,
+			id: "9",
 			name: "Dylan Barrett",
 			post: "Resident",
 			phone: "(523) 125-2523",
@@ -91,7 +91,7 @@ export default {
 			start: "04.03.1968",
 		},
 		{
-			id: 10,
+			id: "10",
 			name: "Abraham Johnston",
 			post: "Fellow",
 			phone: "(251) 315-4731",
@@ -101,7 +101,7 @@ export default {
 			start: "09.01.2020",
 		},
 		{
-			id: 11,
+			id: "11",
 			name: "Philippa Holmes",
 			post: "Resident",
 			phone: "(151) 231-1256",
@@ -111,7 +111,7 @@ export default {
 			start: "25.12.2019",
 		},
 		{
-			id: 12,
+			id: "12",
 			name: "Claudia Fraser",
 			post: "Resident",
 			phone: "(125) 215-2636",
@@ -121,7 +121,7 @@ export default {
 			start: "07.06.2010",
 		},
 		{
-			id: 13,
+			id: "13",
 			name: "Alisha Hall",
 			post: "Head of department",
 			phone: "(405) 372-9756",
@@ -131,7 +131,7 @@ export default {
 			start: "05.03.2015",
 		},
 		{
-			id: 14,
+			id: "14",
 			name: "Milena Hunter",
 			post: "Attending physician",
 			phone: "(124) 622-1256",
@@ -141,7 +141,7 @@ export default {
 			start: "09.01.2020",
 		},
 		{
-			id: 15,
+			id: "15",
 			name: "Bradley Sutton",
 			post: "Fellow",
 			phone: "(325) 154-6232",
@@ -151,7 +151,7 @@ export default {
 			start: "11.05.2019",
 		},
 		{
-			id: 16,
+			id: "16",
 			name: "Joel Stevens",
 			post: "Fellow",
 			phone: "(165) 463-1232",
@@ -161,7 +161,7 @@ export default {
 			start: "07.03.2005",
 		},
 		{
-			id: 17,
+			id: "17",
 			name: "Axel Khan",
 			post: "Fellow",
 			phone: "(578) 734-3633",
@@ -171,7 +171,7 @@ export default {
 			start: "09.05.2014",
 		},
 		{
-			id: 18,
+			id: "18",
 			name: "Maximus Dixon",
 			post: "Medical director",
 			phone: "(264) 684-4373",
@@ -181,7 +181,7 @@ export default {
 			start: "05.05.2014",
 		},
 		{
-			id: 19,
+			id: "19",
 			name: "Sami Morris",
 			post: "Fellow",
 			phone: "(437) 347-3473",
@@ -191,7 +191,7 @@ export default {
 			start: "07.03.2005",
 		},
 		{
-			id: 20,
+			id: "20",
 			name: "Jessica Murray",
 			post: "Fellow",
 			phone: "(436) 348-8692",
@@ -201,7 +201,7 @@ export default {
 			start: "12.10.2015",
 		},
 		{
-			id: 21,
+			id: "21",
 			name: "Maryam Barker",
 			post: "Fellow",
 			phone: "(632) 324-3262",
@@ -211,7 +211,7 @@ export default {
 			start: "01.03.2005",
 		},
 		{
-			id: 22,
+			id: "22",
 			name: "Edward Sharp",
 			post: "Head of department",
 			phone: "(451) 251-2578",
@@ -221,7 +221,7 @@ export default {
 			start: "09.01.2000",
 		},
 		{
-			id: 23,
+			id: "23",
 			name: "Cruz Burke",
 			post: "Attending physician",
 			phone: "(587) 234-8975",
@@ -231,7 +231,7 @@ export default {
 			start: "01.02.2019",
 		},
 		{
-			id: 24,
+			id: "24",
 			name: "Eloise Saunders",
 			post: "Attending physician",
 			phone: "(875) 231-5332",
@@ -241,7 +241,7 @@ export default {
 			start: "09.09.2018",
 		},
 		{
-			id: 25,
+			id: "25",
 			name: "Sophia Matthews",
 			post: "Attending physician",
 			phone: "(361) 423-7234",
@@ -251,7 +251,7 @@ export default {
 			start: "01.01.2015",
 		},
 		{
-			id: 26,
+			id: "26",
 			name: "Kara Foster",
 			post: "Attending physician",
 			phone: "(565) 525-0672",
@@ -261,7 +261,7 @@ export default {
 			start: "06.01.2000",
 		},
 		{
-			id: 27,
+			id: "27",
 			name: "Peter Cox",
 			post: "Head of department",
 			phone: "(732) 321-2312",
@@ -271,7 +271,7 @@ export default {
 			start: "03.01.2002",
 		},
 		{
-			id: 28,
+			id: "28",
 			name: "Nancy Collins",
 			post: "Attending physician",
 			phone: "(743) 235-1263",
@@ -281,7 +281,7 @@ export default {
 			start: "09.03.2014",
 		},
 		{
-			id: 29,
+			id: "29",
 			name: "Alyssa Day",
 			post: "Fellow",
 			phone: "(623) 265-2362",
@@ -291,7 +291,7 @@ export default {
 			start: "03.02.2019",
 		},
 		{
-			id: 30,
+			id: "30",
 			name: "Nancy Newman",
 			post: "Fellow",
 			phone: "(347) 236-2373",
@@ -301,7 +301,7 @@ export default {
 			start: "09.09.2000",
 		},
 		{
-			id: 31,
+			id: "31",
 			name: "Honey Black",
 			post: "Attending physician",
 			phone: "(263) 234-8756",
@@ -311,7 +311,7 @@ export default {
 			start: "04.07.2016",
 		},
 		{
-			id: 32,
+			id: "32",
 			name: "Archie Moore",
 			post: "Attending physician",
 			phone: "(705) 236-5742",
@@ -321,7 +321,7 @@ export default {
 			start: "09.03.2015",
 		},
 		{
-			id: 33,
+			id: "33",
 			name: "Kristin Mccoy",
 			post: "Medical director",
 			phone: "(405) 555-0128",
