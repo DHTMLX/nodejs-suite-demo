@@ -4,14 +4,19 @@
 		<!-- meta block -->
 		<title>Basic initialization - DHTMLX Dataview</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
+
 		<link rel="stylesheet" href="../assets/css/index.css" />
 		<link rel="stylesheet" href="../library/suite.css" />
 		<script type="text/javascript" src="../library/suite.js"></script>
+		<!-- Browser theme -->
+		<link rel="icon" type="image/png" sizes="16x16" href="../assets/static/favicon.ico" />
+		<link rel="manifest" href="../assets/static/site.webmanifest" />
+		<meta name="theme-color" content="#4b4b4b" />
 		<!-- custom sample head -->
-		<script src="../temp/book.js"></script>
 		<style>
-			.dhx_sample-container__widget {
-				max-width: 400px;
+			.dhx_sample-container {
+				width: 400px;
+				min-height: 450px;
 				max-height: 450px;
 				overflow-y: auto;
 			}
@@ -37,17 +42,84 @@
 				</h1>
 			</div>
 		</header>
-		<section class="dhx_sample-container">
+		<section class="dhx_sample-container dhx_widget--bordered">
 			<div class="dhx_sample-container__widget" id="tree"></div>
 		</section>
 		<script>
+			var URL = "http://localhost:3000/books/";
+
 			var tree = new dhx.Tree("tree", {
 				editing: true,
 				dragMode: "both",
-				css: "dhx_widget--bordered",
 			});
 
-			tree.data.parse(data);
+			tree.data
+				.load(URL)
+				.then(function (res) {
+					displayMessage("Data loaded successfully");
+				})
+				.catch(function (res) {
+					displayMessage(res.statusText || "Resource Not Found", true);
+				});
+
+			tree.data.events.on("change", function (id, method, data) {
+				if (method === "update") {
+					sendTreeData(data);
+				}
+			});
+
+			tree.events.on("afterDrag", function(data, events) {
+				if (data.start) {
+					var data = tree.data.getItem(data.start);
+					sendTreeData(data);
+				}
+				if (data.target) {
+					var data = tree.data.getItem(data.target);
+					sendTreeData(data);
+				}
+			});
+
+			function displayMessage(text, err) {
+				var css;
+
+				if (err) {
+					css = "dhx_message--error";
+				} else {
+					css = "dhx_message--success";
+				}
+
+				dhx.message({
+					text: text,
+					expire: 3000,
+					css: css,
+				});
+			}
+
+			function getTreeData(data) {
+				var treeData = {};
+				for (var key in data) {
+					if (
+						data.hasOwnProperty(key) &&
+						key.indexOf("$") === -1 &&
+						!(typeof data[key] === "string" && data[key].includes("ROOT"))
+					) {
+						treeData[key] = data[key];
+					}
+				}
+				return treeData;
+			}
+
+			function sendTreeData(data) {
+				getTreeData(data);
+				dhx.ajax
+					.put(URL + data.id, getTreeData(data))
+					.then(function () {
+						displayMessage(data.value + " - Edited");
+					})
+					.catch(function (error) {
+						displayMessage(error.message, true);
+					});
+			}
 		</script>
 	</body>
 </html>

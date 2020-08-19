@@ -11,6 +11,7 @@ export default async function (dbPath) {
 		filename: dbPath,
 		driver: sqlite3.Database,
 	});
+
 	// PERSONAL
 	{
 		await db.exec(
@@ -45,6 +46,20 @@ export default async function (dbPath) {
 					"INSERT INTO projects (id, project, owner, start_date, end_date, status, hours, balance, paid) VALUES (?,?,?,?,?,?,?,?,?);",
 					[id, project, owner, start_date, end_date, status, hours, balance, paid]
 				);
+			}
+		}
+	}
+
+	// BOOKS
+	{
+		await db.exec(
+			"CREATE TABLE IF NOT EXISTS books (id TEXT PRIMARY KEY, value TEXT NOT NULL, isFolder INTEGER NOT NULL, parent TEXT );"
+		);
+		const { count } = await db.get("SELECT COUNT(*) AS count FROM books;");
+
+		if (count === 0) {
+			for (const { id, value, isFolder, parent } of data.books) {
+				await db.get("INSERT INTO books VALUES(?,?,?,?);", [id, value, isFolder, parent]);
 			}
 		}
 	}
