@@ -18,13 +18,14 @@ export default function (app, db) {
 	});
 
 	app.post("/books", async (req, res) => {
-		const { id, value, isFolder, parent } = req.body;
-		if (!id || !value) {
+		const { value, isFolder, parent } = req.body;
+		if (!value) {
 			invalidRequest(res);
 		} else {
+			const id = `${Date.now().toString()}_id`;
 			await db.run("INSERT INTO books (id, value, isFolder, parent) VALUES (?,?,?,?);", [id, value, isFolder || false, parent]);
 			res.setHeader("Location", `/books/${id}`);
-			res.status(201);
+			res.status(201).json({ id });
 		}
 	});
 
