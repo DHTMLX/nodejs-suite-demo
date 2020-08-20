@@ -4,8 +4,6 @@
 	"description": "NdeJS with DHTMLX Suite components",
 	"scripts": {
 		"start": "nodemon --exec babel-node ./server/server.js",
-		"lint": "eslint --debug src/",
-		"lint:write": "eslint --debug src/ --fix",
 		"prettier": "prettier --write */**/*.{js,html,css,json}"
 	},
 	"license": "GPL",
