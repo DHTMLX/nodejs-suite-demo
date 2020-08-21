@@ -11,7 +11,7 @@ export default function (app) {
 		res.status(200).send(JSON.stringify(req.body, null, 2));
 	});
 
-	app.post("/form/upload", (req, res) => {
+	app.post("/form/upload", async (req, res) => {
 		if (req.method === "POST") {
 			const busboy = new Busboy({ headers: req.headers });
 			const response = {};

@@ -98,13 +98,12 @@
 			function getTreeData(data) {
 				var treeData = {};
 				for (var key in data) {
-					if (
-						data.hasOwnProperty(key) &&
-						key.indexOf("$") === -1 &&
-						typeof data[key] === "string" &&
-						data[key].indexOf("ROOT") === -1
-					) {
-						treeData[key] = data[key];
+					if (data.hasOwnProperty(key)) {
+						if (key === "parent" && data[key].indexOf("ROOT") !== -1) {
+							treeData[key] = null;
+						} else {
+							treeData[key] = data[key];
+						}
 					}
 				}
 				return treeData;

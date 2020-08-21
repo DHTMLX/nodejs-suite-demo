@@ -10,7 +10,6 @@ import initDB from "./database/initDatabase";
 import createFormRoute from "./routers/form";
 import createPersonalRoute from "./routers/personal";
 import createProjectsRoute from "./routers/projects";
-import createChartRoute from "./routers/chart";
 import createBooksRoute from "./routers/books";
 
 export default async function () {
@@ -23,7 +22,6 @@ export default async function () {
 	app.use(express.static(__dirname + "/upload"));
 
 	createFormRoute(app);
-	createChartRoute(app);
 	createPersonalRoute(app, db);
 	createProjectsRoute(app, db);
 	createBooksRoute(app, db);

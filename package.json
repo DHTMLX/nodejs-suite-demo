@@ -6,7 +6,7 @@
 		"start": "nodemon --exec babel-node ./server/server.js",
 		"prettier": "prettier --write */**/*.{js,html,css,json}"
 	},
-	"license": "GPL",
+	"license": "MIT",
 	"author": "DHTMLX",
 	"dependencies": {
 		"body-parser": "^1.19.0",
