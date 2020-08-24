@@ -62,7 +62,7 @@
 				rows: [
 					{
 						type: "select",
-						label: "Folder name",
+						label: "Root folder name",
 						placeholder: "Select the root folder",
 						options: [
 							{
@@ -228,6 +228,11 @@
 					.put(URL + item.id, data)
 					.then(function () {
 						displayMessage(data.value + " - Edited");
+					})
+					.then(function () {
+						var options = getOptions();
+						form.getItem("folder_name").setOptions(options);
+						form.getItem("folder_name").setValue(data.parent);
 					})
 					.catch(function (error) {
 						displayMessage(error.message, true);
