@@ -149,7 +149,7 @@
 						cols: [
 							{
 								type: "button",
-								value: "Add",
+								text: "Add",
 								size: "medium",
 								view: "flat",
 								color: "primary",
@@ -158,7 +158,7 @@
 							},
 							{
 								type: "button",
-								value: "Edit",
+								text: "Edit",
 								size: "medium",
 								view: "flat",
 								color: "primary",
@@ -168,7 +168,7 @@
 							},
 							{
 								type: "button",
-								value: "Delete",
+								text: "Delete",
 								size: "medium",
 								view: "flat",
 								color: "primary",
@@ -178,7 +178,7 @@
 							},
 							{
 								type: "button",
-								value: "Clear",
+								text: "Clear",
 								size: "medium",
 								view: "flat",
 								color: "primary",
@@ -190,7 +190,7 @@
 				],
 			});
 
-			form.events.on("ButtonClick", function (id) {
+			form.events.on("click", function (id) {
 				switch (id) {
 					case "clear":
 						clearState();
@@ -223,8 +223,10 @@
 				}
 			});
 
-			form.events.on("ValidationFail", function (id) {
-				displayMessage(id + " invalid data", true);
+			form.events.on("afterValidate", function (id, value, isValid) {
+				if (!isValid) {
+					displayMessage(id + " invalid data: " + value, true);
+				}
 			});
 
 			function displayMessage(text, err) {

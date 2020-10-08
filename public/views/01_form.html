@@ -82,7 +82,7 @@
 					},
 					{
 						type: "button",
-						value: "Send",
+						text: "Send",
 						size: "medium",
 						view: "flat",
 						color: "primary",
@@ -93,7 +93,7 @@
 
 			var URL = "http://localhost:3000/form/login";
 
-			form.events.on("ButtonClick", function () {
+			form.events.on("click", function () {
 				if (!form.validate()) {
 					return;
 				}
@@ -108,10 +108,18 @@
 				form.clear();
 			});
 
-			form.events.on("ValidationFail", function (id) {
-				displayMessage(id + " invalid data", true);
+			form.events.on("afterValidate", function (id, value, isValid) {
+				if (!isValid) {
+					displayMessage(id + " invalid data: " + value, true);
+				}
 			});
 
+			var passwordInput = form.getItem("password");
+
+			passwordInput.events.on("input", function(value) {
+				passwordInput.validate(value);
+			});
+			
 			function displayMessage(text, err) {
 				var css;
 
