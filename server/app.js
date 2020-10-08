@@ -19,7 +19,7 @@ export default async function () {
 	app.use(cors());
 	app.use(bodyParser.json({ limit: "5mb" }));
 	app.use(bodyParser.urlencoded({ limit: "5mb", extended: true }));
-	app.use(express.static(__dirname + "/upload"));
+	app.use(express.static(`${__dirname}/upload`));
 
 	createFormRoute(app);
 	createPersonalRoute(app, db);

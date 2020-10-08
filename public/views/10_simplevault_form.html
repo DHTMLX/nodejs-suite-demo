@@ -27,9 +27,7 @@
 					</ul>
 				</nav>
 				<h1 class="dhx_sample-header__title">
-					<div class="dhx_sample-header__content">
-						Simplevault with NodeJS.
-					</div>
+					<div class="dhx_sample-header__content">Simplevault with NodeJS.</div>
 				</h1>
 			</div>
 		</header>
@@ -84,6 +82,10 @@
 				if (!isValid) {
 					displayMessage(id + " invalid data: " + value, true);
 				}
+			});
+
+			form.getItem("simplevault").events.on("uploadFile", function (file, value, res) {
+				displayMessage("File path on the server: " + res.link);
 			});
 
 			function displayMessage(text, err) {

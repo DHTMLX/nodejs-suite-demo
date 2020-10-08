@@ -26,9 +26,7 @@
 					</ul>
 				</nav>
 				<h1 class="dhx_sample-header__title">
-					<div class="dhx_sample-header__content">
-						Form with NodeJS.
-					</div>
+					<div class="dhx_sample-header__content">Form with NodeJS.</div>
 				</h1>
 			</div>
 		</header>
@@ -74,9 +72,9 @@
 						required: true,
 						preMessage: "Enter password",
 						successMessage: "Success",
-						errorMessage: "Password must be at least 8 characters",
+						errorMessage: "Password must be at least 4 characters",
 						validation: function (value) {
-							return value.length > 8;
+							return value.length >= 4;
 						},
 						id: "password",
 					},
@@ -116,10 +114,10 @@
 
 			var passwordInput = form.getItem("password");
 
-			passwordInput.events.on("input", function(value) {
+			passwordInput.events.on("input", function (value) {
 				passwordInput.validate(value);
 			});
-			
+
 			function displayMessage(text, err) {
 				var css;
 
