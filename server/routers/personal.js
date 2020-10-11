@@ -42,7 +42,7 @@ export default function (app, db) {
 	});
 
 	app.put("/personal/:id", async (req, res) => {
-		const id = req.params.id;
+		const { id } = req.params;
 		const personal = await db.get("SELECT * FROM personal WHERE id=?;", id);
 		if (!personal) {
 			notFound(res);

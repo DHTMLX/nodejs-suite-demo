@@ -10,7 +10,6 @@
 		<script type="text/javascript" src="../library/suite.js"></script>
 		<!-- Browser theme -->
 		<link rel="icon" type="image/png" sizes="16x16" href="../assets/static/favicon.ico" />
-		<link rel="manifest" href="../assets/static/site.webmanifest" />
 		<meta name="theme-color" content="#4b4b4b" />
 		<!-- custom sample head -->
 		<style>
@@ -109,7 +108,7 @@
 			function template(data) {
 				var template = '<div class="dhx-demo_personal-card">';
 				template += '<div class="dhx-demo_personal-card__container dhx-demo_personal-card__img-container">';
-				template += '<img src="' + imgURL + data.photo + '" alt="' + data.name + '"></img></div>';
+				// template += '<img src="' + imgURL + data.photo + '" alt="' + data.name + '"></img></div>';
 				template += '<div class="dhx-demo_personal-card__container">';
 				template += "<h3>" + data.name + "</h3>";
 				template += "<p>" + data.post + "</p>";
@@ -192,8 +191,10 @@
 						id: "mail",
 					},
 					{
-						type: "input",
-						hidden: true,
+						type: "simplevault",
+						label: "Photo",
+						required: true,
+						target: UPLOADER_URL,
 						id: "photo",
 					},
 					{
@@ -278,9 +279,17 @@
 						start: selectedItem.start,
 						birthday: selectedItem.birthday,
 						mail: selectedItem.mail,
-						photo: selectedItem.photo,
+						photo: [{
+							link: selectedItem.photo,
+							name: selectedItem.name,
+							id: selectedItem.name + selectedItem.post
+						}],
 					});
 				}
+			});
+
+			form.getItem("photo").events.on("uploadFile", function (file, value, res) {
+				console.log(file, value, res);
 			});
 
 			form.events.on("afterValidate", function (id, value, isValid) {
