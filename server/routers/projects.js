@@ -1,3 +1,5 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable camelcase */
 import { notFound, invalidRequest } from "../utils/responses";
 
 export default function (app, db) {
@@ -21,7 +23,10 @@ export default function (app, db) {
 	app.post("/projects", async (req, res) => {
 		const { project, owner, start_date, end_date, status, hours, balance, paid } = req.body;
 
-		if (!project || !owner || !start_date || !end_date || !status || !hours || !balance) {
+		const props = ["project", "owner", "start_date", "end_date", "status", "hours", "balance", "paid"];
+		const valid = props.every(prop => req.body.hasOwnProperty(prop) && typeof prop !== "undefined");
+
+		if (!valid) {
 			invalidRequest(res);
 		} else {
 			const {
@@ -43,7 +48,10 @@ export default function (app, db) {
 		} else {
 			const { project, owner, start_date, end_date, status, hours, balance, paid } = req.body;
 
-			if (!project || !owner || !start_date || !end_date || !status || !hours || !balance) {
+			const props = ["project", "owner", "start_date", "end_date", "status", "hours", "balance", "paid"];
+			const valid = props.every(prop => req.body.hasOwnProperty(prop) && typeof prop !== "undefined");
+
+			if (!valid) {
 				invalidRequest(res);
 			} else {
 				await db.run(

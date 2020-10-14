@@ -16,7 +16,7 @@ export default function (app) {
 			const busboy = new Busboy({ headers: req.headers });
 			const response = {};
 
-			busboy.on("file", (fieldname, file, filename) => {
+			busboy.on("file", (_fieldname, file, filename) => {
 				const saveTo = path.join(__dirname, "../upload/files/") + filename;
 				response.link = `/form/upload/files/${filename}`;
 

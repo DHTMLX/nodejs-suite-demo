@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 import { notFound, invalidRequest } from "../utils/responses";
 
 export default function (app, db) {
@@ -19,7 +20,11 @@ export default function (app, db) {
 
 	app.post("/books", async (req, res) => {
 		const { value, isFolder, parent, opened } = req.body;
-		if (!value) {
+
+		const props = ["value", "isFolder", "parent", "opened"];
+		const valid = props.every(prop => req.body.hasOwnProperty(prop) && typeof prop !== "undefined");
+
+		if (!valid) {
 			invalidRequest(res);
 		} else {
 			const id = `${Date.now().toString()}_id`;
@@ -42,7 +47,11 @@ export default function (app, db) {
 			notFound(res);
 		} else {
 			const { value, isFolder, parent, opened } = req.body;
-			if (!value) {
+
+			const props = ["value", "isFolder", "parent", "opened"];
+			const valid = props.every(prop => req.body.hasOwnProperty(prop) && typeof prop !== "undefined");
+
+			if (!valid) {
 				invalidRequest(res);
 			} else {
 				await db.run("UPDATE books SET value=?, isFolder=?, parent=?, opened=? WHERE id=?;", [

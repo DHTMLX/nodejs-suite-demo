@@ -11,6 +11,11 @@
 		<link rel="icon" type="image/png" sizes="16x16" href="../assets/static/favicon.ico" />
 		<meta name="theme-color" content="#4b4b4b" />
 		<!-- custom sample head -->
+		<style>
+			.dhx_sample-container {
+				max-width: 1280px;
+			}
+		</style>
 	</head>
 	<body>
 		<header class="dhx_sample-header">
@@ -57,7 +62,7 @@
 						dateFormat: "%d/%m/%Y",
 					},
 					{ width: 160, id: "end_date", header: ["", { text: "End date" }], type: "date", dateFormat: "%d/%m/%Y" },
-					{ width: 160, id: "balance", header: [{ text: "Balance" }, { content: "inputFilter" }] },
+					{ width: 158, id: "balance", header: [{ text: "Balance" }, { content: "inputFilter" }] },
 				],
 				selection: true,
 				editable: true,

@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 import { notFound, invalidRequest } from "../utils/responses";
 
 export default function (app, db) {
@@ -21,7 +22,10 @@ export default function (app, db) {
 	app.post("/personal", async (req, res) => {
 		const { name, post, phone, mail, photo, birthday, start } = req.body;
 
-		if (!name || !post || !phone || !mail || !birthday || !photo || !start) {
+		const props = ["name", "post", "phone", "mail", "photo", "birthday", "start"];
+		const valid = props.every(prop => req.body.hasOwnProperty(prop) && typeof prop !== "undefined");
+
+		if (!valid) {
 			invalidRequest(res);
 		} else {
 			const id = `${Date.now().toString()}_id`;
@@ -49,7 +53,10 @@ export default function (app, db) {
 		} else {
 			const { name, post, phone, mail, photo, birthday, start } = req.body;
 
-			if (!name || !post || !phone || !mail || !birthday || !photo || !start) {
+			const props = ["name", "post", "phone", "mail", "photo", "birthday", "start"];
+			const valid = props.every(prop => req.body.hasOwnProperty(prop) && typeof prop !== "undefined");
+
+			if (!valid) {
 				invalidRequest(res);
 			} else {
 				await db.run("UPDATE personal SET name=?, post=?, phone=?, mail=?, photo=?, birthday=?, start=? WHERE id=?;", [
