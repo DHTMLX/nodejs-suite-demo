@@ -18,12 +18,18 @@ export default function (app, db) {
 	});
 
 	app.post("/books", async (req, res) => {
-		const { value, isFolder, parent } = req.body;
+		const { value, isFolder, parent, opened } = req.body;
 		if (!value) {
 			invalidRequest(res);
 		} else {
 			const id = `${Date.now().toString()}_id`;
-			await db.run("INSERT INTO books (id, value, isFolder, parent) VALUES (?,?,?,?);", [id, value, isFolder || false, parent]);
+			await db.run("INSERT INTO books (id, value, isFolder, parent, opened) VALUES (?,?,?,?,?);", [
+				id,
+				value,
+				isFolder || false,
+				parent,
+				opened,
+			]);
 			res.setHeader("Location", `/books/${id}`);
 			res.status(201).json({ id });
 		}
@@ -35,11 +41,17 @@ export default function (app, db) {
 		if (!treeItem) {
 			notFound(res);
 		} else {
-			const { value, isFolder, parent } = req.body;
+			const { value, isFolder, parent, opened } = req.body;
 			if (!value) {
 				invalidRequest(res);
 			} else {
-				await db.run("UPDATE books SET value=?, isFolder=?, parent=? WHERE id=?;", [value, isFolder || false, parent || null, id]);
+				await db.run("UPDATE books SET value=?, isFolder=?, parent=?, opened=? WHERE id=?;", [
+					value,
+					isFolder || false,
+					parent || null,
+					opened || false,
+					id,
+				]);
 				res.sendStatus(204);
 			}
 		}

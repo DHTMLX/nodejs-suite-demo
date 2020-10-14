@@ -1,3 +1,6 @@
+/* eslint-disable camelcase */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
 import sqlite3 from "sqlite3";
 import { open } from "sqlite";
 import data from "./data";
@@ -53,13 +56,13 @@ export default async function (dbPath) {
 	// BOOKS
 	{
 		await db.exec(
-			"CREATE TABLE IF NOT EXISTS books (id TEXT PRIMARY KEY, value TEXT NOT NULL, isFolder INTEGER NOT NULL, parent TEXT );"
+			"CREATE TABLE IF NOT EXISTS books (id TEXT PRIMARY KEY, value TEXT NOT NULL, isFolder INTEGER NOT NULL, parent TEXT, opened INTEGER NOT NULL );"
 		);
 		const { count } = await db.get("SELECT COUNT(*) AS count FROM books;");
 
 		if (count === 0) {
-			for (const { id, value, isFolder, parent } of data.books) {
-				await db.get("INSERT INTO books VALUES(?,?,?,?);", [id, value, isFolder, parent]);
+			for (const { id, value, isFolder, parent, opened } of data.books) {
+				await db.get("INSERT INTO books VALUES(?,?,?,?,?);", [id, value, isFolder, parent, opened]);
 			}
 		}
 	}
