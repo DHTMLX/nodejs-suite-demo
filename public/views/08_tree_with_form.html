@@ -13,11 +13,10 @@
 		<!-- custom sample head -->
 		<style>
 			.dhx_sample-container__widget {
-				max-width: 500px;
-				min-height: 450px;
-				height: 450px;
-				overflow-y: auto;
-				margin: 0 20px;
+				display: block;
+				width: 500px;
+				height: 600px;
+				overflow: auto;
 			}
 			.dhx_form-button .dhx_button {
 				width: 110px;
@@ -44,7 +43,7 @@
 		</header>
 		<section class="dhx_sample-container">
 			<div class="dhx_sample-container__widget dhx_widget--bordered" id="tree"></div>
-			<div class="dhx_sample-container__widget" id="form"></div>
+			<div id="form"></div>
 		</section>
 		<script>
 			var URL = "http://localhost:3000/books/";
