@@ -91,7 +91,7 @@
 			</div>
 		</header>
 		<section class="dhx_sample-container">
-			<div class="dhx_sample-container__widget" id="dataview"></div>
+			<div class="dhx_sample-container__widget" style="min-height: 630px" id="dataview"></div>
 			<div id="form"></div>
 		</section>
 		<script>
@@ -139,7 +139,7 @@
 			var form = new dhx.Form("form", {
 				css: "dhx_widget--bordered",
 				width: 500,
-				height: 600,
+				height: 630,
 				padding: 20,
 				rows: [
 					{
@@ -171,6 +171,7 @@
 						type: "datepicker",
 						label: "Birthday",
 						required: true,
+						editable: true,
 						placeholder: "25.12.1991",
 						dateFormat: "%d.%m.%Y",
 						id: "birthday",
@@ -187,7 +188,6 @@
 					{
 						type: "simplevault",
 						label: "Photo",
-						required: true,
 						target: UPLOADER_URL,
 						id: "photo",
 					},
@@ -204,28 +204,19 @@
 						cols: [
 							{
 								type: "button",
-								text: "Add",
+								text: "Clear",
 								size: "medium",
-								view: "flat",
-								color: "primary",
-								css: "dhx_form-button",
-								id: "add",
-							},
-							{
-								type: "button",
-								text: "Edit",
-								size: "medium",
-								view: "flat",
+								view: "link",
 								color: "primary",
 								css: "dhx_form-button",
 								disabled: true,
-								id: "edit",
+								id: "clear",
 							},
 							{
 								type: "button",
 								text: "Delete",
 								size: "medium",
-								view: "flat",
+								view: "link",
 								color: "primary",
 								css: "dhx_form-button",
 								disabled: true,
@@ -233,12 +224,22 @@
 							},
 							{
 								type: "button",
-								text: "Clear",
+								text: "Edit",
+								size: "medium",
+								view: "link",
+								color: "primary",
+								css: "dhx_form-button",
+								disabled: true,
+								id: "edit",
+							},
+							{
+								type: "button",
+								text: "Add",
 								size: "medium",
 								view: "flat",
 								color: "primary",
 								css: "dhx_form-button",
-								id: "clear",
+								id: "add",
 							},
 						],
 					},
@@ -262,7 +263,15 @@
 				}
 			});
 
-			dataview.selection.events.on("AfterSelect", function () {
+			form.events.on("change", function () {
+				if (changeClear()) {
+					form.getItem("clear").enable();
+				} else {
+					form.getItem("clear").disable();
+				}
+			});
+
+			dataview.events.on("AfterSelect", function () {
 				var selectedItem = dataview.selection.getItem();
 				if (selectedItem) {
 					form.enable();
@@ -273,11 +282,13 @@
 						start: selectedItem.start,
 						birthday: selectedItem.birthday,
 						mail: selectedItem.mail,
-						photo: [{
-							link: selectedItem.photo,
-							name: selectedItem.name,
-							id: selectedItem.name + selectedItem.post
-						}],
+						photo: [
+							{
+								link: selectedItem.photo,
+								name: selectedItem.name,
+								id: selectedItem.name + selectedItem.post,
+							},
+						],
 					});
 				}
 			});
@@ -309,11 +320,11 @@
 			}
 
 			function clearState() {
-				var button = ["edit", "delete"];
+				var button = ["edit", "delete", "clear"];
+				form.clear();
 				button.forEach(id => {
 					form.getItem(id).disable();
 				});
-				form.clear();
 				dataview.selection.remove();
 			}
 
@@ -375,6 +386,17 @@
 					mail: data.mail,
 					photo: data.photo,
 				};
+			}
+
+			function changeClear() {
+				let state = false;
+				form.forEach(item => {
+					if (item.config.hasOwnProperty("value") && !!item.getValue().length) {
+						state = true;
+						return;
+					}
+				});
+				return state;
 			}
 		</script>
 	</body>

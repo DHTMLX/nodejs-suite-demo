@@ -110,6 +110,7 @@
 						type: "datepicker",
 						label: "Works since",
 						required: true,
+						editable: true,
 						placeholder: "25.12.1991",
 						dateFormat: "%d.%m.%Y",
 						id: "start",
@@ -118,6 +119,7 @@
 						type: "datepicker",
 						label: "Birthday",
 						required: true,
+						editable: true,
 						placeholder: "25.12.1991",
 						dateFormat: "%d.%m.%Y",
 						id: "birthday",
@@ -140,28 +142,19 @@
 						cols: [
 							{
 								type: "button",
-								text: "Add",
+								text: "Clear",
 								size: "medium",
-								view: "flat",
-								color: "primary",
-								css: "dhx_form-button",
-								id: "add",
-							},
-							{
-								type: "button",
-								text: "Edit",
-								size: "medium",
-								view: "flat",
+								view: "link",
 								color: "primary",
 								css: "dhx_form-button",
 								disabled: true,
-								id: "edit",
+								id: "clear",
 							},
 							{
 								type: "button",
 								text: "Delete",
 								size: "medium",
-								view: "flat",
+								view: "link",
 								color: "primary",
 								css: "dhx_form-button",
 								disabled: true,
@@ -169,12 +162,22 @@
 							},
 							{
 								type: "button",
-								text: "Clear",
+								text: "Edit",
+								size: "medium",
+								view: "link",
+								color: "primary",
+								css: "dhx_form-button",
+								disabled: true,
+								id: "edit",
+							},
+							{
+								type: "button",
+								text: "Add",
 								size: "medium",
 								view: "flat",
 								color: "primary",
 								css: "dhx_form-button",
-								id: "clear",
+								id: "add",
 							},
 						],
 					},
@@ -198,7 +201,15 @@
 				}
 			});
 
-			list.selection.events.on("AfterSelect", function () {
+			form.events.on("change", function () {
+				if (changeClear()) {
+					form.getItem("clear").enable();
+				} else {
+					form.getItem("clear").disable();
+				}
+			});
+
+			list.events.on("AfterSelect", function () {
 				var selectedItem = list.selection.getItem();
 				if (selectedItem) {
 					form.enable();
@@ -237,11 +248,11 @@
 			}
 
 			function clearState() {
-				var button = ["edit", "delete"];
+				var button = ["edit", "delete", "clear"];
+				form.clear();
 				button.forEach(id => {
 					form.getItem(id).disable();
 				});
-				form.clear();
 				list.selection.remove();
 			}
 
@@ -302,6 +313,17 @@
 					mail: data.mail || "",
 					photo: data.photo || "",
 				};
+			}
+
+			function changeClear() {
+				let state = false;
+				form.forEach(item => {
+					if (item.config.hasOwnProperty("value") && !!item.getValue().length) {
+						state = true;
+						return;
+					}
+				});
+				return state;
 			}
 		</script>
 	</body>

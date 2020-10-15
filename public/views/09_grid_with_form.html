@@ -36,7 +36,7 @@
 			</div>
 		</header>
 		<section class="dhx_sample-container">
-			<div class="dhx_sample-container__widget" id="grid" style="min-width: 850px; min-height: 620px;"></div>
+			<div class="dhx_sample-container__widget" id="grid" style="min-width: 850px; min-height: 630px"></div>
 			<div id="form"></div>
 		</section>
 		<script>
@@ -82,7 +82,7 @@
 			var form = new dhx.Form("form", {
 				css: "dhx_widget--bordered",
 				width: 500,
-				height: 620,
+				height: 630,
 				padding: 20,
 				rows: [
 					{
@@ -163,28 +163,19 @@
 						cols: [
 							{
 								type: "button",
-								text: "Add",
+								text: "Clear",
 								size: "medium",
-								view: "flat",
-								color: "primary",
-								css: "dhx_form-button",
-								id: "add",
-							},
-							{
-								type: "button",
-								text: "Edit",
-								size: "medium",
-								view: "flat",
+								view: "link",
 								color: "primary",
 								css: "dhx_form-button",
 								disabled: true,
-								id: "edit",
+								id: "clear",
 							},
 							{
 								type: "button",
 								text: "Delete",
 								size: "medium",
-								view: "flat",
+								view: "link",
 								color: "primary",
 								css: "dhx_form-button",
 								disabled: true,
@@ -192,12 +183,22 @@
 							},
 							{
 								type: "button",
-								text: "Clear",
+								text: "Edit",
+								size: "medium",
+								view: "link",
+								color: "primary",
+								css: "dhx_form-button",
+								disabled: true,
+								id: "edit",
+							},
+							{
+								type: "button",
+								text: "Add",
 								size: "medium",
 								view: "flat",
 								color: "primary",
 								css: "dhx_form-button",
-								id: "clear",
+								id: "add",
 							},
 						],
 					},
@@ -221,7 +222,15 @@
 				}
 			});
 
-			grid.selection.events.on("AfterSelect", function (row) {
+			form.events.on("change", function () {
+				if (changeClear()) {
+					form.getItem("clear").enable();
+				} else {
+					form.getItem("clear").disable();
+				}
+			});
+
+			grid.events.on("AfterSelect", function (row) {
 				if (row) {
 					form.enable();
 					form.setValue({
@@ -260,12 +269,12 @@
 			}
 
 			function clearState() {
-				var button = ["edit", "delete"];
+				var button = ["edit", "delete", "clear"];
+				form.clear();
 				button.forEach(id => {
 					form.getItem(id).disable();
 				});
-				form.clear();
-				grid.selection.remove();
+				grid.selection.removeCell();
 			}
 
 			function deleteItem() {
@@ -325,6 +334,17 @@
 					balance: data.balance,
 					paid: data.paid,
 				};
+			}
+
+			function changeClear() {
+				let state = false;
+				form.forEach(item => {
+					if (item.config.hasOwnProperty("value") && !!item.getValue().length) {
+						state = true;
+						return;
+					}
+				});
+				return state;
 			}
 		</script>
 	</body>

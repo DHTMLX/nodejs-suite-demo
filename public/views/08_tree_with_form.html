@@ -89,28 +89,19 @@
 						cols: [
 							{
 								type: "button",
-								text: "Add",
+								text: "Clear",
 								size: "medium",
-								view: "flat",
-								color: "primary",
-								css: "dhx_form-button",
-								id: "add",
-							},
-							{
-								type: "button",
-								text: "Edit",
-								size: "medium",
-								view: "flat",
+								view: "link",
 								color: "primary",
 								css: "dhx_form-button",
 								disabled: true,
-								id: "edit",
+								id: "clear",
 							},
 							{
 								type: "button",
 								text: "Delete",
 								size: "medium",
-								view: "flat",
+								view: "link",
 								color: "primary",
 								css: "dhx_form-button",
 								disabled: true,
@@ -118,12 +109,22 @@
 							},
 							{
 								type: "button",
-								text: "Clear",
+								text: "Edit",
+								size: "medium",
+								view: "link",
+								color: "primary",
+								css: "dhx_form-button",
+								disabled: true,
+								id: "edit",
+							},
+							{
+								type: "button",
+								text: "Add",
 								size: "medium",
 								view: "flat",
 								color: "primary",
 								css: "dhx_form-button",
-								id: "clear",
+								id: "add",
 							},
 						],
 					},
@@ -166,7 +167,15 @@
 				}
 			});
 
-			tree.selection.events.on("AfterSelect", function () {
+			form.events.on("change", function () {
+				if (changeClear()) {
+					form.getItem("clear").enable();
+				} else {
+					form.getItem("clear").disable();
+				}
+			});
+
+			tree.events.on("AfterSelect", function () {
 				var selectedItem = tree.selection.getItem();
 				if (selectedItem) {
 					form.enable();
@@ -195,11 +204,11 @@
 			}
 
 			function clearState() {
-				var button = ["edit", "delete"];
+				var button = ["edit", "delete", "clear"];
+				form.clear();
 				button.forEach(id => {
 					form.getItem(id).disable();
 				});
-				form.clear();
 				tree.selection.remove();
 			}
 
@@ -288,6 +297,10 @@
 					}
 				});
 				return data;
+			}
+
+			function changeClear() {
+				return !!form.getItem("name").getValue().length;
 			}
 		</script>
 	</body>
