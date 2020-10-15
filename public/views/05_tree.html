@@ -106,7 +106,7 @@
 				return treeData;
 			}
 
-			function sendTreeData(data) {
+			function sendTreeData(data) { 
 				getTreeData(data);
 				dhx.ajax
 					.put(URL + data.id, getTreeData(data))

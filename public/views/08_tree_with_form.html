@@ -82,6 +82,11 @@
 						id: "folder",
 					},
 					{
+						type: "input",
+						hidden: true,
+						id: "opened",
+					},
+					{
 						type: "spacer",
 					},
 					{
@@ -135,7 +140,7 @@
 				.load(URL)
 				.then(function () {
 					displayMessage("Data loaded successfully");
-					setTimeout(() => {
+					setTimeout(function() {
 						var options = getOptions();
 						form.getItem("folder_name").setOptions(options);
 					});
@@ -183,19 +188,18 @@
 						folder_name: selectedItem.parent,
 						name: selectedItem.value,
 						folder: selectedItem.isFolder,
+						opened: selectedItem.opened,
 					});
 				}
 			});
 
 			function displayMessage(text, err) {
 				var css;
-
 				if (err) {
 					css = "dhx_message--error";
 				} else {
 					css = "dhx_message--success";
 				}
-
 				dhx.message({
 					text: text,
 					expire: 3000,
@@ -219,6 +223,14 @@
 					.then(function () {
 						tree.data.remove(item.id);
 						displayMessage(item.value + " - Removed");
+						clearState();
+					})
+					.then(function () {
+						setTimeout(function() {
+							var options = getOptions();
+							form.getItem("folder_name").setOptions(options);
+							form.getItem("folder_name").setValue(data.parent);
+						});
 					})
 					.catch(function (error) {
 						displayMessage(error.message, true);
@@ -237,9 +249,11 @@
 						displayMessage(data.value + " - Edited");
 					})
 					.then(function () {
-						var options = getOptions();
-						form.getItem("folder_name").setOptions(options);
-						form.getItem("folder_name").setValue(data.parent);
+						setTimeout(function() {
+							var options = getOptions();
+							form.getItem("folder_name").setOptions(options);
+							form.getItem("folder_name").setValue(data.parent);
+						});
 					})
 					.catch(function (error) {
 						displayMessage(error.message, true);
@@ -258,6 +272,13 @@
 						tree.data.add(data, 0, data.parent || tree.data.getRoot());
 						displayMessage(data.value + " - Added");
 					})
+					.then(function () {
+						setTimeout(function() {
+							var options = getOptions();
+							form.getItem("folder_name").setOptions(options);
+							form.getItem("folder_name").setValue(data.parent);
+						});
+					})
 					.catch(function (error) {
 						displayMessage(error.message, true);
 					});
@@ -269,6 +290,7 @@
 					parent: data.folder_name,
 					value: data.name,
 					isFolder: !!data.folder,
+					opened: !!data.opened,
 				};
 			}
 
@@ -289,7 +311,7 @@
 			function getOptions() {
 				var data = [{ value: tree.data.getRoot(), content: " " }];
 				tree.data.forEach(function (item) {
-					if (!!item.isFolder === true) {
+					if (!!item.isFolder) {
 						data.push({
 							value: item.id,
 							content: item.value,
