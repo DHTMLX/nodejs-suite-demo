@@ -209,6 +209,12 @@
 				}
 			});
 
+			var phonedInput = form.getItem("phone");
+
+			phonedInput.events.on("input", function (value) {
+				phonedInput.validate(value);
+			});
+
 			list.events.on("AfterSelect", function () {
 				var selectedItem = list.selection.getItem();
 				if (selectedItem) {
@@ -227,7 +233,11 @@
 
 			form.events.on("afterValidate", function (id, value, isValid) {
 				if (!isValid) {
-					displayMessage(id + " invalid data: " + value, true);
+					if (id === "phone") {
+						displayMessage(`Valid date: (405) 500-2020; Invalid data: ${value}`, true);
+					} else {
+						displayMessage(id + " invalid data: " + value, true);
+					}
 				}
 			});
 

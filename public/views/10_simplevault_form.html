@@ -84,6 +84,7 @@
 			});
 
 			form.getItem("simplevault").events.on("uploadFile", function (file, value, res) {
+				console.log(res);
 				displayMessage("File path on the server: " + res.link);
 			});
 
