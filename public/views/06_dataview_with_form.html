@@ -70,6 +70,9 @@
 			.dhx_form-button .dhx_button {
 				width: 110px;
 			}
+			.dhx_sample-container, .dhx_sample-container__widget {
+				min-height: 630px;
+			}
 		</style>
 	</head>
 	<body>
@@ -91,7 +94,7 @@
 			</div>
 		</header>
 		<section class="dhx_sample-container">
-			<div class="dhx_sample-container__widget" style="min-height: 630px" id="dataview"></div>
+			<div class="dhx_sample-container__widget" id="dataview"></div>
 			<div id="form"></div>
 		</section>
 		<script>
@@ -322,7 +325,7 @@
 			function clearState() {
 				var button = ["edit", "delete", "clear"];
 				form.clear();
-				button.forEach(id => {
+				button.forEach(function(id) {
 					form.getItem(id).disable();
 				});
 				dataview.selection.remove();
@@ -390,7 +393,7 @@
 
 			function changeClear() {
 				let state = false;
-				form.forEach(item => {
+				form.forEach(function(item) {
 					if (item.config.hasOwnProperty("value") && !!item.getValue().length) {
 						state = true;
 						return;

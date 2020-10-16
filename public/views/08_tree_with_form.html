@@ -210,7 +210,7 @@
 			function clearState() {
 				var button = ["edit", "delete", "clear"];
 				form.clear();
-				button.forEach(id => {
+				button.forEach(function(id) {
 					form.getItem(id).disable();
 				});
 				tree.selection.remove();

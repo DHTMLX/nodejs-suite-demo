@@ -250,7 +250,7 @@
 			function clearState() {
 				var button = ["edit", "delete", "clear"];
 				form.clear();
-				button.forEach(id => {
+				button.forEach(function(id) {
 					form.getItem(id).disable();
 				});
 				list.selection.remove();
@@ -317,7 +317,7 @@
 
 			function changeClear() {
 				let state = false;
-				form.forEach(item => {
+				form.forEach(function(item) {
 					if (item.config.hasOwnProperty("value") && !!item.getValue().length) {
 						state = true;
 						return;
