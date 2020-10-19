@@ -15,7 +15,8 @@
 			.dhx_form-button .dhx_button {
 				width: 110px;
 			}
-			.dhx_sample-container, .dhx_sample-container__widget {
+			.dhx_sample-container,
+			.dhx_sample-container__widget {
 				min-height: 630px;
 			}
 		</style>
@@ -39,7 +40,7 @@
 			</div>
 		</header>
 		<section class="dhx_sample-container">
-			<div class="dhx_sample-container__widget" id="grid" style="min-width: 850px;"></div>
+			<div class="dhx_sample-container__widget" id="grid" style="min-width: 850px"></div>
 			<div id="form"></div>
 		</section>
 		<script>
@@ -274,7 +275,7 @@
 			function clearState() {
 				var button = ["edit", "delete", "clear"];
 				form.clear();
-				button.forEach(function(id) {
+				button.forEach(function (id) {
 					form.getItem(id).disable();
 				});
 				grid.selection.removeCell();
@@ -341,7 +342,7 @@
 
 			function changeClear() {
 				let state = false;
-				form.forEach(function(item) {
+				form.forEach(function (item) {
 					if (item.config.hasOwnProperty("value") && !!item.getValue().length) {
 						state = true;
 						return;

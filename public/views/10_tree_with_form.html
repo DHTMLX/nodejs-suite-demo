@@ -140,7 +140,7 @@
 				.load(URL)
 				.then(function () {
 					displayMessage("Data loaded successfully");
-					setTimeout(function() {
+					setTimeout(function () {
 						var options = getOptions();
 						form.getItem("folder_name").setOptions(options);
 					});
@@ -210,7 +210,7 @@
 			function clearState() {
 				var button = ["edit", "delete", "clear"];
 				form.clear();
-				button.forEach(function(id) {
+				button.forEach(function (id) {
 					form.getItem(id).disable();
 				});
 				tree.selection.remove();
@@ -226,7 +226,7 @@
 						clearState();
 					})
 					.then(function () {
-						setTimeout(function() {
+						setTimeout(function () {
 							var options = getOptions();
 							form.getItem("folder_name").setOptions(options);
 							form.getItem("folder_name").setValue(data.parent);
@@ -249,7 +249,7 @@
 						displayMessage(data.value + " - Edited");
 					})
 					.then(function () {
-						setTimeout(function() {
+						setTimeout(function () {
 							var options = getOptions();
 							form.getItem("folder_name").setOptions(options);
 							form.getItem("folder_name").setValue(data.parent);
@@ -273,7 +273,7 @@
 						displayMessage(data.value + " - Added");
 					})
 					.then(function () {
-						setTimeout(function() {
+						setTimeout(function () {
 							var options = getOptions();
 							form.getItem("folder_name").setOptions(options);
 							form.getItem("folder_name").setValue(data.parent);

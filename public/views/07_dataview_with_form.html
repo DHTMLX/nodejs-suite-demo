@@ -70,7 +70,8 @@
 			.dhx_form-button .dhx_button {
 				width: 110px;
 			}
-			.dhx_sample-container, .dhx_sample-container__widget {
+			.dhx_sample-container,
+			.dhx_sample-container__widget {
 				min-height: 630px;
 			}
 		</style>
@@ -329,7 +330,7 @@
 			function clearState() {
 				var button = ["edit", "delete", "clear"];
 				form.clear();
-				button.forEach(function(id) {
+				button.forEach(function (id) {
 					form.getItem(id).disable();
 				});
 				dataview.selection.remove();
@@ -394,13 +395,13 @@
 					birthday: data.birthday,
 					start: data.start,
 					mail: data.mail,
-					photo: data.photo.length && data.photo[0].file.name || "avatar.png",
+					photo: (data.photo.length && data.photo[0].file.name) || "avatar.png",
 				};
 			}
 
 			function changeClear() {
 				let state = false;
-				form.forEach(function(item) {
+				form.forEach(function (item) {
 					if (item.config.hasOwnProperty("value") && !!item.getValue().length) {
 						state = true;
 						return;

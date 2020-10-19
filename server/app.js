@@ -11,6 +11,7 @@ import createFormRoute from "./routers/form";
 import createPersonalRoute from "./routers/personal";
 import createProjectsRoute from "./routers/projects";
 import createBooksRoute from "./routers/books";
+import createStatistic from "./routers/statistic";
 
 export default async function () {
 	const db = await initDB(config.dbPath);
@@ -25,6 +26,7 @@ export default async function () {
 	createPersonalRoute(app, db);
 	createProjectsRoute(app, db);
 	createBooksRoute(app, db);
+	createStatistic(app, db);
 
 	app.use((_, res) => {
 		notFound(res);

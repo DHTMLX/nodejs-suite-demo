@@ -34,6 +34,54 @@
 			<div class="dhx_sample-container__widget" id="chart"></div>
 		</section>
 		<script>
+			var URL = "http://localhost:3000/static/personal/";
+
+			var config = {
+				type: "donut",
+				series: [
+					{
+						value: "value",
+						color: "color",
+						text: "post",
+					},
+				],
+				legend: {
+					values: {
+						id: "id",
+						text: "post",
+						color: "color",
+					},
+					halign: "right",
+					valign: "bottom",
+				},
+			};
+
+			var chart = new dhx.Chart("chart", config);
+
+			chart.data
+				.load(URL)
+				.then(function (res) {
+					displayMessage("Data loaded successfully");
+				})
+				.catch(function (res) {
+					displayMessage(res.statusText || "Resource Not Found", true);
+				});
+
+			function displayMessage(text, err) {
+				var css;
+
+				if (err) {
+					css = "dhx_message--error";
+				} else {
+					css = "dhx_message--success";
+				}
+
+				dhx.message({
+					text: text,
+					expire: 3000,
+					css: css,
+				});
+			}
 		</script>
 	</body>
 </html>
