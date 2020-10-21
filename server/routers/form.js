@@ -13,7 +13,7 @@ export default function (app) {
 	});
 
 	app.post("/form/upload", async (req, res) => {
-		upload(req, res, "upload");
+		upload(req, res, "files");
 	});
 
 	app.post("/form/images", async (req, res) => {
