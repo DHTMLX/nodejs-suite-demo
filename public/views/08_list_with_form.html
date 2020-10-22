@@ -102,7 +102,7 @@
 						icon: "mdi mdi-cellphone-android",
 						required: true,
 						validation: function (value) {
-							return /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/.test(value);
+							return /^(\+)?(\(\d{2,3}\) ?\d|\d)(([ \-]?\d)|( ?\(\d{2,3}\) ?)){5,12}\d$/.test(value);
 						},
 						id: "phone",
 					},
@@ -209,12 +209,6 @@
 				}
 			});
 
-			var phonedInput = form.getItem("phone");
-
-			phonedInput.events.on("input", function (value) {
-				phonedInput.validate(value);
-			});
-
 			list.events.on("AfterSelect", function () {
 				var selectedItem = list.selection.getItem();
 				if (selectedItem) {
@@ -233,11 +227,7 @@
 
 			form.events.on("afterValidate", function (id, value, isValid) {
 				if (!isValid) {
-					if (id === "phone") {
-						displayMessage(`Valid date: (405) 500-2020; Invalid data: ${value}`, true);
-					} else {
-						displayMessage(id + " invalid data: " + value, true);
-					}
+					displayMessage(id + " invalid data: " + value, true);
 				}
 			});
 
