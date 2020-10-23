@@ -139,9 +139,9 @@
 
 			var toolbarData = [
 				{ type: "spacer" },
-				{ id: "delete", type: "button", value: "Delete card", size: "small", circle: true, view: "link", hidden: true },
-				{ id: "edit", type: "button", value: "Edit card", size: "small", circle: true, view: "link", hidden: true },
-				{ id: "add", type: "button", value: "Add new card", size: "small", circle: true },
+				{ id: "delete", type: "button", value: "Delete card", size: "small", view: "link", hidden: true },
+				{ id: "edit", type: "button", value: "Edit card", size: "small", view: "link", hidden: true },
+				{ id: "add", type: "button", value: "Add new card", size: "small" },
 			];
 
 			var toolbar = new dhx.Toolbar("toolbar", {
@@ -247,7 +247,6 @@
 								view: "link",
 								color: "primary",
 								size: "small",
-								circle: true,
 								css: "dhx_form-button",
 								id: "cancel",
 							},
@@ -257,7 +256,6 @@
 								size: "medium",
 								view: "flat",
 								color: "primary",
-								circle: true,
 								size: "small",
 								css: "dhx_form-button",
 								id: "editItem",
@@ -268,7 +266,6 @@
 								size: "medium",
 								view: "flat",
 								color: "primary",
-								circle: true,
 								size: "small",
 								css: "dhx_form-button",
 								id: "addItem",
