@@ -207,6 +207,24 @@ h5 {
 	margin: 0 20px;
 }
 
+.dhx_sample-container__toolbar {
+	width: 700px;
+	margin-bottom: 10px;
+}
+
+.dhx_sample-container--column {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: inherit;
+	margin-top: 20px;
+}
+
+.dhx_sample-container--column .dhx_sample-container__widget {
+	height: 590px;
+}
+
 .dhx_sample-container__widget--grid {
 	width: 100%;
 }

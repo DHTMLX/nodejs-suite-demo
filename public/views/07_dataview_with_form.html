@@ -68,11 +68,8 @@
 				padding: 2px;
 			}
 			.dhx_form-button .dhx_button {
+				margin-left: 10px;
 				width: 110px;
-			}
-			.dhx_sample-container,
-			.dhx_sample-container__widget {
-				min-height: 630px;
 			}
 		</style>
 	</head>
@@ -94,9 +91,9 @@
 				</h1>
 			</div>
 		</header>
-		<section class="dhx_sample-container">
+		<section class="dhx_sample-container--column">
+			<div class="dhx_sample-container__toolbar" id="toolbar"></div>
 			<div class="dhx_sample-container__widget" id="dataview"></div>
-			<div id="form"></div>
 		</section>
 		<script>
 			var URL = "http://localhost:3000/personal/";
@@ -140,7 +137,41 @@
 					displayMessage(res.statusText || "Resource Not Found", true);
 				});
 
-			var form = new dhx.Form("form", {
+			var toolbarData = [
+				{ type: "spacer" },
+				{ id: "delete", type: "button", value: "Delete card", size: "small", circle: true, view: "link", hidden: true },
+				{ id: "edit", type: "button", value: "Edit card", size: "small", circle: true, view: "link", hidden: true },
+				{ id: "add", type: "button", value: "Add new card", size: "small", circle: true },
+			];
+
+			var toolbar = new dhx.Toolbar("toolbar", {
+				css: "dhx_widget--bordered",
+			});
+
+			toolbar.data.parse(toolbarData);
+
+			toolbar.events.on("click", function (id) {
+				switch (id) {
+					case "add":
+						openWindow("add");
+						break;
+					case "edit":
+						openWindow("edit");
+						break;
+					case "delete":
+						deleteItem();
+						break;
+				}
+			});
+
+			dataview.events.on("AfterSelect", function () {
+				var selectedItem = dataview.selection.getItem();
+				if (selectedItem) {
+					toolbar.show();
+				}
+			});
+
+			var form = new dhx.Form(null, {
 				css: "dhx_widget--bordered",
 				width: 500,
 				height: 630,
@@ -207,43 +238,40 @@
 						align: "between",
 						cols: [
 							{
-								type: "button",
-								text: "Clear",
-								size: "medium",
-								view: "link",
-								color: "primary",
-								css: "dhx_form-button",
-								disabled: true,
-								id: "clear",
+								type: "spacer",
 							},
 							{
 								type: "button",
-								text: "Delete",
+								text: "Cancel",
 								size: "medium",
 								view: "link",
 								color: "primary",
+								size: "small",
+								circle: true,
 								css: "dhx_form-button",
-								disabled: true,
-								id: "delete",
+								id: "cancel",
 							},
 							{
 								type: "button",
-								text: "Edit",
-								size: "medium",
-								view: "link",
-								color: "primary",
-								css: "dhx_form-button",
-								disabled: true,
-								id: "edit",
-							},
-							{
-								type: "button",
-								text: "Add",
+								text: "Save",
 								size: "medium",
 								view: "flat",
 								color: "primary",
+								circle: true,
+								size: "small",
 								css: "dhx_form-button",
-								id: "add",
+								id: "editItem",
+							},
+							{
+								type: "button",
+								text: "Save",
+								size: "medium",
+								view: "flat",
+								color: "primary",
+								circle: true,
+								size: "small",
+								css: "dhx_form-button",
+								id: "addItem",
 							},
 						],
 					},
@@ -252,33 +280,43 @@
 
 			form.events.on("click", function (id) {
 				switch (id) {
-					case "clear":
-						clearState();
-						break;
-					case "add":
+					case "addItem":
 						addItem();
 						break;
-					case "edit":
+					case "editItem":
 						editItem();
 						break;
-					case "delete":
-						deleteItem();
-						break;
+				}
+				closeWindow();
+			});
+
+			form.events.on("afterValidate", function (id, value, isValid) {
+				if (!isValid) {
+					displayMessage(id + " invalid data: " + value, true);
 				}
 			});
 
-			form.events.on("change", function () {
-				if (changeClear()) {
-					form.getItem("clear").enable();
+			var dhxwindow;
+
+			function openWindow(action) {
+				if (dhxwindow) {
+					dhxwindow.destructor();
+				}
+
+				var title;
+				if (action === "add") {
+					title = "Add new card";
+					form.getItem("addItem").show();
+					form.getItem("editItem").hide();
 				} else {
-					form.getItem("clear").disable();
+					title = "Edit card";
+					form.getItem("addItem").hide();
+					form.getItem("editItem").show();
 				}
-			});
 
-			dataview.events.on("AfterSelect", function () {
 				var selectedItem = dataview.selection.getItem();
-				if (selectedItem) {
-					form.enable();
+
+				selectedItem &&
 					form.setValue({
 						name: selectedItem.name,
 						post: selectedItem.post,
@@ -292,14 +330,25 @@
 							},
 						],
 					});
-				}
-			});
 
-			form.events.on("afterValidate", function (id, value, isValid) {
-				if (!isValid) {
-					displayMessage(id + " invalid data: " + value, true);
-				}
-			});
+				dhxwindow = new dhx.Window({
+					width: form.config.width + 20,
+					height: form.config.height + 110,
+					title: title,
+					modal: true,
+				});
+
+				dhxwindow.events.on("AfterHide", function() {
+					form.clear();
+				});
+
+				dhxwindow.attach(form);
+				dhxwindow.show();
+			}
+
+			function closeWindow() {
+				dhxwindow.hide();
+			}
 
 			function displayMessage(text, err) {
 				var css;
@@ -315,15 +364,6 @@
 					expire: 3000,
 					css: css,
 				});
-			}
-
-			function clearState() {
-				var button = ["edit", "delete", "clear"];
-				form.clear();
-				button.forEach(function (id) {
-					form.getItem(id).disable();
-				});
-				dataview.selection.remove();
 			}
 
 			function deleteItem() {
@@ -387,17 +427,6 @@
 					mail: data.mail,
 					photo: (data.photo.length && data.photo[0].file.name) || "avatar.png",
 				};
-			}
-
-			function changeClear() {
-				let state = false;
-				form.forEach(function (item) {
-					if (item.config.hasOwnProperty("value") && !!item.getValue().length) {
-						state = true;
-						return;
-					}
-				});
-				return state;
 			}
 		</script>
 	</body>
