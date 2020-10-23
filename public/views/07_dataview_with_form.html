@@ -172,7 +172,6 @@
 			});
 
 			var form = new dhx.Form(null, {
-				css: "dhx_widget--bordered",
 				width: 500,
 				height: 630,
 				padding: 20,
@@ -283,8 +282,11 @@
 					case "editItem":
 						editItem();
 						break;
+					case "cancel":
+						closeWindow();
+						break;
 				}
-				closeWindow();
+				form.validate(true) && id !== "cancel" && closeWindow();
 			});
 
 			form.events.on("afterValidate", function (id, value, isValid) {
@@ -313,7 +315,7 @@
 
 				var selectedItem = dataview.selection.getItem();
 
-				selectedItem &&
+				selectedItem && action === "edit" &&
 					form.setValue({
 						name: selectedItem.name,
 						post: selectedItem.post,
@@ -327,9 +329,11 @@
 							},
 						],
 					});
+				
+				form.clear("validation");
 
 				dhxwindow = new dhx.Window({
-					width: form.config.width + 20,
+					width: form.config.width,
 					height: form.config.height + 110,
 					title: title,
 					modal: true,
