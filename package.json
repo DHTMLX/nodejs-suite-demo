@@ -1,7 +1,7 @@
 {
 	"name": "dhtmlx-suite-node",
 	"version": "1.0.0",
-	"description": "NdeJS with DHTMLX Suite components",
+	"description": "NodeJS with DHTMLX Suite components",
 	"scripts": {
 		"start": "nodemon --exec babel-node ./server/server.js",
 		"prettier": "prettier --write */**/*.{js,html,css,json}"
