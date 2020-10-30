@@ -13,11 +13,11 @@
 		<!-- custom sample head -->
 		<style>
 			.dhx_form-button .dhx_button {
+				margin-left: 10px;
 				width: 110px;
 			}
-			.dhx_sample-container,
-			.dhx_sample-container__widget {
-				min-height: 630px;
+			.dhx_sample-container__toolbar, .dhx_sample-container__widget {
+				width: 1000px;
 			}
 		</style>
 	</head>
@@ -39,9 +39,9 @@
 				</h1>
 			</div>
 		</header>
-		<section class="dhx_sample-container">
-			<div class="dhx_sample-container__widget" id="grid" style="min-width: 850px"></div>
-			<div id="form"></div>
+		<section class="dhx_sample-container--column">
+			<div class="dhx_sample-container__toolbar" id="toolbar"></div>
+			<div class="dhx_sample-container__widget" id="grid"></div>
 		</section>
 		<script>
 			var URL = "http://localhost:3000/projects/";
@@ -83,7 +83,40 @@
 					displayMessage(res.statusText || "Resource Not Found", true);
 				});
 
-			var form = new dhx.Form("form", {
+			var toolbarData = [
+				{ type: "spacer" },
+				{ id: "delete", type: "button", value: "Delete card", size: "small", view: "link", hidden: true },
+				{ id: "edit", type: "button", value: "Edit card", size: "small", view: "link", hidden: true },
+				{ id: "add", type: "button", value: "Add new card", size: "small" },
+			];
+			
+			var toolbar = new dhx.Toolbar("toolbar", {
+				css: "dhx_widget--bordered",
+			});
+
+			toolbar.data.parse(toolbarData);
+
+			toolbar.events.on("click", function (id) {
+				switch (id) {
+					case "add":
+						openWindow("add");
+						break;
+					case "edit":
+						openWindow("edit");
+						break;
+					case "delete":
+						deleteItem();
+						break;
+				}
+			});
+
+			grid.events.on("AfterSelect", function (row) {
+				if (row) {
+					toolbar.show();
+				}
+			});
+
+			var form = new dhx.Form(null, {
 				css: "dhx_widget--bordered",
 				width: 500,
 				height: 630,
@@ -165,89 +198,56 @@
 					{
 						align: "between",
 						cols: [
-							{
-								type: "button",
-								text: "Clear",
-								size: "medium",
-								view: "link",
-								color: "primary",
-								css: "dhx_form-button",
-								disabled: true,
-								id: "clear",
+						{
+								type: "spacer",
 							},
 							{
 								type: "button",
-								text: "Delete",
+								text: "Cancel",
 								size: "medium",
 								view: "link",
 								color: "primary",
+								size: "small",
 								css: "dhx_form-button",
-								disabled: true,
-								id: "delete",
+								id: "cancel",
 							},
 							{
 								type: "button",
-								text: "Edit",
-								size: "medium",
-								view: "link",
-								color: "primary",
-								css: "dhx_form-button",
-								disabled: true,
-								id: "edit",
-							},
-							{
-								type: "button",
-								text: "Add",
+								text: "Save",
 								size: "medium",
 								view: "flat",
 								color: "primary",
+								size: "small",
 								css: "dhx_form-button",
-								id: "add",
+								id: "editItem",
+							},
+							{
+								type: "button",
+								text: "Save",
+								size: "medium",
+								view: "flat",
+								color: "primary",
+								size: "small",
+								css: "dhx_form-button",
+								id: "addItem",
 							},
 						],
 					},
 				],
 			});
-
 			form.events.on("click", function (id) {
 				switch (id) {
-					case "clear":
-						clearState();
-						break;
-					case "add":
+					case "addItem":
 						addItem();
 						break;
-					case "edit":
+					case "editItem":
 						editItem();
 						break;
-					case "delete":
-						deleteItem();
+					case "cancel":
+						closeWindow();
 						break;
 				}
-			});
-
-			form.events.on("change", function () {
-				if (changeClear()) {
-					form.getItem("clear").enable();
-				} else {
-					form.getItem("clear").disable();
-				}
-			});
-
-			grid.events.on("AfterSelect", function (row) {
-				if (row) {
-					form.enable();
-					form.setValue({
-						project: row.project,
-						owner: row.owner,
-						start_date: row.start_date,
-						end_date: row.end_date,
-						status: row.status,
-						hours: row.hours,
-						balance: row.balance,
-						paid: row.paid,
-					});
-				}
+				form.validate(true) && id !== "cancel" && closeWindow();
 			});
 
 			form.events.on("afterValidate", function (id, value, isValid) {
@@ -255,6 +255,58 @@
 					displayMessage(id + " invalid data: " + value, true);
 				}
 			});
+
+			var dhxwindow;
+
+			function openWindow(action) {
+				if (dhxwindow) {
+					dhxwindow.destructor();
+				}
+				var title;
+				if (action === "add") {
+					title = "Add new card";
+					form.getItem("addItem").show();
+					form.getItem("editItem").hide();
+				} else {
+					title = "Edit card";
+					form.getItem("addItem").hide();
+					form.getItem("editItem").show();
+				}
+
+				var selectedItem = grid.selection.getCell();
+
+				selectedItem && action === "edit" &&
+					form.setValue({
+						project: selectedItem.row.project,
+						owner: selectedItem.row.owner,
+						start_date: selectedItem.row.start_date,
+						end_date: selectedItem.row.end_date,
+						status: selectedItem.row.status,
+						hours: selectedItem.row.hours,
+						balance: selectedItem.row.balance,
+						paid: selectedItem.row.paid,
+					});
+				
+				form.clear("validation");
+
+				dhxwindow = new dhx.Window({
+					width: form.config.width,
+					height: form.config.height + 110,
+					title: title,
+					modal: true,
+				});
+
+				dhxwindow.events.on("AfterHide", function() {
+					form.clear();
+				});
+
+				dhxwindow.attach(form);
+				dhxwindow.show();
+			}
+
+			function closeWindow() {
+				dhxwindow.hide();
+			}
 
 			function displayMessage(text, err) {
 				var css;
@@ -270,15 +322,6 @@
 					expire: 3000,
 					css: css,
 				});
-			}
-
-			function clearState() {
-				var button = ["edit", "delete", "clear"];
-				form.clear();
-				button.forEach(function (id) {
-					form.getItem(id).disable();
-				});
-				grid.selection.removeCell();
 			}
 
 			function deleteItem() {
@@ -338,17 +381,6 @@
 					balance: data.balance,
 					paid: data.paid,
 				};
-			}
-
-			function changeClear() {
-				let state = false;
-				form.forEach(function (item) {
-					if (item.config.hasOwnProperty("value") && !!item.getValue().length) {
-						state = true;
-						return;
-					}
-				});
-				return state;
 			}
 		</script>
 	</body>

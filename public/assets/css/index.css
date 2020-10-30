@@ -219,6 +219,7 @@ h5 {
 	justify-content: center;
 	height: inherit;
 	margin-top: 20px;
+	min-height: 600px;
 }
 
 .dhx_sample-container--column .dhx_sample-container__widget {
