@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<!-- meta block -->
-		<title>Basic initialization - DHTMLX Dataview</title>
+		<title>Basic initialization - DHTMLX List</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
 		<link rel="stylesheet" href="../assets/css/index.css" />
 		<link rel="stylesheet" href="../library/suite.css" />
@@ -20,6 +20,7 @@
 				line-height: 20px;
 			}
 			.dhx_form-button .dhx_button {
+				margin-left: 10px;
 				width: 110px;
 			}
 		</style>
@@ -42,9 +43,9 @@
 				</h1>
 			</div>
 		</header>
-		<section class="dhx_sample-container">
+		<section class="dhx_sample-container--column">
+			<div class="dhx_sample-container__toolbar" id="toolbar"></div>
 			<div class="dhx_sample-container__widget" id="list"></div>
-			<div id="form"></div>
 		</section>
 		<script>
 			var URL = "http://localhost:3000/personal/";
@@ -74,8 +75,42 @@
 				.catch(function (res) {
 					displayMessage(res.statusText || "Resource Not Found", true);
 				});
+			
+			var toolbarData = [
+				{ type: "spacer" },
+				{ id: "delete", type: "button", value: "Delete card", size: "small", view: "link", hidden: true },
+				{ id: "edit", type: "button", value: "Edit card", size: "small", view: "link", hidden: true },
+				{ id: "add", type: "button", value: "Add new card", size: "small" },
+			];
 
-			var form = new dhx.Form("form", {
+			var toolbar = new dhx.Toolbar("toolbar", {
+				css: "dhx_widget--bordered",
+			});
+
+			toolbar.data.parse(toolbarData);
+
+			toolbar.events.on("click", function (id) {
+				switch (id) {
+					case "add":
+						openWindow("add");
+						break;
+					case "edit":
+						openWindow("edit");
+						break;
+					case "delete":
+						deleteItem();
+						break;
+				}
+			});
+
+			list.events.on("AfterSelect", function () {
+				var selectedItem = list.selection.getItem();
+				if (selectedItem) {
+					toolbar.show();
+				}
+			});
+
+			var form = new dhx.Form(null, {
 				css: "dhx_widget--bordered",
 				width: 500,
 				height: 600,
@@ -141,43 +176,37 @@
 						align: "between",
 						cols: [
 							{
-								type: "button",
-								text: "Clear",
-								size: "medium",
-								view: "link",
-								color: "primary",
-								css: "dhx_form-button",
-								disabled: true,
-								id: "clear",
+								type: "spacer",
 							},
 							{
 								type: "button",
-								text: "Delete",
+								text: "Cancel",
 								size: "medium",
 								view: "link",
 								color: "primary",
+								size: "small",
 								css: "dhx_form-button",
-								disabled: true,
-								id: "delete",
+								id: "cancel",
 							},
 							{
 								type: "button",
-								text: "Edit",
-								size: "medium",
-								view: "link",
-								color: "primary",
-								css: "dhx_form-button",
-								disabled: true,
-								id: "edit",
-							},
-							{
-								type: "button",
-								text: "Add",
+								text: "Save",
 								size: "medium",
 								view: "flat",
 								color: "primary",
+								size: "small",
 								css: "dhx_form-button",
-								id: "add",
+								id: "editItem",
+							},
+							{
+								type: "button",
+								text: "Save",
+								size: "medium",
+								view: "flat",
+								color: "primary",
+								size: "small",
+								css: "dhx_form-button",
+								id: "addItem",
 							},
 						],
 					},
@@ -186,33 +215,45 @@
 
 			form.events.on("click", function (id) {
 				switch (id) {
-					case "clear":
-						clearState();
-						break;
-					case "add":
+					case "addItem":
 						addItem();
 						break;
-					case "edit":
+					case "editItem":
 						editItem();
 						break;
-					case "delete":
-						deleteItem();
+					case "cancel":
+						closeWindow();
 						break;
 				}
+				form.validate(true) && id !== "cancel" && closeWindow();
 			});
 
-			form.events.on("change", function () {
-				if (changeClear()) {
-					form.getItem("clear").enable();
-				} else {
-					form.getItem("clear").disable();
+			form.events.on("afterValidate", function (id, value, isValid) {
+				if (!isValid) {
+					displayMessage(id + " invalid data: " + value, true);
 				}
 			});
 
-			list.events.on("AfterSelect", function () {
+			var dhxwindow;
+
+			function openWindow(action) {
+				if (dhxwindow) {
+					dhxwindow.destructor();
+				}
+				var title;
+				if (action === "add") {
+					title = "Add new card";
+					form.getItem("addItem").show();
+					form.getItem("editItem").hide();
+				} else {
+					title = "Edit card";
+					form.getItem("addItem").hide();
+					form.getItem("editItem").show();
+				}
+
 				var selectedItem = list.selection.getItem();
-				if (selectedItem) {
-					form.enable();
+
+				selectedItem && action === "edit" &&
 					form.setValue({
 						name: selectedItem.name,
 						post: selectedItem.post,
@@ -222,14 +263,27 @@
 						mail: selectedItem.mail,
 						photo: selectedItem.photo,
 					});
-				}
-			});
+				
+				form.clear("validation");
 
-			form.events.on("afterValidate", function (id, value, isValid) {
-				if (!isValid) {
-					displayMessage(id + " invalid data: " + value, true);
-				}
-			});
+				dhxwindow = new dhx.Window({
+					width: form.config.width,
+					height: form.config.height + 110,
+					title: title,
+					modal: true,
+				});
+
+				dhxwindow.events.on("AfterHide", function() {
+					form.clear();
+				});
+
+				dhxwindow.attach(form);
+				dhxwindow.show();
+			}
+
+			function closeWindow() {
+				dhxwindow.hide();
+			}
 
 			function displayMessage(text, err) {
 				var css;
@@ -245,15 +299,6 @@
 					expire: 3000,
 					css: css,
 				});
-			}
-
-			function clearState() {
-				var button = ["edit", "delete", "clear"];
-				form.clear();
-				button.forEach(function (id) {
-					form.getItem(id).disable();
-				});
-				list.selection.remove();
 			}
 
 			function deleteItem() {
@@ -311,19 +356,8 @@
 					birthday: data.birthday,
 					start: data.start,
 					mail: data.mail || "",
-					photo: data.photo || "",
+					photo: data.photo || "avatar.png",
 				};
-			}
-
-			function changeClear() {
-				let state = false;
-				form.forEach(function (item) {
-					if (item.config.hasOwnProperty("value") && !!item.getValue().length) {
-						state = true;
-						return;
-					}
-				});
-				return state;
 			}
 		</script>
 	</body>
