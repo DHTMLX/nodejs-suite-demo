@@ -52,7 +52,7 @@
 
 			tree.data
 				.load(URL)
-				.then(function (res) {
+				.then(function () {
 					displayMessage("Data loaded successfully");
 				})
 				.catch(function (res) {
@@ -110,8 +110,8 @@
 				getTreeData(data);
 				dhx.ajax
 					.put(URL + data.id, getTreeData(data))
-					.then(function () {
-						displayMessage(data.value + " - Edited");
+					.then(function (res) {
+						displayMessage(data.value + " - Updated");
 					})
 					.catch(function (error) {
 						displayMessage(error.message, true);
