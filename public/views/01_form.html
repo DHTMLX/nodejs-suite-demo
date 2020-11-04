@@ -111,7 +111,8 @@
 			var passwordInput = form.getItem("password");
 
 			passwordInput.events.on("input", function (value) {
-				passwordInput.validate(value);
+				console.log(value)
+				passwordInput.validate(false, value);
 			});
 
 			function displayMessage(text, err) {
