@@ -89,7 +89,7 @@
 				{ id: "edit", type: "button", value: "Edit card", size: "small", view: "link", hidden: true },
 				{ id: "add", type: "button", value: "Add new card", size: "small" },
 			];
-			
+
 			var toolbar = new dhx.Toolbar("toolbar", {
 				css: "dhx_widget--bordered",
 			});
@@ -202,7 +202,6 @@
 							{
 								type: "button",
 								text: "Cancel",
-								size: "medium",
 								view: "link",
 								color: "primary",
 								size: "small",
@@ -212,7 +211,6 @@
 							{
 								type: "button",
 								text: "Save",
-								size: "medium",
 								view: "flat",
 								color: "primary",
 								size: "small",
@@ -222,7 +220,6 @@
 							{
 								type: "button",
 								text: "Save",
-								size: "medium",
 								view: "flat",
 								color: "primary",
 								size: "small",
@@ -284,7 +281,7 @@
 						balance: selectedItem.row.balance,
 						paid: selectedItem.row.paid,
 					});
-				
+
 				form.clear("validation");
 
 				dhxwindow = new dhx.Window({

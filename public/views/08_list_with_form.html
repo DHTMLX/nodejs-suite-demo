@@ -75,7 +75,7 @@
 				.catch(function (res) {
 					displayMessage(res.statusText || "Resource Not Found", true);
 				});
-			
+
 			var toolbarData = [
 				{ type: "spacer" },
 				{ id: "delete", type: "button", value: "Delete card", size: "small", view: "link", hidden: true },
@@ -179,7 +179,6 @@
 							{
 								type: "button",
 								text: "Cancel",
-								size: "medium",
 								view: "link",
 								color: "primary",
 								size: "small",
@@ -189,7 +188,6 @@
 							{
 								type: "button",
 								text: "Save",
-								size: "medium",
 								view: "flat",
 								color: "primary",
 								size: "small",
@@ -199,7 +197,6 @@
 							{
 								type: "button",
 								text: "Save",
-								size: "medium",
 								view: "flat",
 								color: "primary",
 								size: "small",
@@ -261,7 +258,7 @@
 						mail: selectedItem.mail,
 						photo: selectedItem.photo,
 					});
-				
+
 				form.clear("validation");
 
 				dhxwindow = new dhx.Window({
