@@ -13,60 +13,90 @@
 		<meta name="theme-color" content="#4b4b4b" />
 		<!-- custom sample head -->
 		<style>
-			.dhx-demo_personal-card {
-				height: 100%;
+			/* css template for DHTMLX Dataview */
+			/* the latest version is available here: https://snippet.dhtmlx.com/dataview_template_d */
+			/* you can find more css templates here: https://dhtmlx.com/docs/products/dhtmlxSuite/styling */
+			.dhx_dataview_template_d_box {
+				background-color: transparent;
+			}
+
+			.dhx_dataview_template_d_box .dhx_dataview-item {
+				padding: 0;
+				border: 1px solid #dfdfdf;
+				background-color: #fff;
+				overflow: hidden;
+			}
+
+			.dhx_dataview_template_d {
+				display: -webkit-box;
+				display: -ms-flexbox;
 				display: flex;
+				width: 100%;
+				height: 136px;
+				padding: 12px;
+			}
+
+			.dhx_dataview_template_d__inside {
+				display: -webkit-box;
+				display: -ms-flexbox;
+				display: flex;
+				width: 100%;
+			}
+
+			.dhx_dataview_template_d__picture {
+				width: 110px;
+				min-width: 110px;
+				background: center center/cover no-repeat #f7f7f7;
+			}
+
+			.dhx_dataview_template_d__picture:before {
+				content: "";
+				display: block;
+				padding-top: 100%;
+			}
+
+			.dhx_dataview_template_d__body {
+				padding-left: 12px;
+				min-width: 250px;
+			}
+
+			.dhx_dataview_template_d__title,
+			.dhx_dataview_template_d__text {
+				font: normal 14px/20px Roboto, sans-serif;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+
+			.dhx_dataview_template_d__title {
+				color: rgba(0, 0, 0, 0.7);
+				font-weight: 500;
+			}
+
+			.dhx_dataview_template_d__row {
+				display: -webkit-box;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-align: center;
+				-ms-flex-align: center;
 				align-items: center;
-				justify-content: center;
-				background: white;
-				color: rgba(0, 0, 0, 0.7);
-				padding: 10px 12px;
+				margin: 4px 0;
 			}
-			.dhx-demo_personal-card i {
-				color: rgba(0, 0, 0, 0.7);
-				height: 20px;
-				width: 20px;
+
+			.dhx_dataview_template_d__icon {
 				font-size: 18px;
+				margin-right: 4px;
+				color: rgba(0, 0, 0, 0.7);
 			}
-			.dhx-demo_personal-card__info {
-				display: flex;
+
+			.dhx_dataview_template_d__text {
+				color: rgba(0, 0, 0, 0.7);
 			}
-			.dhx-demo_personal-card__info a {
+
+			.dhx_dataview_template_d__link {
 				color: #0288d1;
 			}
-			.dhx-demo_personal-card__container {
-				height: 100%;
-				width: 100%;
-				overflow: hidden;
-				position: relative;
-			}
-			.dhx-demo_personal-card__container h3,
-			.dhx-demo_personal-card__container p {
-				text-align: left;
-				font-size: 14px;
-				line-height: 20px;
-				height: 20px;
-				margin: 0 0 4px 0;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			}
-			.dhx-demo_personal-card__container i {
-				margin-right: 4px;
-			}
-			.dhx-demo_personal-card__img-container {
-				min-width: 110px;
-				width: 110px;
-				margin-right: 12px;
-				height: 110px;
-			}
-			.dhx-demo_personal-card__img-container img {
-				width: inherit;
-				height: auto;
-			}
-			.dhx_dataview-item {
-				padding: 2px;
-			}
+			/* end of code for dataview_template_d */
 		</style>
 	</head>
 	<body>
@@ -95,28 +125,30 @@
 			var IMG_URL = "http://localhost:3000/images/";
 
 			function template(data) {
-				var template = '<div class="dhx-demo_personal-card">';
-				template += '<div class="dhx-demo_personal-card__container dhx-demo_personal-card__img-container">';
-				template += '<img src="' + IMG_URL + data.photo + '" alt="' + data.name + '"></img></div>';
-				template += '<div class="dhx-demo_personal-card__container">';
-				template += "<h3>" + data.name + "</h3>";
-				template += "<p>" + data.post + "</p>";
-				template += '<span class="dhx-demo_personal-card__info">';
-				template += '<i class="mdi mdi-cellphone-android"></i>';
-				template += "<p>" + data.phone + "</p></span>";
-				template += '<span class="dhx-demo_personal-card__info">';
-				template += '<i class="mdi mdi-cake-variant"></i>';
-				template += "<p>" + data.birthday + "</p></span>";
-				template += '<span class="dhx-demo_personal-card__info">';
-				template += '<i class="mdi mdi-email-outline"></i>';
-				template += '<a href="mailto:' + data.mail + '" target="_blank">' + data.mail + "</a></span></div></div>";
+				var template = '<div class="dhx_dataview_template_d">';
+					template += '<div class="dhx_dataview_template_d__inside">';
+					template += '<div class="dhx_dataview_template_d__picture" style="background-image: url(' + IMG_URL + data.photo + ');"></div>';
+					template += '<div class="dhx_dataview_template_d__body">';
+					template += '<span class="dhx_dataview_template_d__title">' + data.name + '</span>';
+					template += '<div class="dhx_dataview_template_d__row">';
+					template += '<span class="dhx_dataview_template_d__text">' + data.post + '</span></div>';
+					template += '<div class="dhx_dataview_template_d__row">';
+					template += '<span class="dhx_dataview_template_d__icon mdi mdi-cellphone-android"></span>';
+					template += '<span class="dhx_dataview_template_d__text">' + data.phone + '</span></div>';
+					template += '<div class="dhx_dataview_template_d__row">';
+					template += '<span class="dhx_dataview_template_d__icon mdi mdi-cake-variant"></span>';
+					template += '<span class="dhx_dataview_template_d__text">' + data.birthday + '</span></div>';
+					template += '<div class="dhx_dataview_template_d__row">';
+					template += '<span class="dhx_dataview_template_d__icon mdi mdi-email-outline"></span>';
+					template += '<span class="dhx_dataview_template_d__text"><a class="dhx_dataview_template_d__link" href="mailto:' + data.mail + '" target="_blank">' + data.mail + '</a></span></div>';
+					template += '</div></div>';
 				return template;
 			}
 
 			var dataview = new dhx.DataView("dataview", {
 				itemsInRow: 2,
 				gap: 10,
-				css: "dhx_widget--bordered",
+				css: "dhx_widget--bordered dhx_dataview_template_d_box",
 				dragMode: "both",
 				template: template,
 				multiselection: true,
