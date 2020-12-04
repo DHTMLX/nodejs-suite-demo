@@ -4,7 +4,6 @@
 		<!-- meta block -->
 		<title>Basic initialization - DHTMLX Dataview</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
-
 		<link rel="stylesheet" href="../assets/css/index.css" />
 		<link rel="stylesheet" href="../library/suite.css" />
 		<script type="text/javascript" src="../library/suite.js"></script>
@@ -13,11 +12,11 @@
 		<meta name="theme-color" content="#4b4b4b" />
 		<!-- custom sample head -->
 		<style>
-			.dhx_sample-container {
-				display: block;
-				width: 500px;
-				height: 600px;
-				overflow: auto;
+			.dhx-demo_personal-card p {
+				margin: 0;
+				color: rgba(0, 0, 0, 0.7);
+				font-size: 14px;
+				line-height: 20px;
 			}
 		</style>
 	</head>
@@ -30,51 +29,44 @@
 							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<span class="dhx_sample-header-breadcrumbs__link">Tree with NodeJS</span>
+							<span class="dhx_sample-header-breadcrumbs__link">List. Getting data</span>
 						</li>
 					</ul>
 				</nav>
-				<h1 class="dhx_sample-header__title">
-					<div class="dhx_sample-header__content">Tree with NodeJS.</div>
-				</h1>
 			</div>
 		</header>
-		<section class="dhx_sample-container dhx_widget--bordered">
-			<div id="tree"></div>
+		<section class="dhx_sample-container">
+			<div class="dhx_sample-container__widget" id="list"></div>
 		</section>
 		<script>
-			var URL = "http://localhost:3000/books/";
+			var URL = "http://localhost:3000/personal/";
 
-			var tree = new dhx.Tree("tree", {
-				editing: true,
+			function template(data) {
+				var template = "<div class='dhx-demo_personal-card'>";
+				template += "<p><b>Name:</b> " + data.name + "</p>";
+				template += "<p><b>Post:</b> " + data.post + "</p>";
+				template += "<p><b>Phone:</b> " + data.phone + "</p>";
+				template += "<p><b>Beginning of work:</b> " + data.start + "</p>";
+				template += "<p><b>Birthday:</b> " + data.birthday + "</p>";
+				return template;
+			}
+
+			var list = new dhx.List("list", {
+				css: "dhx_widget--bordered",
 				dragMode: "both",
+				multiselection: true,
+				template: template,
+				keyNavigation: true,
 			});
 
-			tree.data
+			list.data
 				.load(URL)
-				.then(function () {
+				.then(function (res) {
 					displayMessage("Data loaded successfully");
 				})
 				.catch(function (res) {
 					displayMessage(res.statusText || "Resource Not Found", true);
 				});
-
-			tree.data.events.on("change", function (id, method, data) {
-				if (method === "update") {
-					sendTreeData(data);
-				}
-			});
-
-			tree.events.on("afterDrag", function (data, events) {
-				if (data.start) {
-					var data = tree.data.getItem(data.start);
-					sendTreeData(data);
-				}
-				if (data.target) {
-					var data = tree.data.getItem(data.target);
-					sendTreeData(data);
-				}
-			});
 
 			function displayMessage(text, err) {
 				var css;
@@ -90,32 +82,6 @@
 					expire: 3000,
 					css: css,
 				});
-			}
-
-			function getTreeData(data) {
-				var treeData = {};
-				for (var key in data) {
-					if (data.hasOwnProperty(key)) {
-						if (key === "parent" && data[key].indexOf("ROOT") !== -1) {
-							treeData[key] = null;
-						} else {
-							treeData[key] = data[key];
-						}
-					}
-				}
-				return treeData;
-			}
-
-			function sendTreeData(data) {
-				getTreeData(data);
-				dhx.ajax
-					.put(URL + data.id, getTreeData(data))
-					.then(function (res) {
-						displayMessage(data.value + " - Updated");
-					})
-					.catch(function (error) {
-						displayMessage(error.message, true);
-					});
 			}
 		</script>
 	</body>

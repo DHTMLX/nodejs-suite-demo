@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<!-- meta block -->
-		<title>Basic initialization - DHTMLX Dataview</title>
+		<title>Basic initialization - DHTMLX List</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
 		<link rel="stylesheet" href="../assets/css/index.css" />
 		<link rel="stylesheet" href="../library/suite.css" />
@@ -11,13 +11,17 @@
 		<link rel="icon" type="image/png" sizes="16x16" href="../assets/static/favicon.ico" />
 		<meta name="theme-color" content="#4b4b4b" />
 		<!-- custom sample head -->
+		<link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.5.55/css/materialdesignicons.min.css" />
 		<style>
+			.dhx-demo_personal-card p {
+				margin: 0;
+				color: rgba(0, 0, 0, 0.7);
+				font-size: 14px;
+				line-height: 20px;
+			}
 			.dhx_form-button .dhx_button {
 				margin-left: 10px;
 				width: 110px;
-			}
-			.dhx_sample-container__toolbar, .dhx_sample-container__widget {
-				width: 1000px;
 			}
 		</style>
 	</head>
@@ -30,51 +34,37 @@
 							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<span class="dhx_sample-header-breadcrumbs__link">Grid and Form with NodeJS</span>
+							<span class="dhx_sample-header-breadcrumbs__link">List with Form and Window. Getting, editing, deleting, and sending data</span>
 						</li>
 					</ul>
 				</nav>
-				<h1 class="dhx_sample-header__title">
-					<div class="dhx_sample-header__content">Grid and Form with NodeJS.</div>
-				</h1>
 			</div>
 		</header>
 		<section class="dhx_sample-container--column">
 			<div class="dhx_sample-container__toolbar" id="toolbar"></div>
-			<div class="dhx_sample-container__widget" id="grid"></div>
+			<div class="dhx_sample-container__widget" id="list"></div>
 		</section>
 		<script>
-			var URL = "http://localhost:3000/projects/";
+			var URL = "http://localhost:3000/personal/";
 
-			var grid = new dhx.Grid("grid", {
-				columns: [
-					{ width: 160, id: "project", header: [{ text: "Project" }, { content: "comboFilter" }] },
-					{
-						width: 160,
-						id: "status",
-						header: [{ text: "Status" }, { content: "selectFilter" }],
-						editorType: "select",
-						options: ["Done", "In Progress", "Not Started"],
-					},
-					{ width: 160, id: "paid", header: [{ text: "Paid", rowspan: 2 }], type: "boolean" },
-					{ width: 160, id: "owner", header: [{ text: "Owner" }, { content: "inputFilter" }] },
-					{ width: 160, id: "hours", header: [{ text: "Number of hours" }, { content: "inputFilter" }] },
-					{
-						width: 160,
-						id: "start_date",
-						header: [{ text: "Calendar", colspan: 2 }, { text: "Start date" }],
-						type: "date",
-						dateFormat: "%d/%m/%Y",
-					},
-					{ width: 160, id: "end_date", header: ["", { text: "End date" }], type: "date", dateFormat: "%d/%m/%Y" },
-					{ width: 160, id: "balance", header: [{ text: "Balance" }, { content: "inputFilter" }] },
-				],
-				selection: "row",
-				resizable: true,
+			function template(data) {
+				var template = "<div class='dhx-demo_personal-card'>";
+				template += "<p><b>Name:</b> " + data.name + "</p>";
+				template += "<p><b>Position:</b> " + data.post + "</p>";
+				template += "<p><b>Phone:</b> " + data.phone + "</p>";
+				template += "<p><b>Works since:</b> " + data.start + "</p>";
+				template += "<p><b>Birthday:</b> " + data.birthday + "</p>";
+				return template;
+			}
+
+			var list = new dhx.List("list", {
+				css: "dhx_widget--bordered",
 				dragMode: "both",
+				template: template,
+				keyNavigation: true,
 			});
 
-			grid.data
+			list.data
 				.load(URL)
 				.then(function (res) {
 					displayMessage("Data loaded successfully");
@@ -110,85 +100,69 @@
 				}
 			});
 
-			grid.events.on("AfterSelect", function (row) {
-				if (row) {
+			list.events.on("AfterSelect", function () {
+				var selectedItem = list.selection.getItem();
+				if (selectedItem) {
 					toolbar.show();
 				}
 			});
 
 			var form = new dhx.Form(null, {
 				width: 500,
-				height: 630,
+				height: 600,
 				rows: [
 					{
 						type: "input",
-						label: "Project",
-						placeholder: "Project name",
+						label: "Name",
+						placeholder: "John Doe",
 						required: true,
-						id: "project",
-					},
-					{
-						type: "select",
-						label: "Status",
-						id: "status",
-						options: [
-							{
-								value: "Done",
-								content: "Done",
-							},
-							{
-								value: "Not Started",
-								content: "Not Started",
-							},
-							{
-								value: "In Progress",
-								content: "In Progress",
-							},
-						],
+						id: "name",
 					},
 					{
 						type: "input",
-						label: "Owner",
-						placeholder: "Mark Luis",
+						label: "Position",
+						placeholder: "Resident",
 						required: true,
-						id: "owner",
+						id: "post",
 					},
 					{
 						type: "input",
-						label: "Number of hourse",
-						placeholder: "0",
-						validation: "integer",
+						label: "Phone number",
+						placeholder: "(405) 500-2020",
+						icon: "mdi mdi-cellphone-android",
 						required: true,
-						id: "hours",
+						validation: function (value) {
+							return /^(\+)?(\(\d{2,3}\) ?\d|\d)(([ \-]?\d)|( ?\(\d{2,3}\) ?)){5,12}\d$/.test(value);
+						},
+						id: "phone",
 					},
 					{
 						type: "datepicker",
-						label: "Start date",
+						label: "Works since",
 						required: true,
-						placeholder: "25/12/2020",
-						dateFormat: "%d/%m/%Y",
-						id: "start_date",
+						editable: true,
+						placeholder: "25.12.1991",
+						dateFormat: "%d.%m.%Y",
+						id: "start",
 					},
 					{
 						type: "datepicker",
-						label: "End date",
+						label: "Birthday",
 						required: true,
-						placeholder: "30/12/2020",
-						dateFormat: "%d/%m/%Y",
-						id: "end_date",
+						editable: true,
+						placeholder: "25.12.1991",
+						dateFormat: "%d.%m.%Y",
+						id: "birthday",
 					},
 					{
 						type: "input",
-						label: "Balance",
-						placeholder: "0",
-						validation: "integer",
-						required: true,
-						id: "balance",
+						hidden: true,
+						id: "mail",
 					},
 					{
-						type: "checkbox",
-						text: "Paid",
-						id: "paid",
+						type: "input",
+						hidden: true,
+						id: "photo",
 					},
 					{
 						type: "spacer",
@@ -196,7 +170,7 @@
 					{
 						align: "between",
 						cols: [
-						{
+							{
 								type: "spacer",
 							},
 							{
@@ -230,6 +204,7 @@
 					},
 				],
 			});
+
 			form.events.on("click", function (id) {
 				switch (id) {
 					case "addItem":
@@ -268,18 +243,17 @@
 					form.getItem("editItem").show();
 				}
 
-				var selectedItem = grid.selection.getCell();
+				var selectedItem = list.selection.getItem();
 
 				selectedItem && action === "edit" &&
 					form.setValue({
-						project: selectedItem.row.project,
-						owner: selectedItem.row.owner,
-						start_date: selectedItem.row.start_date,
-						end_date: selectedItem.row.end_date,
-						status: selectedItem.row.status,
-						hours: selectedItem.row.hours,
-						balance: selectedItem.row.balance,
-						paid: selectedItem.row.paid,
+						name: selectedItem.name,
+						post: selectedItem.post,
+						phone: selectedItem.phone,
+						start: selectedItem.start,
+						birthday: selectedItem.birthday,
+						mail: selectedItem.mail,
+						photo: selectedItem.photo,
 					});
 
 				form.clear("validation");
@@ -320,12 +294,12 @@
 			}
 
 			function deleteItem() {
-				var selectedRow = grid.selection.getCell().row;
+				var item = list.selection.getItem();
 				dhx.ajax
-					.delete(URL + selectedRow.id)
+					.delete(URL + item.id)
 					.then(function () {
-						grid.data.remove(selectedRow.id);
-						displayMessage(selectedRow.project + " - Removed");
+						list.data.remove(item.id);
+						displayMessage(item.name + " - Removed");
 					})
 					.catch(function (error) {
 						displayMessage(error.message, true);
@@ -335,13 +309,14 @@
 			function editItem() {
 				if (!form.validate()) return;
 
-				var selectedRow = grid.selection.getCell().row;
+				var item = list.selection.getItem();
 				var data = getItemData();
+
 				dhx.ajax
-					.put(URL + selectedRow.id, data)
+					.put(URL + item.id, data)
 					.then(function () {
-						grid.data.update(selectedRow.id, data);
-						displayMessage(selectedRow.project + " - Edited");
+						list.data.update(item.id, data);
+						displayMessage(data.name + " - Edited");
 					})
 					.catch(function (error) {
 						displayMessage(error.message, true);
@@ -356,8 +331,8 @@
 					.post(URL, data)
 					.then(function (res) {
 						data.id = res.id;
-						grid.data.add(data);
-						displayMessage(data.project + " - Added");
+						list.data.add(data);
+						displayMessage(data.name + " - Added");
 					})
 					.catch(function (error) {
 						displayMessage(error.message, true);
@@ -367,14 +342,13 @@
 			function getItemData() {
 				var data = form.getValue();
 				return {
-					project: data.project,
-					owner: data.owner,
-					start_date: data.start_date,
-					end_date: data.end_date,
-					status: data.status,
-					hours: data.hours,
-					balance: data.balance,
-					paid: data.paid,
+					name: data.name,
+					post: data.post,
+					phone: data.phone,
+					birthday: data.birthday,
+					start: data.start,
+					mail: data.mail || "",
+					photo: data.photo || "avatar.png",
 				};
 			}
 		</script>

@@ -3,8 +3,7 @@
 [![dhtmlx.com](https://img.shields.io/badge/made%20by-DHTMLX-blue)](https://dhtmlx.com/)
 [![License: GPL v2](https://img.shields.io/badge/license-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 
-[![react-widgets](https://raw.githubusercontent.com/plazarev/media/master/nodejs-suite-demo%402x.png)](https://dhtmlx.github.io/angular-suite-demo/?path=/story)
-
+[![nodejs-suite-demo](https://raw.githubusercontent.com/plazarev/media/master/nodejs-suite-demo%402x.png)](https://github.com/DHTMLX/nodejs-suite-demo)
 ## How to run
 - run `npm install`
 - run `npm start` for starting the server
