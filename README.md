@@ -28,7 +28,7 @@ npm run prettier
 ## Useful links
 
 - [Online  documentation](https://docs.dhtmlx.com/)
-- [Support forum](https://forum.dhtmlx.com/c/suite6)
+- [Support forum](https://forum.dhtmlx.com/c/suite7)
 
 
 ## Follow us
