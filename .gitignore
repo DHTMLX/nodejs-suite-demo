@@ -17,9 +17,10 @@ dist
 
 # Other
 npm-debug.log*
+package-lock.json
 yarn-debug.log*
 yarn-error.log*
-package-lock.json
+yarn.lock
 
 # Special
 Thumbs.db

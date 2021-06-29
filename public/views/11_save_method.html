@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- meta block -->
+		<title>Save method. Getting, editing, deleting, and sending data</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
+		<link rel="stylesheet" href="../assets/css/index.css" />
+		<!-- Suite -->
+		<link rel="stylesheet" href="../../lib/suite_7.2/suite.css" />
+		<script type="text/javascript" src="../../lib/suite_7.2/suite.js"></script>
+		<!-- Browser theme -->
+		<link rel="icon" type="image/png" sizes="16x16" href="../assets/static/favicon.ico" />
+		<meta name="theme-color" content="#4b4b4b" />
+		<!-- custom sample head -->
+		<style>
+			.dhx_form-button .dhx_button {
+				margin-left: 10px;
+				width: 110px;
+			}
+			.dhx_sample-container__toolbar, .dhx_sample-container__widget {
+				width: 1000px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="dhx_sample-header">
+			<div class="dhx_sample-header__main">
+				<nav class="dhx_sample-header__breadcrumbs">
+					<ul class="dhx_sample-header-breadcrumbs">
+						<li class="dhx_sample-header-breadcrumbs__item">
+							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
+						</li>
+						<li class="dhx_sample-header-breadcrumbs__item">
+							<span class="dhx_sample-header-breadcrumbs__link">Grid with Form and Window. Getting, editing, deleting, and sending data</span>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<section class="dhx_sample-container--column">
+			<div class="dhx_sample-container__toolbar" id="toolbar"></div>
+			<div class="dhx_sample-container__widget" id="grid"></div>
+		</section>
+		<script>
+			var URL = "http://localhost:3000/save";
+
+			var grid = new dhx.Grid("grid", {
+				columns: [
+					{ width: 160, id: "project", header: [{ text: "Project" }, { content: "comboFilter" }] },
+					{
+						width: 160,
+						id: "status",
+						header: [{ text: "Status" }, { content: "selectFilter" }],
+						editorType: "select",
+						options: ["Done", "In Progress", "Not Started"],
+					},
+					{ width: 160, id: "paid", header: [{ text: "Paid", rowspan: 2 }], type: "boolean" },
+					{ width: 160, id: "owner", header: [{ text: "Owner" }, { content: "inputFilter" }] },
+					{ width: 160, id: "hours", header: [{ text: "Number of hours" }, { content: "inputFilter" }] },
+					{
+						width: 160,
+						id: "start_date",
+						header: [{ text: "Calendar", colspan: 2 }, { text: "Start date" }],
+						type: "date",
+						dateFormat: "%d/%m/%Y",
+					},
+					{ width: 160, id: "end_date", header: ["", { text: "End date" }], type: "date", dateFormat: "%d/%m/%Y" },
+					{ width: 158, id: "balance", header: [{ text: "Balance" }, { content: "inputFilter" }] },
+				],
+				selection: true,
+				editable: true,
+				resizable: true,
+				dragMode: "both",
+			});
+
+			grid.data
+				.load(URL + "/load")
+				.then(function () {
+					displayMessage("Data loaded successfully");
+				})
+				.catch(function (res) {
+					displayMessage(res.statusText || "Resource Not Found", true);
+				});
+
+			grid.data.events.on("change", function (id, method, data) {
+				if (method) {
+					grid.data.save(URL);
+
+					grid.data.saveData.then(function () {
+						displayMessage(data.project + " - " + method);
+					});
+				}
+			});
+
+			function displayMessage(text, err) {
+				var css;
+
+				if (err) {
+					css = "dhx_message--error";
+				} else {
+					css = "dhx_message--success";
+				}
+
+				dhx.message({
+					text: text,
+					expire: 3000,
+					css: css,
+				});
+			}
+
+			var toolbarData = [
+				{ type: "spacer" },
+				{ id: "delete", type: "button", value: "Delete card", size: "small", view: "link", hidden: true },
+				{ id: "add", type: "button", value: "Add new card", size: "small" },
+			];
+
+			var toolbar = new dhx.Toolbar("toolbar", {
+				css: "dhx_widget--bordered",
+			});
+
+			toolbar.data.parse(toolbarData);
+
+			toolbar.events.on("click", function (id) {
+				switch (id) {
+					case "add":
+						const newId = grid.data.add({
+							project: "",
+							status: "",
+							paid: null,
+							owner: "",
+							hours: "",
+							start_date: null,
+							end_date: null,
+							balance: "",
+						});
+						grid.selection.setCell(newId);
+						grid.scrollTo(newId, "country");
+						break;
+					case "delete":
+						grid.data.remove(grid.selection.getCell().row.id);
+						break;
+				}
+			});
+
+			grid.events.on("AfterSelect", function (row) {
+				if (row) {
+					toolbar.show();
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -12,6 +12,7 @@ import createPersonalRoute from "./routers/personal";
 import createProjectsRoute from "./routers/projects";
 import createBooksRoute from "./routers/books";
 import createStatistic from "./routers/statistic";
+import createSaveRoute from "./routers/save";
 
 export default async function () {
 	const db = await initDB(config.dbPath);
@@ -27,6 +28,7 @@ export default async function () {
 	createProjectsRoute(app, db);
 	createBooksRoute(app, db);
 	createStatistic(app, db);
+	createSaveRoute(app, db);
 
 	app.use((_, res) => {
 		notFound(res);
