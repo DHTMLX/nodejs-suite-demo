@@ -17,7 +17,8 @@
 				margin-left: 10px;
 				width: 110px;
 			}
-			.dhx_sample-container__toolbar, .dhx_sample-container__widget {
+			.dhx_sample-container__toolbar,
+			.dhx_sample-container__widget {
 				width: 1000px;
 			}
 		</style>
@@ -31,7 +32,9 @@
 							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<span class="dhx_sample-header-breadcrumbs__link">Save method. Getting, editing, deleting, and sending data</span>
+							<span class="dhx_sample-header-breadcrumbs__link"
+								>Save method. Getting, editing, deleting, and sending data</span
+							>
 						</li>
 					</ul>
 				</nav>
@@ -54,17 +57,28 @@
 						editorType: "select",
 						options: ["Done", "In Progress", "Not Started"],
 					},
-					{ width: 160, id: "paid", header: [{ text: "Paid", rowspan: 2 }], type: "boolean" },
+					{ width: 160, id: "paid", header: [{ text: "Paid", rowspan: 2, align: "center" }], type: "boolean" },
 					{ width: 160, id: "owner", header: [{ text: "Owner" }, { content: "inputFilter" }] },
 					{ width: 160, id: "hours", header: [{ text: "Number of hours" }, { content: "inputFilter" }] },
 					{
 						width: 160,
 						id: "start_date",
-						header: [{ text: "Calendar", colspan: 2 }, { text: "Start date" }],
+						header: [
+							{ text: "Calendar", colspan: 2, align: "center" },
+							{ text: "Start date", align: "center" },
+						],
 						type: "date",
 						dateFormat: "%d/%m/%Y",
+						align: "center",
 					},
-					{ width: 160, id: "end_date", header: ["", { text: "End date" }], type: "date", dateFormat: "%d/%m/%Y" },
+					{
+						width: 160,
+						id: "end_date",
+						header: ["", { text: "End date", align: "center" }],
+						type: "date",
+						dateFormat: "%d/%m/%Y",
+						align: "center",
+					},
 					{ width: 158, id: "balance", header: [{ text: "Balance" }, { content: "inputFilter" }] },
 				],
 				selection: true,
@@ -87,7 +101,22 @@
 					grid.data.save(URL);
 
 					grid.data.saveData.then(function () {
-						displayMessage(data.project + " - " + method);
+						let action;
+
+						switch (method) {
+							case "add":
+								action = "added";
+								break;
+							case "remove":
+								action = "deleted";
+								break;
+							case "update":
+								action = "updated";
+								break;
+						}
+						const project = data.project || "Empty project";
+
+						displayMessage(`${project} - ${action}`);
 					});
 				}
 			});

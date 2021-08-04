@@ -35,7 +35,9 @@
 							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<span class="dhx_sample-header-breadcrumbs__link">List with Form and Window. Getting, editing, deleting, and sending data</span>
+							<span class="dhx_sample-header-breadcrumbs__link"
+								>List with Form and Window. Getting, editing, deleting, and sending data</span
+							>
 						</li>
 					</ul>
 				</nav>
@@ -246,7 +248,8 @@
 
 				var selectedItem = list.selection.getItem();
 
-				selectedItem && action === "edit" &&
+				selectedItem &&
+					action === "edit" &&
 					form.setValue({
 						name: selectedItem.name,
 						post: selectedItem.post,
@@ -266,7 +269,7 @@
 					modal: true,
 				});
 
-				dhxwindow.events.on("AfterHide", function() {
+				dhxwindow.events.on("AfterHide", function () {
 					form.clear();
 				});
 

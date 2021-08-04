@@ -114,7 +114,9 @@
 							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<span class="dhx_sample-header-breadcrumbs__link">Dataview with Form and Window. Getting, editing, deleting, and sending data</span>
+							<span class="dhx_sample-header-breadcrumbs__link"
+								>Dataview with Form and Window. Getting, editing, deleting, and sending data</span
+							>
 						</li>
 					</ul>
 				</nav>
@@ -131,22 +133,28 @@
 
 			function template(data) {
 				var template = '<div class="dhx_dataview_template_d">';
-					template += '<div class="dhx_dataview_template_d__inside">';
-					template += '<div class="dhx_dataview_template_d__picture" style="background-image: url(' + IMG_URL + data.photo + ');"></div>';
-					template += '<div class="dhx_dataview_template_d__body">';
-					template += '<span class="dhx_dataview_template_d__title">' + data.name + '</span>';
-					template += '<div class="dhx_dataview_template_d__row">';
-					template += '<span class="dhx_dataview_template_d__text">' + data.post + '</span></div>';
-					template += '<div class="dhx_dataview_template_d__row">';
-					template += '<span class="dhx_dataview_template_d__icon mdi mdi-cellphone-android"></span>';
-					template += '<span class="dhx_dataview_template_d__text">' + data.phone + '</span></div>';
-					template += '<div class="dhx_dataview_template_d__row">';
-					template += '<span class="dhx_dataview_template_d__icon mdi mdi-cake-variant"></span>';
-					template += '<span class="dhx_dataview_template_d__text">' + data.birthday + '</span></div>';
-					template += '<div class="dhx_dataview_template_d__row">';
-					template += '<span class="dhx_dataview_template_d__icon mdi mdi-email-outline"></span>';
-					template += '<span class="dhx_dataview_template_d__text"><a class="dhx_dataview_template_d__link" href="mailto:' + data.mail + '" target="_blank">' + data.mail + '</a></span></div>';
-					template += '</div></div>';
+				template += '<div class="dhx_dataview_template_d__inside">';
+				template +=
+					'<div class="dhx_dataview_template_d__picture" style="background-image: url(' + IMG_URL + data.photo + ');"></div>';
+				template += '<div class="dhx_dataview_template_d__body">';
+				template += '<span class="dhx_dataview_template_d__title">' + data.name + "</span>";
+				template += '<div class="dhx_dataview_template_d__row">';
+				template += '<span class="dhx_dataview_template_d__text">' + data.post + "</span></div>";
+				template += '<div class="dhx_dataview_template_d__row">';
+				template += '<span class="dhx_dataview_template_d__icon mdi mdi-cellphone-android"></span>';
+				template += '<span class="dhx_dataview_template_d__text">' + data.phone + "</span></div>";
+				template += '<div class="dhx_dataview_template_d__row">';
+				template += '<span class="dhx_dataview_template_d__icon mdi mdi-cake-variant"></span>';
+				template += '<span class="dhx_dataview_template_d__text">' + data.birthday + "</span></div>";
+				template += '<div class="dhx_dataview_template_d__row">';
+				template += '<span class="dhx_dataview_template_d__icon mdi mdi-email-outline"></span>';
+				template +=
+					'<span class="dhx_dataview_template_d__text"><a class="dhx_dataview_template_d__link" href="mailto:' +
+					data.mail +
+					'" target="_blank">' +
+					data.mail +
+					"</a></span></div>";
+				template += "</div></div>";
 				return template;
 			}
 
@@ -342,7 +350,8 @@
 
 				var selectedItem = dataview.selection.getItem();
 
-				selectedItem && action === "edit" &&
+				selectedItem &&
+					action === "edit" &&
 					form.setValue({
 						name: selectedItem.name,
 						post: selectedItem.post,
@@ -366,7 +375,7 @@
 					modal: true,
 				});
 
-				dhxwindow.events.on("AfterHide", function() {
+				dhxwindow.events.on("AfterHide", function () {
 					form.clear();
 				});
 

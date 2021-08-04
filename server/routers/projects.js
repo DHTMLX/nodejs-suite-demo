@@ -29,9 +29,7 @@ export default function (app, db) {
 		if (!valid) {
 			invalidRequest(res);
 		} else {
-			const {
-				lastID,
-			} = await db.run(
+			const { lastID } = await db.run(
 				"INSERT INTO projects ( project, owner, start_date, end_date, status, hours, balance, paid) VALUES (?,?,?,?,?,?,?,?);",
 				[project, owner, start_date, end_date, status, hours, balance, paid]
 			);

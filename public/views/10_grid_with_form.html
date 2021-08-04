@@ -17,7 +17,8 @@
 				margin-left: 10px;
 				width: 110px;
 			}
-			.dhx_sample-container__toolbar, .dhx_sample-container__widget {
+			.dhx_sample-container__toolbar,
+			.dhx_sample-container__widget {
 				width: 1000px;
 			}
 		</style>
@@ -31,7 +32,9 @@
 							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
-							<span class="dhx_sample-header-breadcrumbs__link">Grid with Form and Window. Getting, editing, deleting, and sending data</span>
+							<span class="dhx_sample-header-breadcrumbs__link"
+								>Grid with Form and Window. Getting, editing, deleting, and sending data</span
+							>
 						</li>
 					</ul>
 				</nav>
@@ -194,7 +197,7 @@
 					{
 						align: "between",
 						cols: [
-						{
+							{
 								type: "spacer",
 							},
 							{
@@ -268,7 +271,8 @@
 
 				var selectedItem = grid.selection.getCell();
 
-				selectedItem && action === "edit" &&
+				selectedItem &&
+					action === "edit" &&
 					form.setValue({
 						project: selectedItem.row.project,
 						owner: selectedItem.row.owner,
@@ -289,7 +293,7 @@
 					modal: true,
 				});
 
-				dhxwindow.events.on("AfterHide", function() {
+				dhxwindow.events.on("AfterHide", function () {
 					form.clear();
 				});
 
