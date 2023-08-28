@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 import { notFound, invalidRequest } from "../utils/responses";
 
-export default function (app, db) {
+export default function (app, bayeux, db) {
 	app.get("/projects", async (_req, res) => {
 		const projects = await db.all("SELECT * FROM projects;");
 
@@ -35,6 +35,11 @@ export default function (app, db) {
 			);
 			res.setHeader("Location", `/projects/${lastID}`);
 			res.status(201).json({ id: lastID });
+
+			bayeux.getClient().publish("/projects", {
+				type: "add",
+				project: { id: lastID, project, owner, start_date, end_date, status, hours, balance, paid },
+			});
 		}
 	});
 
@@ -57,6 +62,11 @@ export default function (app, db) {
 					[project, owner, start_date, end_date, status, hours, balance, paid, id]
 				);
 				res.sendStatus(204);
+
+				bayeux.getClient().publish("/projects", {
+					type: "update",
+					project: { id, project, owner, start_date, end_date, status, hours, balance, paid },
+				});
 			}
 		}
 	});
@@ -69,6 +79,8 @@ export default function (app, db) {
 		} else {
 			await db.run("DELETE from projects WHERE id=?", [id]);
 			res.sendStatus(204);
+
+			bayeux.getClient().publish("/projects", { type: "delete", project: { id } });
 		}
 	});
 }

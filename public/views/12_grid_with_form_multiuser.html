@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- meta block -->
+		<title>Grid with Form and Window. Getting, editing, deleting, and sending data (multiuser)</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
+		<link rel="stylesheet" href="../assets/css/index.css" />
+		<!-- Suite -->
+		<link rel="stylesheet" href="https://cdn.dhtmlx.com/suite/edge/suite.css" />
+		<script type="text/javascript" src="https://cdn.dhtmlx.com/suite/edge/suite.js"></script>
+
+		<script src="../../node_modules/faye/client/faye-browser-min.js"></script>
+		<!-- Browser theme -->
+		<link rel="icon" type="image/png" sizes="16x16" href="../assets/static/favicon.ico" />
+		<meta name="theme-color" content="#4b4b4b" />
+		<!-- custom sample head -->
+		<style>
+			.dhx_form-button .dhx_button {
+				margin-left: 10px;
+				width: 110px;
+			}
+			.dhx_sample-container__toolbar,
+			.dhx_sample-container__widget {
+				width: 1000px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="dhx_sample-header">
+			<div class="dhx_sample-header__main">
+				<nav class="dhx_sample-header__breadcrumbs">
+					<ul class="dhx_sample-header-breadcrumbs">
+						<li class="dhx_sample-header-breadcrumbs__item">
+							<a href="../index.html" class="dhx_sample-header-breadcrumbs__link">NodeJS samles</a>
+						</li>
+						<li class="dhx_sample-header-breadcrumbs__item">
+							<span class="dhx_sample-header-breadcrumbs__link"
+								>Grid with Form and Window. Getting, editing, deleting, and sending data</span
+							>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<section class="dhx_sample-container--column">
+			<div class="dhx_sample-container__toolbar" id="toolbar"></div>
+			<div class="dhx_sample-container__widget" id="grid"></div>
+		</section>
+		<script>
+			const fayeClient = new Faye.Client("http://localhost:3000/sync");
+
+			var URL = "http://localhost:3000/projects/";
+
+			var grid = new dhx.Grid("grid", {
+				columns: [
+					{ width: 160, id: "project", header: [{ text: "Project" }, { content: "comboFilter" }] },
+					{
+						width: 160,
+						id: "status",
+						header: [{ text: "Status" }, { content: "selectFilter" }],
+						editorType: "select",
+						options: ["Done", "In Progress", "Not Started"],
+					},
+					{ width: 160, id: "paid", header: [{ text: "Paid", rowspan: 2 }], type: "boolean" },
+					{ width: 160, id: "owner", header: [{ text: "Owner" }, { content: "inputFilter" }] },
+					{ width: 160, id: "hours", header: [{ text: "Number of hours" }, { content: "inputFilter" }] },
+					{
+						width: 160,
+						id: "start_date",
+						header: [{ text: "Calendar", colspan: 2 }, { text: "Start date" }],
+						type: "date",
+						dateFormat: "%d/%m/%Y",
+					},
+					{ width: 160, id: "end_date", header: ["", { text: "End date" }], type: "date", dateFormat: "%d/%m/%Y" },
+					{ width: 160, id: "balance", header: [{ text: "Balance" }, { content: "inputFilter" }] },
+				],
+				selection: "row",
+				resizable: true,
+				dragMode: "both",
+			});
+
+			grid.data
+				.load(URL)
+				.then(function (res) {
+					displayMessage("Data loaded successfully");
+				})
+				.catch(function (res) {
+					displayMessage(res.statusText || "Resource Not Found", true);
+				});
+
+			var toolbarData = [
+				{ type: "spacer" },
+				{ id: "delete", type: "button", value: "Delete card", size: "small", view: "link", hidden: true },
+				{ id: "edit", type: "button", value: "Edit card", size: "small", view: "link", hidden: true },
+				{ id: "add", type: "button", value: "Add new card", size: "small" },
+			];
+
+			var toolbar = new dhx.Toolbar("toolbar", {
+				css: "dhx_widget--bordered",
+			});
+
+			toolbar.data.parse(toolbarData);
+
+			toolbar.events.on("click", function (id) {
+				switch (id) {
+					case "add":
+						openWindow("add");
+						break;
+					case "edit":
+						openWindow("edit");
+						break;
+					case "delete":
+						deleteItem();
+						break;
+				}
+			});
+
+			grid.events.on("AfterSelect", function (row) {
+				if (row) {
+					toolbar.show();
+				}
+			});
+
+			var form = new dhx.Form(null, {
+				width: 500,
+				height: 630,
+				rows: [
+					{
+						type: "input",
+						label: "Project",
+						placeholder: "Project name",
+						required: true,
+						id: "project",
+					},
+					{
+						type: "select",
+						label: "Status",
+						id: "status",
+						options: [
+							{
+								value: "Done",
+								content: "Done",
+							},
+							{
+								value: "Not Started",
+								content: "Not Started",
+							},
+							{
+								value: "In Progress",
+								content: "In Progress",
+							},
+						],
+					},
+					{
+						type: "input",
+						label: "Owner",
+						placeholder: "Mark Luis",
+						required: true,
+						id: "owner",
+					},
+					{
+						type: "input",
+						label: "Number of hourse",
+						placeholder: "0",
+						validation: "integer",
+						required: true,
+						id: "hours",
+					},
+					{
+						type: "datepicker",
+						label: "Start date",
+						required: true,
+						placeholder: "25/12/2020",
+						dateFormat: "%d/%m/%Y",
+						id: "start_date",
+					},
+					{
+						type: "datepicker",
+						label: "End date",
+						required: true,
+						placeholder: "30/12/2020",
+						dateFormat: "%d/%m/%Y",
+						id: "end_date",
+					},
+					{
+						type: "input",
+						label: "Balance",
+						placeholder: "0",
+						validation: "integer",
+						required: true,
+						id: "balance",
+					},
+					{
+						type: "checkbox",
+						text: "Paid",
+						id: "paid",
+					},
+					{
+						type: "spacer",
+					},
+					{
+						align: "between",
+						cols: [
+							{
+								type: "spacer",
+							},
+							{
+								type: "button",
+								text: "Cancel",
+								view: "link",
+								color: "primary",
+								size: "small",
+								css: "dhx_form-button",
+								id: "cancel",
+							},
+							{
+								type: "button",
+								text: "Save",
+								view: "flat",
+								color: "primary",
+								size: "small",
+								css: "dhx_form-button",
+								id: "editItem",
+							},
+							{
+								type: "button",
+								text: "Save",
+								view: "flat",
+								color: "primary",
+								size: "small",
+								css: "dhx_form-button",
+								id: "addItem",
+							},
+						],
+					},
+				],
+			});
+			form.events.on("click", function (id) {
+				switch (id) {
+					case "addItem":
+						addItem();
+						break;
+					case "editItem":
+						editItem();
+						break;
+					case "cancel":
+						closeWindow();
+						break;
+				}
+				form.validate(true) && id !== "cancel" && closeWindow();
+			});
+
+			form.events.on("afterValidate", function (id, value, isValid) {
+				if (!isValid) {
+					displayMessage(id + (value ? " invalid data: " + value : " empty field"), true);
+				}
+			});
+
+			var dhxwindow;
+
+			function openWindow(action) {
+				var title;
+				if (action === "add") {
+					title = "Add new card";
+					form.getItem("addItem").show();
+					form.getItem("editItem").hide();
+				} else {
+					title = "Edit card";
+					form.getItem("addItem").hide();
+					form.getItem("editItem").show();
+				}
+
+				var selectedItem = grid.selection.getCell();
+
+				selectedItem &&
+					action === "edit" &&
+					form.setValue({
+						project: selectedItem.row.project,
+						owner: selectedItem.row.owner,
+						start_date: selectedItem.row.start_date,
+						end_date: selectedItem.row.end_date,
+						status: selectedItem.row.status,
+						hours: selectedItem.row.hours,
+						balance: selectedItem.row.balance,
+						paid: selectedItem.row.paid,
+					});
+
+				form.clear("validation");
+
+				dhxwindow = new dhx.Window({
+					width: form.config.width,
+					height: form.config.height + 110,
+					title: title,
+					modal: true,
+				});
+
+				dhxwindow.events.on("AfterHide", function () {
+					// form.clear();
+				});
+
+				dhxwindow.attach(form);
+				dhxwindow.show();
+			}
+
+			function closeWindow() {
+				dhxwindow.hide();
+			}
+
+			function displayMessage(text, err) {
+				var css;
+
+				if (err) {
+					css = "dhx_message--error";
+				} else {
+					css = "dhx_message--success";
+				}
+
+				dhx.message({
+					text: text,
+					expire: 3000,
+					css: css,
+				});
+			}
+
+			function deleteItem() {
+				var selectedRow = grid.selection.getCell().row;
+				dhx.ajax
+					.delete(URL + selectedRow.id)
+					.then(function () {
+						grid.data.remove(selectedRow.id);
+						displayMessage(selectedRow.project + " - Removed");
+					})
+					.catch(function (error) {
+						displayMessage(error.message, true);
+					});
+			}
+
+			function editItem() {
+				if (!form.validate()) return;
+
+				var selectedRow = grid.selection.getCell().row;
+				var data = getItemData();
+				dhx.ajax
+					.put(URL + selectedRow.id, data)
+					.then(function () {
+						grid.data.update(selectedRow.id, data);
+						displayMessage(selectedRow.project + " - Edited");
+					})
+					.catch(function (error) {
+						displayMessage(error.message, true);
+					});
+			}
+
+			function addItem() {
+				if (!form.validate()) return;
+
+				var data = getItemData();
+				dhx.ajax
+					.post(URL, data)
+					.then(function (res) {
+						data.id = res.id;
+						grid.data.add(data);
+						displayMessage(data.project + " - Added");
+					})
+					.catch(function (error) {
+						displayMessage(error.message, true);
+					});
+			}
+
+			function getItemData() {
+				var data = form.getValue();
+				return {
+					project: data.project,
+					owner: data.owner,
+					start_date: data.start_date,
+					end_date: data.end_date,
+					status: data.status,
+					hours: data.hours,
+					balance: data.balance,
+					paid: data.paid,
+				};
+			}
+
+			fayeClient.subscribe("/projects", message => {
+				const data = message.project;
+				if (!data || !data.id) return;
+				switch (message.type) {
+					case "add":
+						if (!grid.data.exists(data.id)) {
+							grid.data.add(data);
+						}
+						break;
+					case "update":
+						if (grid.data.exists(data.id)) {
+							grid.data.update(data.id, data);
+						}
+						break;
+					case "delete":
+						if (grid.data.exists(data.id)) {
+							grid.data.remove(data.id);
+						}
+						break;
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -16,15 +16,5 @@ const { PORT } = process.env;
 
 (async () => {
 	const app = await createApp();
-
-	app.use((err, _req, res) => {
-		console.error(err);
-		if (process.env.NODE_ENV === "production") {
-			res.status(500).send("Internal Server Error");
-		} else {
-			res.status(500).send(err.stack);
-		}
-	});
-
 	app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 })();
