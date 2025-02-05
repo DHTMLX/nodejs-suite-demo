@@ -24,8 +24,8 @@
 
 			.dhx_dataview_template_d_box .dhx_dataview-item {
 				padding: 0;
-				border: 1px solid #dfdfdf;
-				background-color: #fff;
+				border: var(--dhx-border);
+				background-color: var(--dhx-background-primary);
 				overflow: hidden;
 			}
 
@@ -64,15 +64,18 @@
 
 			.dhx_dataview_template_d__title,
 			.dhx_dataview_template_d__text {
-				font: normal 14px/20px Roboto, sans-serif;
+				font-family: var(--dhx-font-family);
+				font-size: var(--dhx-font-size-normal);
+				line-height: var(--dhx-line-height-normal);
+				font-weight: var(--dhx-font-weight-regular);
 				white-space: nowrap;
 				text-overflow: ellipsis;
 				overflow: hidden;
 			}
 
 			.dhx_dataview_template_d__title {
-				color: rgba(0, 0, 0, 0.7);
-				font-weight: 500;
+				color: var(--dhx-font-color-primary);
+				font-weight: var(--dhx-font-weight-medium);
 			}
 
 			.dhx_dataview_template_d__row {
@@ -88,15 +91,15 @@
 			.dhx_dataview_template_d__icon {
 				font-size: 18px;
 				margin-right: 4px;
-				color: rgba(0, 0, 0, 0.7);
+				color: var(--dhx-font-color-primary);
 			}
 
 			.dhx_dataview_template_d__text {
-				color: rgba(0, 0, 0, 0.7);
+				color: var(--dhx-font-color-primary);
 			}
 
 			.dhx_dataview_template_d__link {
-				color: #0288d1;
+				color: var(--dhx-color-primary);
 			}
 			/* end of code for dataview_template_d */
 		</style>
@@ -120,42 +123,43 @@
 			<div class="dhx_sample-container__widget" id="dataview"></div>
 		</section>
 		<script>
-			var URL = "http://localhost:3000/personal/";
-			var IMG_URL = "http://localhost:3000/images/";
+			const URL = "http://localhost:3000/personal/";
+			const IMG_URL = "http://localhost:3000/images/";
 
-			function template(data) {
-				var template = '<div class="dhx_dataview_template_d">';
-				template += '<div class="dhx_dataview_template_d__inside">';
-				template +=
-					'<div class="dhx_dataview_template_d__picture" style="background-image: url(' + IMG_URL + data.photo + ');"></div>';
-				template += '<div class="dhx_dataview_template_d__body">';
-				template += '<span class="dhx_dataview_template_d__title">' + data.name + "</span>";
-				template += '<div class="dhx_dataview_template_d__row">';
-				template += '<span class="dhx_dataview_template_d__text">' + data.post + "</span></div>";
-				template += '<div class="dhx_dataview_template_d__row">';
-				template += '<span class="dhx_dataview_template_d__icon mdi mdi-cellphone-android"></span>';
-				template += '<span class="dhx_dataview_template_d__text">' + data.phone + "</span></div>";
-				template += '<div class="dhx_dataview_template_d__row">';
-				template += '<span class="dhx_dataview_template_d__icon mdi mdi-cake-variant"></span>';
-				template += '<span class="dhx_dataview_template_d__text">' + data.birthday + "</span></div>";
-				template += '<div class="dhx_dataview_template_d__row">';
-				template += '<span class="dhx_dataview_template_d__icon mdi mdi-email-outline"></span>';
-				template +=
-					'<span class="dhx_dataview_template_d__text"><a class="dhx_dataview_template_d__link" href="mailto:' +
-					data.mail +
-					'" target="_blank">' +
-					data.mail +
-					"</a></span></div>";
-				template += "</div></div>";
-				return template;
-			}
+			const template = ({ name, photo, post, phone, birthday, mail }) => (`
+				<div class="dhx_dataview_template_d">
+					<div class="dhx_dataview_template_d__inside">
+						<div class="dhx_dataview_template_d__picture" style="background-image: url(${IMG_URL + photo});"></div>
+						<div class="dhx_dataview_template_d__body">
+							<span class="dhx_dataview_template_d__title">${name}</span>
+							<div class="dhx_dataview_template_d__row">
+								<span class="dhx_dataview_template_d__text">${post}</span>
+							</div>
+							<div class="dhx_dataview_template_d__row">
+								<span class="dhx_dataview_template_d__icon mdi mdi-cellphone-android"></span>
+								<span class="dhx_dataview_template_d__text">${phone}</span>
+							</div>
+							<div class="dhx_dataview_template_d__row">
+								<span class="dhx_dataview_template_d__icon mdi mdi-cake-variant"></span>
+								<span class="dhx_dataview_template_d__text">${birthday}</span>
+							</div>
+							<div class="dhx_dataview_template_d__row">
+								<span class="dhx_dataview_template_d__icon mdi mdi-email-outline"></span>
+								<span class="dhx_dataview_template_d__text">
+									<a class="dhx_dataview_template_d__link" href="mailto:${mail}" target="_blank">${mail}</a>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			`);
 
-			var dataview = new dhx.DataView("dataview", {
+			const dataview = new dhx.DataView("dataview", {
 				itemsInRow: 2,
 				gap: 10,
 				css: "dhx_widget--bordered dhx_dataview_template_d_box",
 				dragMode: "both",
-				template: template,
+				template,
 				multiselection: true,
 				keyNavigation: true,
 			});
@@ -170,19 +174,11 @@
 				});
 
 			function displayMessage(text, err) {
-				var css;
+				const css = err
+					? "dhx_message--error"
+					: "dhx_message--success";
 
-				if (err) {
-					css = "dhx_message--error";
-				} else {
-					css = "dhx_message--success";
-				}
-
-				dhx.message({
-					text: text,
-					expire: 3000,
-					css: css,
-				});
+				dhx.message({text, expire: 3000, css });
 			}
 		</script>
 	</body>

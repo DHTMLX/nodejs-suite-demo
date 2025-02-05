@@ -24,8 +24,8 @@
 
 			.dhx_dataview_template_d_box .dhx_dataview-item {
 				padding: 0;
-				border: 1px solid #dfdfdf;
-				background-color: #fff;
+				border: var(--dhx-border);
+				background-color: var(--dhx-background-primary);
 				overflow: hidden;
 			}
 
@@ -64,15 +64,18 @@
 
 			.dhx_dataview_template_d__title,
 			.dhx_dataview_template_d__text {
-				font: normal 14px/20px Roboto, sans-serif;
+				font-family: var(--dhx-font-family);
+				font-size: var(--dhx-font-size-normal);
+				line-height: var(--dhx-line-height-normal);
+				font-weight: var(--dhx-font-weight-regular);
 				white-space: nowrap;
 				text-overflow: ellipsis;
 				overflow: hidden;
 			}
 
 			.dhx_dataview_template_d__title {
-				color: rgba(0, 0, 0, 0.7);
-				font-weight: 500;
+				color: var(--dhx-font-color-primary);
+				font-weight: var(--dhx-font-weight-medium);
 			}
 
 			.dhx_dataview_template_d__row {
@@ -88,15 +91,15 @@
 			.dhx_dataview_template_d__icon {
 				font-size: 18px;
 				margin-right: 4px;
-				color: rgba(0, 0, 0, 0.7);
+				color: var(--dhx-font-color-primary);
 			}
 
 			.dhx_dataview_template_d__text {
-				color: rgba(0, 0, 0, 0.7);
+				color: var(--dhx-font-color-primary);
 			}
 
 			.dhx_dataview_template_d__link {
-				color: #0288d1;
+				color: var(--dhx-color-primary);
 			}
 			/* end of code for dataview_template_d */
 			.dhx_form-button .dhx_button {
@@ -127,44 +130,45 @@
 			<div class="dhx_sample-container__widget" id="dataview"></div>
 		</section>
 		<script>
-			var URL = "http://localhost:3000/personal/";
-			var UPLOADER_URL = "http://localhost:3000/form/images";
-			var IMG_URL = "http://localhost:3000/images/";
+			const URL = "http://localhost:3000/personal/";
+			const UPLOADER_URL = "http://localhost:3000/form/images";
+			const IMG_URL = "http://localhost:3000/images/";
 
-			function template(data) {
-				var template = '<div class="dhx_dataview_template_d">';
-				template += '<div class="dhx_dataview_template_d__inside">';
-				template +=
-					'<div class="dhx_dataview_template_d__picture" style="background-image: url(' + IMG_URL + data.photo + ');"></div>';
-				template += '<div class="dhx_dataview_template_d__body">';
-				template += '<span class="dhx_dataview_template_d__title">' + data.name + "</span>";
-				template += '<div class="dhx_dataview_template_d__row">';
-				template += '<span class="dhx_dataview_template_d__text">' + data.post + "</span></div>";
-				template += '<div class="dhx_dataview_template_d__row">';
-				template += '<span class="dhx_dataview_template_d__icon mdi mdi-cellphone-android"></span>';
-				template += '<span class="dhx_dataview_template_d__text">' + data.phone + "</span></div>";
-				template += '<div class="dhx_dataview_template_d__row">';
-				template += '<span class="dhx_dataview_template_d__icon mdi mdi-cake-variant"></span>';
-				template += '<span class="dhx_dataview_template_d__text">' + data.birthday + "</span></div>";
-				template += '<div class="dhx_dataview_template_d__row">';
-				template += '<span class="dhx_dataview_template_d__icon mdi mdi-email-outline"></span>';
-				template +=
-					'<span class="dhx_dataview_template_d__text"><a class="dhx_dataview_template_d__link" href="mailto:' +
-					data.mail +
-					'" target="_blank">' +
-					data.mail +
-					"</a></span></div>";
-				template += "</div></div>";
-				return template;
-			}
+			const template = ({ name, photo, post, phone, birthday, mail }) => (`
+				<div class="dhx_dataview_template_d">
+					<div class="dhx_dataview_template_d__inside">
+						<div class="dhx_dataview_template_d__picture" style="background-image: url(${IMG_URL + photo});"></div>
+						<div class="dhx_dataview_template_d__body">
+							<span class="dhx_dataview_template_d__title">${name}</span>
+							<div class="dhx_dataview_template_d__row">
+								<span class="dhx_dataview_template_d__text">${post}</span>
+							</div>
+							<div class="dhx_dataview_template_d__row">
+								<span class="dhx_dataview_template_d__icon mdi mdi-cellphone-android"></span>
+								<span class="dhx_dataview_template_d__text">${phone}</span>
+							</div>
+							<div class="dhx_dataview_template_d__row">
+								<span class="dhx_dataview_template_d__icon mdi mdi-cake-variant"></span>
+								<span class="dhx_dataview_template_d__text">${birthday}</span>
+							</div>
+							<div class="dhx_dataview_template_d__row">
+								<span class="dhx_dataview_template_d__icon mdi mdi-email-outline"></span>
+								<span class="dhx_dataview_template_d__text">
+									<a class="dhx_dataview_template_d__link" href="mailto:${mail}" target="_blank">${mail}</a>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			`);
 
-			var dataview = new dhx.DataView("dataview", {
+			const dataview = new dhx.DataView("dataview", {
 				itemsInRow: 2,
 				gap: 10,
 				css: "dhx_widget--bordered dhx_dataview_template_d_box",
 				dragMode: "both",
 				keyNavigation: true,
-				template: template,
+				template,
 			});
 
 			dataview.data
@@ -176,18 +180,15 @@
 					displayMessage(res.statusText || "Resource Not Found", true);
 				});
 
-			var toolbarData = [
-				{ type: "spacer" },
-				{ id: "delete", type: "button", value: "Delete card", size: "small", view: "link", hidden: true },
-				{ id: "edit", type: "button", value: "Edit card", size: "small", view: "link", hidden: true },
-				{ id: "add", type: "button", value: "Add new card", size: "small" },
-			];
-
-			var toolbar = new dhx.Toolbar("toolbar", {
+			const toolbar = new dhx.Toolbar("toolbar", {
 				css: "dhx_widget--bordered",
+				data: [
+					{ type: "spacer" },
+					{ id: "delete", type: "button", value: "Delete card", size: "small", view: "link", hidden: true },
+					{ id: "edit", type: "button", value: "Edit card", size: "small", view: "link", hidden: true },
+					{ id: "add", type: "button", value: "Add new card", size: "small" },
+				]
 			});
-
-			toolbar.data.parse(toolbarData);
 
 			toolbar.events.on("click", function (id) {
 				switch (id) {
@@ -204,69 +205,67 @@
 			});
 
 			dataview.events.on("AfterSelect", function () {
-				var selectedItem = dataview.selection.getItem();
-				if (selectedItem) {
+				if (dataview.selection.getItem()) {
 					toolbar.show();
 				}
 			});
 
-			var form = new dhx.Form(null, {
+			const form = new dhx.Form(null, {
 				width: 500,
 				height: 630,
 				rows: [
 					{
+						name: "name",
 						type: "input",
 						label: "Employee name",
 						placeholder: "John Doe",
 						required: true,
-						id: "name",
 					},
 					{
+						name: "post",
 						type: "input",
 						label: "Position",
 						placeholder: "Resident",
 						required: true,
-						id: "post",
 					},
 					{
+						name: "phone",
 						type: "input",
 						label: "Phone number",
 						placeholder: "(405) 500-2020",
 						icon: "mdi mdi-cellphone-android",
 						required: true,
-						validation: function (value) {
-							return /^(\+)?(\(\d{2,3}\) ?\d|\d)(([ \-]?\d)|( ?\(\d{2,3}\) ?)){5,12}\d$/.test(value);
-						},
-						id: "phone",
+						patternMask: "(000) 000-0000",
+						validation:  (value) => (value.trim().length === 14)
 					},
 					{
+						name: "birthday",
 						type: "datepicker",
 						label: "Birthday",
 						required: true,
 						editable: true,
 						placeholder: "25.12.1991",
-						dateFormat: "%d.%m.%Y",
-						id: "birthday",
+						dateFormat: "%d.%m.%Y"
 					},
 					{
+						name: "mail",
 						type: "input",
 						label: "Email",
 						icon: "mdi mdi-email-outline",
 						placeholder: "jd@mail.name",
 						required: true,
-						validation: "email",
-						id: "mail",
+						validation: "email"
 					},
 					{
+						name: "photo",
 						type: "simplevault",
 						label: "Photo",
-						target: UPLOADER_URL,
-						id: "photo",
+						target: UPLOADER_URL
 					},
 					{
+						name: "start",
 						type: "input",
 						hidden: true,
-						id: "start",
 					},
 					{
 						type: "spacer",
@@ -274,35 +273,33 @@
 					{
 						align: "between",
 						cols: [
+							{ type: "spacer" },
 							{
-								type: "spacer",
-							},
-							{
+								name: "cancel",
 								type: "button",
 								text: "Cancel",
 								view: "link",
 								color: "primary",
 								size: "small",
 								css: "dhx_form-button",
-								id: "cancel",
 							},
 							{
+								name: "editItem",
 								type: "button",
 								text: "Save",
 								view: "flat",
 								color: "primary",
 								size: "small",
 								css: "dhx_form-button",
-								id: "editItem",
 							},
 							{
+								name: "addItem",
 								type: "button",
 								text: "Save",
 								view: "flat",
 								color: "primary",
 								size: "small",
-								css: "dhx_form-button",
-								id: "addItem",
+								css: "dhx_form-button"
 							},
 						],
 					},
@@ -330,10 +327,10 @@
 				}
 			});
 
-			var dhxwindow;
+			let dhxwindow;
 
 			function openWindow(action) {
-				var title;
+				let title;
 				if (action === "add") {
 					title = "Add new card";
 					form.getItem("addItem").show();
@@ -344,7 +341,7 @@
 					form.getItem("editItem").show();
 				}
 
-				var selectedItem = dataview.selection.getItem();
+				const selectedItem = dataview.selection.getItem();
 
 				selectedItem &&
 					action === "edit" &&
@@ -380,23 +377,15 @@
 			}
 
 			function closeWindow() {
-				dhxwindow.hide();
+				dhxwindow.destructor();
 			}
 
 			function displayMessage(text, err) {
-				var css;
+				const css = err
+					? "dhx_message--error"
+					: "dhx_message--success";
 
-				if (err) {
-					css = "dhx_message--error";
-				} else {
-					css = "dhx_message--success";
-				}
-
-				dhx.message({
-					text: text,
-					expire: 3000,
-					css: css,
-				});
+				dhx.message({text, expire: 3000, css });
 			}
 
 			function deleteItem() {
@@ -416,8 +405,8 @@
 			function editItem() {
 				if (!form.validate()) return;
 
-				var item = dataview.selection.getItem();
-				var data = getItemData();
+				const item = dataview.selection.getItem();
+				const data = getItemData();
 
 				form.getItem("photo").send();
 				dhx.ajax
@@ -434,7 +423,7 @@
 			function addItem() {
 				if (!form.validate()) return;
 
-				var data = getItemData();
+				const data = getItemData();
 
 				form.getItem("photo").send();
 				dhx.ajax
@@ -450,7 +439,7 @@
 			}
 
 			function getItemData() {
-				var data = form.getValue();
+				const data = form.getValue();
 				return {
 					name: data.name,
 					post: data.post,

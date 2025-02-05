@@ -32,9 +32,9 @@
 			<div class="dhx_sample-container__widget" id="chart"></div>
 		</section>
 		<script>
-			var URL = "http://localhost:3000/static/personal/";
+			const URL = "http://localhost:3000/static/personal/";
 
-			var config = {
+			const chart = new dhx.Chart("chart", {
 				type: "donut",
 				series: [
 					{
@@ -52,9 +52,7 @@
 					halign: "right",
 					valign: "bottom",
 				},
-			};
-
-			var chart = new dhx.Chart("chart", config);
+			});
 
 			chart.data
 				.load(URL)
@@ -66,19 +64,11 @@
 				});
 
 			function displayMessage(text, err) {
-				var css;
+				const css = err
+					? "dhx_message--error"
+					: "dhx_message--success";
 
-				if (err) {
-					css = "dhx_message--error";
-				} else {
-					css = "dhx_message--success";
-				}
-
-				dhx.message({
-					text: text,
-					expire: 3000,
-					css: css,
-				});
+				dhx.message({text, expire: 3000, css });
 			}
 		</script>
 	</body>

@@ -32,20 +32,19 @@
 			<div id="form"></div>
 		</section>
 		<script>
-			var URL = "http://localhost:3000/form/upload";
-
-			var form = new dhx.Form("form", {
+			const URL = "http://localhost:3000/form/upload";
+			const form = new dhx.Form("form", {
 				css: "dhx_widget--bordered",
 				width: 500,
 				height: 510,
 				padding: 20,
 				rows: [
 					{
+						name: "vault",
 						type: "simpleVault",
 						required: true,
 						label: "Simple Vault",
 						target: URL,
-						id: "simplevault",
 					},
 					{
 						type: "spacer",
@@ -81,25 +80,16 @@
 				}
 			});
 
-			form.getItem("simplevault").events.on("uploadFile", function (file, value, res) {
+			form.getItem("vault").events.on("uploadFile", function (file, value, res) {
 				console.log(res);
 				displayMessage("File path on the server: " + res.link);
 			});
 
 			function displayMessage(text, err) {
-				var css;
-
-				if (err) {
-					css = "dhx_message--error";
-				} else {
-					css = "dhx_message--success";
-				}
-
-				dhx.message({
-					text: text,
-					expire: 3000,
-					css: css,
-				});
+				const css = err
+					? "dhx_message--error"
+					: "dhx_message--success";
+				dhx.message({ text,	expire: 3000, css });
 			}
 		</script>
 	</body>

@@ -32,31 +32,22 @@
 			<div class="dhx_sample-container__widget--grid" id="grid"></div>
 		</section>
 		<script>
-			var URL = "http://localhost:3000/projects/";
+			const URL = "http://localhost:3000/projects/";
+			const columns = [
+				{ id: "project", header: [{ text: "Project" }, { content: "comboFilter" }] },
+				{ id: "status",	header: [{ text: "Status" }, { content: "selectFilter" }], editorType: "select", options: ["Done", "In Progress", "Not Started"] },
+				{ id: "paid", header: [{ text: "Paid", rowspan: 2 }], type: "boolean" },
+				{ id: "owner", header: [{ text: "Owner" }, { content: "inputFilter" }] },
+				{ id: "hours", header: [{ text: "Number of hours" }, { content: "inputFilter" }] },
+				{ id: "start_date",	header: [{ text: "Calendar", colspan: 2 }, { text: "Start date" }],	type: "date", dateFormat: "%d/%m/%Y" },
+				{ id: "end_date", header: ["", { text: "End date" }], type: "date", dateFormat: "%d/%m/%Y" },
+				{ id: "balance", header: [{ text: "Balance" }, { content: "inputFilter" }], autoWidth: true, },
+			];
 
-			var grid = new dhx.Grid("grid", {
-				columns: [
-					{ width: 160, id: "project", header: [{ text: "Project" }, { content: "comboFilter" }] },
-					{
-						width: 160,
-						id: "status",
-						header: [{ text: "Status" }, { content: "selectFilter" }],
-						editorType: "select",
-						options: ["Done", "In Progress", "Not Started"],
-					},
-					{ width: 160, id: "paid", header: [{ text: "Paid", rowspan: 2 }], type: "boolean" },
-					{ width: 160, id: "owner", header: [{ text: "Owner" }, { content: "inputFilter" }] },
-					{ width: 160, id: "hours", header: [{ text: "Number of hours" }, { content: "inputFilter" }] },
-					{
-						width: 160,
-						id: "start_date",
-						header: [{ text: "Calendar", colspan: 2 }, { text: "Start date" }],
-						type: "date",
-						dateFormat: "%d/%m/%Y",
-					},
-					{ width: 160, id: "end_date", header: ["", { text: "End date" }], type: "date", dateFormat: "%d/%m/%Y" },
-					{ width: 158, id: "balance", header: [{ text: "Balance" }, { content: "inputFilter" }] },
-				],
+			columns.forEach(column => column.minWidth = 155);
+
+			const grid = new dhx.Grid("grid", {
+				columns,
 				selection: true,
 				editable: true,
 				resizable: true,
@@ -86,19 +77,11 @@
 			});
 
 			function displayMessage(text, err) {
-				var css;
+				const css = err
+					? "dhx_message--error"
+					: "dhx_message--success";
 
-				if (err) {
-					css = "dhx_message--error";
-				} else {
-					css = "dhx_message--success";
-				}
-
-				dhx.message({
-					text: text,
-					expire: 3000,
-					css: css,
-				});
+				dhx.message({text, expire: 3000, css });
 			}
 		</script>
 	</body>

@@ -40,9 +40,9 @@
 			<div id="tree"></div>
 		</section>
 		<script>
-			var URL = "http://localhost:3000/books/";
+			const URL = "http://localhost:3000/books/";
 
-			var tree = new dhx.Tree("tree", {
+			const tree = new dhx.Tree("tree", {
 				editing: true,
 				dragMode: "both",
 			});
@@ -64,29 +64,19 @@
 
 			tree.events.on("afterDrag", function (data, events) {
 				if (data.start) {
-					var data = tree.data.getItem(data.start);
-					sendTreeData(data);
+					sendTreeData(tree.data.getItem(data.start));
 				}
 				if (data.target) {
-					var data = tree.data.getItem(data.target);
-					sendTreeData(data);
+					sendTreeData(tree.data.getItem(data.target));
 				}
 			});
 
 			function displayMessage(text, err) {
-				var css;
+				const css = err
+					? "dhx_message--error"
+					: "dhx_message--success";
 
-				if (err) {
-					css = "dhx_message--error";
-				} else {
-					css = "dhx_message--success";
-				}
-
-				dhx.message({
-					text: text,
-					expire: 3000,
-					css: css,
-				});
+				dhx.message({text, expire: 3000, css });
 			}
 
 			function getTreeData(data) {

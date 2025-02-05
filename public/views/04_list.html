@@ -40,23 +40,21 @@
 			<div class="dhx_sample-container__widget" id="list"></div>
 		</section>
 		<script>
-			var URL = "http://localhost:3000/personal/";
+			const URL = "http://localhost:3000/personal/";
 
-			function template(data) {
-				var template = "<div class='dhx-demo_personal-card'>";
-				template += "<p><b>Name:</b> " + data.name + "</p>";
-				template += "<p><b>Post:</b> " + data.post + "</p>";
-				template += "<p><b>Phone:</b> " + data.phone + "</p>";
-				template += "<p><b>Beginning of work:</b> " + data.start + "</p>";
-				template += "<p><b>Birthday:</b> " + data.birthday + "</p>";
-				return template;
-			}
-
-			var list = new dhx.List("list", {
+			const list = new dhx.List("list", {
 				css: "dhx_widget--bordered",
 				dragMode: "both",
 				multiselection: true,
-				template: template,
+				template: ({ name, post, phone, start, birthday }) => (`
+					<div class="dhx-demo_personal-card">
+						<p><b>Name: </b>${name}</p>
+						<p><b>Post: </b>${post}</p>
+						<p><b>Phone: </b>${phone}</p>
+						<p><b>Beginning of work: </b>${start}</p>
+						<p><b>Birthday: </b>${birthday}</p>
+					</div>
+				`),
 				keyNavigation: true,
 			});
 
@@ -70,19 +68,11 @@
 				});
 
 			function displayMessage(text, err) {
-				var css;
+				const css = err
+					? "dhx_message--error"
+					: "dhx_message--success";
 
-				if (err) {
-					css = "dhx_message--error";
-				} else {
-					css = "dhx_message--success";
-				}
-
-				dhx.message({
-					text: text,
-					expire: 3000,
-					css: css,
-				});
+				dhx.message({text, expire: 3000, css });
 			}
 		</script>
 	</body>

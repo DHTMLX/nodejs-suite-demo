@@ -31,13 +31,14 @@
 			<form id="form"></form>
 		</section>
 		<script>
-			var form = new dhx.Form("form", {
+			const form = new dhx.Form("form", {
 				css: "dhx_widget--bordered",
 				width: 500,
 				height: 350,
 				padding: 20,
 				rows: [
 					{
+						name: "name",
 						type: "input",
 						label: "Name",
 						placeholder: "John Doe",
@@ -45,9 +46,9 @@
 						preMessage: "Please enter the correct data in the Name field",
 						successMessage: "Success",
 						errorMessage: "Please enter the correct data in the Name field",
-						id: "name",
 					},
 					{
+						name: "email",
 						type: "input",
 						label: "Email",
 						placeholder: "jd@mail.name",
@@ -56,9 +57,9 @@
 						successMessage: "Success",
 						errorMessage: "Please enter the correct data in the Email field",
 						validation: "email",
-						id: "email",
 					},
 					{
+						name: "password",
 						type: "input",
 						inputType: "password",
 						label: "Password",
@@ -70,7 +71,6 @@
 						validation: function (value) {
 							return value.length >= 4;
 						},
-						id: "password",
 					},
 					{
 						type: "button",
@@ -83,7 +83,7 @@
 				],
 			});
 
-			var URL = "http://localhost:3000/form/login";
+			const URL = "http://localhost:3000/form/login";
 
 			form.events.on("click", function () {
 				if (!form.validate()) {
@@ -91,7 +91,7 @@
 				}
 				form.send(URL)
 					.then(function (res) {
-						var name = JSON.parse(res).name;
+						const name = JSON.parse(res).name;
 						displayMessage(name + ", your data has been entered successfully");
 					})
 					.catch(function (res) {
@@ -106,26 +106,18 @@
 				}
 			});
 
-			var passwordInput = form.getItem("password");
+			const passwordInput = form.getItem("password");
 
 			passwordInput.events.on("input", function (value) {
 				passwordInput.validate(false, value);
 			});
 
 			function displayMessage(text, err) {
-				var css;
+				const css = err
+					? "dhx_message--error"
+					: "dhx_message--success";
 
-				if (err) {
-					css = "dhx_message--error";
-				} else {
-					css = "dhx_message--success";
-				}
-
-				dhx.message({
-					text: text,
-					expire: 3000,
-					css: css,
-				});
+				dhx.message({text, expire: 3000, css });
 			}
 		</script>
 	</body>
