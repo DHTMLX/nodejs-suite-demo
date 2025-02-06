@@ -80,8 +80,8 @@
 			}
 
 			function getTreeData(data) {
-				var treeData = {};
-				for (var key in data) {
+				const treeData = {};
+				for (let key in data) {
 					if (data.hasOwnProperty(key)) {
 						if (key === "parent" && data[key].indexOf("ROOT") !== -1) {
 							treeData[key] = null;

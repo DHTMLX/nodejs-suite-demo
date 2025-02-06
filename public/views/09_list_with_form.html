@@ -130,7 +130,7 @@
 						icon: "mdi mdi-cellphone-android",
 						required: true,
 						patternMask: "(000) 000-0000",
-						validation:  (value) => (value.trim().length === 14)
+						validation: v => (v.startsWith("(") ? v.trim().length === 14 : v.trim().length === 10)
 					},
 					{
 						name: "start",
@@ -227,30 +227,19 @@
 				}
 
 				const selectedItem = list.selection.getItem();
-
-				selectedItem &&
-					action === "edit" &&
-					form.setValue({
-						name: selectedItem.name,
-						post: selectedItem.post,
-						phone: selectedItem.phone,
-						start: selectedItem.start,
-						birthday: selectedItem.birthday,
-						mail: selectedItem.mail,
-						photo: selectedItem.photo,
-					});
+				if (selectedItem && action === "edit") {
+					form.setValue({ ...selectedItem });
+				} else {
+					form.clear();
+				}
 
 				form.clear("validation");
 
 				dhxwindow = new dhx.Window({
 					width: form.config.width,
 					height: form.config.height + 110,
-					title: title,
 					modal: true,
-				});
-
-				dhxwindow.events.on("AfterHide", function () {
-					form.clear();
+					title,
 				});
 
 				dhxwindow.attach(form);
@@ -316,15 +305,7 @@
 			}
 
 			function getItemData() {
-				const data = form.getValue();
-				return {
-					name: data.name,
-					post: data.post,
-					phone: data.phone,
-					birthday: data.birthday,
-					start: data.start,
-					mail: data.mail || "",
-				};
+				return { ...form.getValue() };
 			}
 		</script>
 	</body>

@@ -45,42 +45,23 @@
 			<div class="dhx_sample-container__widget" id="grid"></div>
 		</section>
 		<script>
-			var URL = "http://localhost:3000/save";
+			const URL = "http://localhost:3000/save";
 
-			var grid = new dhx.Grid("grid", {
-				columns: [
-					{ width: 160, id: "project", header: [{ text: "Project" }, { content: "comboFilter" }] },
-					{
-						width: 160,
-						id: "status",
-						header: [{ text: "Status" }, { content: "selectFilter" }],
-						editorType: "select",
-						options: ["Done", "In Progress", "Not Started"],
-					},
-					{ width: 160, id: "paid", header: [{ text: "Paid", rowspan: 2, align: "center" }], type: "boolean" },
-					{ width: 160, id: "owner", header: [{ text: "Owner" }, { content: "inputFilter" }] },
-					{ width: 160, id: "hours", header: [{ text: "Number of hours" }, { content: "inputFilter" }] },
-					{
-						width: 160,
-						id: "start_date",
-						header: [
-							{ text: "Calendar", colspan: 2, align: "center" },
-							{ text: "Start date", align: "center" },
-						],
-						type: "date",
-						dateFormat: "%d/%m/%Y",
-						align: "center",
-					},
-					{
-						width: 160,
-						id: "end_date",
-						header: ["", { text: "End date", align: "center" }],
-						type: "date",
-						dateFormat: "%d/%m/%Y",
-						align: "center",
-					},
-					{ width: 158, id: "balance", header: [{ text: "Balance" }, { content: "inputFilter" }] },
-				],
+			const columns = [
+				{ id: "project", header: [{ text: "Project" }, { content: "comboFilter" }] },
+				{ id: "status",	header: [{ text: "Status" }, { content: "selectFilter" }], editorType: "select", options: ["Done", "In Progress", "Not Started"] },
+				{ id: "paid", header: [{ text: "Paid", rowspan: 2 }], type: "boolean" },
+				{ id: "owner", header: [{ text: "Owner" }, { content: "inputFilter" }] },
+				{ id: "hours", header: [{ text: "Number of hours" }, { content: "inputFilter" }] },
+				{ id: "start_date",	header: [{ text: "Calendar", colspan: 2 }, { text: "Start date" }],	type: "date", dateFormat: "%d/%m/%Y" },
+				{ id: "end_date", header: ["", { text: "End date" }], type: "date", dateFormat: "%d/%m/%Y" },
+				{ id: "balance", header: [{ text: "Balance" }, { content: "inputFilter" }], autoWidth: true, },
+			];
+
+			columns.forEach(column => column.minWidth = 155);
+
+			const grid = new dhx.Grid("grid", {
+				columns,
 				selection: true,
 				editable: true,
 				resizable: true,
@@ -98,11 +79,13 @@
 
 			grid.data.events.on("change", function (id, method, data) {
 				if (method) {
-					grid.data.save(URL);
+					if (method === "load") {
+						return;
+					}
 
+					grid.data.save(URL);
 					grid.data.saveData.then(function () {
 						let action;
-
 						switch (method) {
 							case "add":
 								action = "added";
@@ -115,39 +98,27 @@
 								break;
 						}
 						const project = data.project || "Empty project";
-
 						displayMessage(`${project} - ${action}`);
 					});
 				}
 			});
 
 			function displayMessage(text, err) {
-				var css;
+				const css = err
+					? "dhx_message--error"
+					: "dhx_message--success";
 
-				if (err) {
-					css = "dhx_message--error";
-				} else {
-					css = "dhx_message--success";
-				}
-
-				dhx.message({
-					text: text,
-					expire: 3000,
-					css: css,
-				});
+				dhx.message({text, expire: 3000, css });
 			}
 
-			var toolbarData = [
-				{ type: "spacer" },
-				{ id: "delete", type: "button", value: "Delete card", size: "small", view: "link", hidden: true },
-				{ id: "add", type: "button", value: "Add new card", size: "small" },
-			];
-
-			var toolbar = new dhx.Toolbar("toolbar", {
+			const toolbar = new dhx.Toolbar("toolbar", {
 				css: "dhx_widget--bordered",
+				data: [
+					{ type: "spacer" },
+					{ id: "delete", type: "button", value: "Delete card", size: "small", view: "link", hidden: true },
+					{ id: "add", type: "button", value: "Add new card", size: "small" },
+				]
 			});
-
-			toolbar.data.parse(toolbarData);
 
 			toolbar.events.on("click", function (id) {
 				switch (id) {
@@ -172,9 +143,7 @@
 			});
 
 			grid.events.on("AfterSelect", function (row) {
-				if (row) {
-					toolbar.show();
-				}
+				if (row) toolbar.show();
 			});
 		</script>
 	</body>

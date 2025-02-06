@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<!-- meta block -->
-		<title>Grid with Form and Window. Getting, editing, deleting, and sending data (multiuser)</title>
+		<title>Multiuser (real-time updated) backend. Save method. Getting, editing, deleting, and sending data</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8" />
 		<link rel="stylesheet" href="../assets/css/index.css" />
 		<!-- Suite -->
@@ -35,7 +35,7 @@
 						</li>
 						<li class="dhx_sample-header-breadcrumbs__item">
 							<span class="dhx_sample-header-breadcrumbs__link"
-								>Grid with Form and Window. Getting, editing, deleting, and sending data</span
+								>Multiuser (real-time updated) backend. Save method. Getting, editing, deleting, and sending data</span
 							>
 						</li>
 					</ul>
@@ -48,32 +48,23 @@
 		</section>
 		<script>
 			const fayeClient = new Faye.Client("http://localhost:3000/sync");
+			const URL = "http://localhost:3000/projects/";
 
-			var URL = "http://localhost:3000/projects/";
+			const columns = [
+				{ id: "project", header: [{ text: "Project" }, { content: "comboFilter" }] },
+				{ id: "status",	header: [{ text: "Status" }, { content: "selectFilter" }], editorType: "select", options: ["Done", "In Progress", "Not Started"] },
+				{ id: "paid", header: [{ text: "Paid", rowspan: 2 }], type: "boolean" },
+				{ id: "owner", header: [{ text: "Owner" }, { content: "inputFilter" }] },
+				{ id: "hours", header: [{ text: "Number of hours" }, { content: "inputFilter" }] },
+				{ id: "start_date",	header: [{ text: "Calendar", colspan: 2 }, { text: "Start date" }],	type: "date", dateFormat: "%d/%m/%Y" },
+				{ id: "end_date", header: ["", { text: "End date" }], type: "date", dateFormat: "%d/%m/%Y" },
+				{ id: "balance", header: [{ text: "Balance" }, { content: "inputFilter" }], autoWidth: true, },
+			];
 
-			var grid = new dhx.Grid("grid", {
-				columns: [
-					{ width: 160, id: "project", header: [{ text: "Project" }, { content: "comboFilter" }] },
-					{
-						width: 160,
-						id: "status",
-						header: [{ text: "Status" }, { content: "selectFilter" }],
-						editorType: "select",
-						options: ["Done", "In Progress", "Not Started"],
-					},
-					{ width: 160, id: "paid", header: [{ text: "Paid", rowspan: 2 }], type: "boolean" },
-					{ width: 160, id: "owner", header: [{ text: "Owner" }, { content: "inputFilter" }] },
-					{ width: 160, id: "hours", header: [{ text: "Number of hours" }, { content: "inputFilter" }] },
-					{
-						width: 160,
-						id: "start_date",
-						header: [{ text: "Calendar", colspan: 2 }, { text: "Start date" }],
-						type: "date",
-						dateFormat: "%d/%m/%Y",
-					},
-					{ width: 160, id: "end_date", header: ["", { text: "End date" }], type: "date", dateFormat: "%d/%m/%Y" },
-					{ width: 160, id: "balance", header: [{ text: "Balance" }, { content: "inputFilter" }] },
-				],
+			columns.forEach(column => column.minWidth = 155);
+
+			const grid = new dhx.Grid("grid", {
+				columns,
 				selection: "row",
 				resizable: true,
 				dragMode: "both",
@@ -88,18 +79,15 @@
 					displayMessage(res.statusText || "Resource Not Found", true);
 				});
 
-			var toolbarData = [
-				{ type: "spacer" },
-				{ id: "delete", type: "button", value: "Delete card", size: "small", view: "link", hidden: true },
-				{ id: "edit", type: "button", value: "Edit card", size: "small", view: "link", hidden: true },
-				{ id: "add", type: "button", value: "Add new card", size: "small" },
-			];
-
-			var toolbar = new dhx.Toolbar("toolbar", {
+			const toolbar = new dhx.Toolbar("toolbar", {
 				css: "dhx_widget--bordered",
+				data: [
+					{ type: "spacer" },
+					{ id: "delete", type: "button", value: "Delete card", size: "small", view: "link", hidden: true },
+					{ id: "edit", type: "button", value: "Edit card", size: "small", view: "link", hidden: true },
+					{ id: "add", type: "button", value: "Add new card", size: "small" },
+				]
 			});
-
-			toolbar.data.parse(toolbarData);
 
 			toolbar.events.on("click", function (id) {
 				switch (id) {
@@ -116,26 +104,24 @@
 			});
 
 			grid.events.on("AfterSelect", function (row) {
-				if (row) {
-					toolbar.show();
-				}
+				if (row) toolbar.show();
 			});
 
-			var form = new dhx.Form(null, {
+			const form = new dhx.Form(null, {
 				width: 500,
 				height: 630,
 				rows: [
 					{
+						name: "project",
 						type: "input",
 						label: "Project",
 						placeholder: "Project name",
 						required: true,
-						id: "project",
 					},
 					{
+						name: "status",
 						type: "select",
 						label: "Status",
-						id: "status",
 						options: [
 							{
 								value: "Done",
@@ -152,89 +138,82 @@
 						],
 					},
 					{
+						name: "owner",
 						type: "input",
 						label: "Owner",
 						placeholder: "Mark Luis",
 						required: true,
-						id: "owner",
 					},
 					{
+						name: "hours",
 						type: "input",
 						label: "Number of hourse",
 						placeholder: "0",
 						validation: "integer",
 						required: true,
-						id: "hours",
 					},
 					{
+						name: "start_date",
 						type: "datepicker",
 						label: "Start date",
 						required: true,
 						placeholder: "25/12/2020",
 						dateFormat: "%d/%m/%Y",
-						id: "start_date",
 					},
 					{
+						name: "end_date",
 						type: "datepicker",
 						label: "End date",
 						required: true,
 						placeholder: "30/12/2020",
 						dateFormat: "%d/%m/%Y",
-						id: "end_date",
 					},
 					{
+						name: "balance",
 						type: "input",
 						label: "Balance",
 						placeholder: "0",
 						validation: "integer",
 						required: true,
-						id: "balance",
 					},
-					{
-						type: "checkbox",
-						text: "Paid",
-						id: "paid",
-					},
-					{
-						type: "spacer",
-					},
+					{ name: "paid", type: "checkbox", text: "Paid" },
+					{ type: "spacer" },
 					{
 						align: "between",
 						cols: [
+							{ type: "spacer" },
 							{
-								type: "spacer",
-							},
-							{
+								name: "cancel",
 								type: "button",
 								text: "Cancel",
 								view: "link",
 								color: "primary",
 								size: "small",
-								css: "dhx_form-button",
-								id: "cancel",
+								css: "dhx_form-button"
 							},
 							{
+								name: "editItem",
 								type: "button",
 								text: "Save",
 								view: "flat",
 								color: "primary",
 								size: "small",
 								css: "dhx_form-button",
-								id: "editItem",
 							},
 							{
+								name: "addItem",
 								type: "button",
 								text: "Save",
 								view: "flat",
 								color: "primary",
 								size: "small",
 								css: "dhx_form-button",
-								id: "addItem",
 							},
 						],
 					},
 				],
 			});
+
 			form.events.on("click", function (id) {
 				switch (id) {
 					case "addItem":
@@ -256,10 +235,10 @@
 				}
 			});
 
-			var dhxwindow;
+			let dhxwindow;
 
 			function openWindow(action) {
-				var title;
+				let title;
 				if (action === "add") {
 					title = "Add new card";
 					form.getItem("addItem").show();
@@ -270,32 +249,20 @@
 					form.getItem("editItem").show();
 				}
 
-				var selectedItem = grid.selection.getCell();
-
-				selectedItem &&
-					action === "edit" &&
-					form.setValue({
-						project: selectedItem.row.project,
-						owner: selectedItem.row.owner,
-						start_date: selectedItem.row.start_date,
-						end_date: selectedItem.row.end_date,
-						status: selectedItem.row.status,
-						hours: selectedItem.row.hours,
-						balance: selectedItem.row.balance,
-						paid: selectedItem.row.paid,
-					});
+				const selectedItem = grid.selection.getCell();
+				if (selectedItem && action === "edit") {
+					form.setValue({ ...selectedItem.row });
+				} else {
+					form.clear();
+				}
 
 				form.clear("validation");
 
 				dhxwindow = new dhx.Window({
 					width: form.config.width,
 					height: form.config.height + 110,
-					title: title,
 					modal: true,
-				});
-
-				dhxwindow.events.on("AfterHide", function () {
-					// form.clear();
+					title,
 				});
 
 				dhxwindow.attach(form);
@@ -307,23 +274,15 @@
 			}
 
 			function displayMessage(text, err) {
-				var css;
+				const css = err
+					? "dhx_message--error"
+					: "dhx_message--success";
 
-				if (err) {
-					css = "dhx_message--error";
-				} else {
-					css = "dhx_message--success";
-				}
-
-				dhx.message({
-					text: text,
-					expire: 3000,
-					css: css,
-				});
+				dhx.message({text, expire: 3000, css });
 			}
 
 			function deleteItem() {
-				var selectedRow = grid.selection.getCell().row;
+				const selectedRow = grid.selection.getCell().row;
 				dhx.ajax
 					.delete(URL + selectedRow.id)
 					.then(function () {
@@ -338,8 +297,8 @@
 			function editItem() {
 				if (!form.validate()) return;
 
-				var selectedRow = grid.selection.getCell().row;
-				var data = getItemData();
+				const selectedRow = grid.selection.getCell().row;
+				const data = getItemData();
 				dhx.ajax
 					.put(URL + selectedRow.id, data)
 					.then(function () {
@@ -354,7 +313,7 @@
 			function addItem() {
 				if (!form.validate()) return;
 
-				var data = getItemData();
+				const data = getItemData();
 				dhx.ajax
 					.post(URL, data)
 					.then(function (res) {
@@ -368,17 +327,7 @@
 			}
 
 			function getItemData() {
-				var data = form.getValue();
-				return {
-					project: data.project,
-					owner: data.owner,
-					start_date: data.start_date,
-					end_date: data.end_date,
-					status: data.status,
-					hours: data.hours,
-					balance: data.balance,
-					paid: data.paid,
-				};
+				return { ...form.getValue() };
 			}
 
 			fayeClient.subscribe("/projects", message => {

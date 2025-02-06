@@ -9,7 +9,7 @@ export default function (app, db) {
 		res.json(projects);
 	});
 
-	app.post("/save", async (req, res) => {
+	app.put("/save", async (req, res) => {
 		const { id } = req.body;
 		const projects = await db.get("SELECT * FROM projects WHERE id=?;", id);
 		if (!projects) {
@@ -32,7 +32,7 @@ export default function (app, db) {
 		}
 	});
 
-	app.put("/save", async (req, res) => {
+	app.post("/save", async (req, res) => {
 		const { project, owner, start_date, end_date, status, hours, balance, paid } = req.body;
 		const props = ["project", "owner", "start_date", "end_date", "status", "hours", "balance", "paid"];
 		const valid = props.every(prop => req.body.hasOwnProperty(prop) && typeof prop !== "undefined");
